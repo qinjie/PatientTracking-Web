@@ -29,8 +29,8 @@ return [
         ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=patient_tracking',
-            'username' => 'patient_tracking',
+            'dsn' => 'mysql:host=localhost;dbname=patient_tracking',
+            'username' => 'sa',
             'password' => 'abcd1234',
             'charset' => 'utf8',
         ],
