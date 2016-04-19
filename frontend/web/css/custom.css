@@ -1,0 +1,40 @@
+.myTable{
+    width: 100%;
+    font-size: 130%;
+    border: 1px solid #f8fdfb;
+}
+.myTable tr:nth-child(odd){
+    background-color: #ffffff;
+}
+.myTable tr:nth-child(even){
+    background-color: #f8fdfb;
+}
+
+.myTable td:nth-child(odd) {
+    width: 5%;
+}
+.myTable td:nth-child(even) {
+    width: 95%;
+}
+
+.myTable td{
+    border: 1px solid #ebf0ee;
+    padding: 5px 5px 5px 5px;
+
+}
+
+.tableOdd{
+    width: 100%;
+    font-size: 130%;
+    border: 1px solid #f8fdfb;
+    background-color: #ffffff;
+
+}
+
+.tableEven{
+    width: 100%;
+    font-size: 130%;
+    border: 1px solid #f8fdfb;
+    background-color: #f8fdfb;
+
+}
