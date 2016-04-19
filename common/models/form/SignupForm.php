@@ -97,11 +97,11 @@ class SignupForm extends Model
 
             if ($user->save()) {
                 # send activation email
-                Yii::$app->mailer->compose(['text' => '@common/mail/emailConfirmToken-html'], ['user' => $user])
-                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-                    ->setTo($this->email)
-                    ->setSubject('Email confirmation for ' . Yii::$app->name)
-                    ->send();
+//                Yii::$app->mailer->compose(['text' => '@common/mail/emailConfirmToken-html'], ['user' => $user])
+//                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+//                    ->setTo($this->email)
+//                    ->setSubject('Email confirmation for ' . Yii::$app->name)
+//                    ->send();
 
                 # use RBAC
                 $auth = Yii::$app->authManager;
