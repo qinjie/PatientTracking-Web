@@ -34,12 +34,41 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-    ];
+//    $menuItems = [
+//        ['label' => 'Home', 'url' => ['/site/index']],
+//    ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
+        $menuItems[] = ['label' => 'Quuppa',
+            'items' => [
+                ['label' => 'Quuppa tag location', 'url' => ['quuppa-tag-position/index']],
+                ['label' => 'Quuppa tag info', 'url' => ['quuppa-tag-info/index']],
+            ]
+        ];
+        $menuItems[] = ['label' => 'Resident',
+            'items' => [
+                ['label' => 'Index', 'url' => ['resident/index']],
+                ['label' => 'Tag', 'url' => ['tag/index']],
+                ['label' => 'Resident Relative', 'url' => ['resident-relative/index']],
+                ['label' => 'Resident Location', 'url' => ['resident-location/index']],
+                ['label' => 'Next of kin', 'url' => ['nextofkin/index']],
+            ]
+        ];
+        $menuItems[] = ['label' => 'Floor',
+            'items' => [
+                ['label' => 'Index', 'url' => ['floor/index']],
+                ['label' => 'Marker', 'url' => ['marker/index']],
+                ['label' => 'Floor map', 'url' => ['floor-map/index']],
+                ['label' => 'Floor manager', 'url' => ['floor-manager/index']],
+            ]
+        ];
+        $menuItems[] = ['label' => 'User',
+            'items' => [
+                ['label' => 'Index', 'url' => ['user/index']],
+                ['label' => 'User token', 'url' => ['user-token/index']],
+            ]
+        ];
         $menuItems[] = [
             'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
             'url' => ['/site/logout'],

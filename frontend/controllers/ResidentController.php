@@ -8,8 +8,31 @@
 
 namespace frontend\controllers;
 
+use backend\models\NextofkinSearch;
+use Yii;
+use yii\web\Controller;
+use backend\models\ResidentSearch;
 
-class ResidentController
+class ResidentController extends Controller
 {
+    public function actionIndex()
+    {
+        $searchModel = new ResidentSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
+    public function actionNextofkin(){
+        $searchModel = new NextofkinSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('nextofkin', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 }

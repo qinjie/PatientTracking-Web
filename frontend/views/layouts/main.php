@@ -104,22 +104,28 @@ AppAsset::register($this);
             'class' => 'navbar-right navbar-inverse navbar-fixed-top',
         ],
     ];
-    $items = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
+    if (Yii::$app->user->isGuest) {
+        $items = [
+            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
 //            ['label' => 'Contact', 'url' => ['/site/contact']],
 //            Yii::$app->user->isGuest ?
 //                ['label' => 'Sign Up', 'url' => ['/site/signup']] :
 //                false,
-
-    ];
-    if (Yii::$app->user->isGuest) {
+        ];
         $items[] = [
             'label' => 'Login',
             'visible' => Yii::$app->user->isGuest,
             'url' => ['/site/login']
         ];
     } else {
+        $items[] = ['label' => 'Dashboard', 'url' => ['dashboard/index']];
+        $items[] = ['label' => 'Resident', 'visible' => !Yii::$app->user->isGuest,
+                'items' => [
+                    ['label' => 'Index', 'url' => ['resident/index'] ],
+                    ['label' => 'Next of kin', 'url' => ['resident/nextofkin'] ],
+                ]
+        ];
         $items[] =
             ['label' => 'Tables', 'visible' => !Yii::$app->user->isGuest,
                 'items' => [
@@ -138,6 +144,7 @@ AppAsset::register($this);
                         ],
                     ],
                     '<li class="divider"></li>',
+
                 ]
             ];
         $items[] = [

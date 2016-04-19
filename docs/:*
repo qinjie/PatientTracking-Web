@@ -1,0 +1,356 @@
+/*
+SQLyog Ultimate v12.04 (64 bit)
+MySQL - 10.1.10-MariaDB : Database - patient_tracking
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`patient_tracking` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `patient_tracking`;
+
+/*Table structure for table `floor` */
+
+DROP TABLE IF EXISTS `floor`;
+
+CREATE TABLE `floor` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(50) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `width` float NOT NULL,
+  `height` float NOT NULL,
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `floor` */
+
+insert  into `floor`(`id`,`label`,`description`,`width`,`height`,`created_at`,`updated_at`) values (1,'Floor 1','This is floor 1',10,5,'2012-09-10 22:40:09',NULL),(2,'Floor 2','This is floor 2',12.78,17.5,'2013-04-05 03:05:57',NULL);
+
+/*Table structure for table `floor_manager` */
+
+DROP TABLE IF EXISTS `floor_manager`;
+
+CREATE TABLE `floor_manager` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL,
+  `floorid` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `userid` (`userid`),
+  KEY `floorid` (`floorid`),
+  CONSTRAINT `floor_manager_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `floor_manager_ibfk_2` FOREIGN KEY (`floorid`) REFERENCES `floor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+/*Data for the table `floor_manager` */
+
+insert  into `floor_manager`(`id`,`userid`,`floorid`,`created_at`) values (2,1,2,'2012-09-10 23:05:52'),(4,3,2,'2012-09-13 01:59:16'),(5,2,2,'2012-09-13 01:59:22'),(6,2,1,'2012-09-13 03:16:51'),(8,3,1,'2012-09-13 03:17:16');
+
+/*Table structure for table `floor_map` */
+
+DROP TABLE IF EXISTS `floor_map`;
+
+CREATE TABLE `floor_map` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `floor_id` int(10) unsigned NOT NULL,
+  `file_type` varchar(10) DEFAULT NULL,
+  `file_name` varchar(30) DEFAULT NULL,
+  `file_ext` varchar(10) DEFAULT NULL,
+  `file_path` varchar(100) DEFAULT NULL,
+  `thumbnail_path` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `floorid` (`floor_id`),
+  KEY `floorid_2` (`floor_id`),
+  CONSTRAINT `floor_map_ibfk_1` FOREIGN KEY (`floor_id`) REFERENCES `floor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+/*Data for the table `floor_map` */
+
+insert  into `floor_map`(`id`,`floor_id`,`file_type`,`file_name`,`file_ext`,`file_path`,`thumbnail_path`,`created_at`,`updated_at`) values (1,2,'image/png','2.png','png','images/floormaps/2.png','images/floormaps/thumbnail_2.png','2013-03-26 22:14:36',NULL),(3,1,'image/jpeg','sample1.jpg','jpg','images/floormaps/sample1.jpg','images/floormaps/thumbnail_sample1.jpg','2013-04-08 23:02:47',NULL);
+
+/*Table structure for table `marker` */
+
+DROP TABLE IF EXISTS `marker`;
+
+CREATE TABLE `marker` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(50) DEFAULT NULL,
+  `mac` varchar(20) DEFAULT NULL,
+  `floor_id` int(10) unsigned DEFAULT NULL,
+  `position` smallint(5) unsigned NOT NULL,
+  `coorx` float NOT NULL,
+  `coory` float NOT NULL,
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `floorid` (`floor_id`),
+  CONSTRAINT `marker_ibfk_1` FOREIGN KEY (`floor_id`) REFERENCES `floor` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+
+/*Data for the table `marker` */
+
+insert  into `marker`(`id`,`label`,`mac`,`floor_id`,`position`,`coorx`,`coory`,`created_at`,`updated_at`) values (1,'F1M1',NULL,1,1,0,0,'2012-09-13 04:31:18',NULL),(2,'F1M2',NULL,1,2,5,0,'2012-09-13 04:31:18',NULL),(3,'F1M3',NULL,1,3,10,0,'2012-09-13 04:31:18',NULL),(4,'F1M4',NULL,1,4,10,5,'2012-09-13 04:31:18',NULL),(5,'F1M5',NULL,1,5,5,5,'2012-09-13 04:31:18',NULL),(6,'F1M6',NULL,1,6,0,5,'2012-09-13 04:31:18',NULL),(7,'3CB8',NULL,2,1,1,1,'2012-09-13 04:31:18',NULL),(8,'287B','',2,2,7.5,1,'2013-03-26 02:36:30',NULL),(9,'143E','',2,10,1,6.5,'2013-03-26 02:04:45',NULL),(10,'6532','',2,3,7.5,5,'2013-03-26 02:02:35',NULL),(11,'0001','',2,4,7.5,7.5,'2013-03-26 02:36:07',NULL),(12,'50F6','',2,9,1,9.5,'2013-03-26 02:37:19',NULL),(14,'5453','',2,5,7.5,12,'2013-03-26 02:03:13',NULL),(15,'5211','',2,8,1,12.5,'2013-03-26 01:59:52',NULL),(16,'06BC','',2,7,1,16.5,'2013-03-26 02:03:53',NULL),(17,'05F5','',2,6,7.5,16,'2013-03-26 02:03:35',NULL);
+
+/*Table structure for table `nextofkin` */
+
+DROP TABLE IF EXISTS `nextofkin`;
+
+CREATE TABLE `nextofkin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nric` varchar(20) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `contact` varchar(20) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `remark` varchar(500) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nric` (`nric`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `nextofkin` */
+
+insert  into `nextofkin`(`id`,`nric`,`first_name`,`last_name`,`contact`,`email`,`remark`,`created_at`,`updated_at`) values (1,'S123456','NextOfKin 1 FirstName','NextOfKin 1 LastName','813534','abc@gmail.com','','2012-09-14 08:35:03',NULL);
+
+/*Table structure for table `quuppa_tag_info` */
+
+DROP TABLE IF EXISTS `quuppa_tag_info`;
+
+CREATE TABLE `quuppa_tag_info` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tagId` varchar(25) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `lastPacketTS` bigint(20) unsigned DEFAULT NULL,
+  `acceleration` varchar(50) DEFAULT NULL,
+  `accelerationTS` bigint(20) unsigned DEFAULT NULL,
+  `batteryVoltage` decimal(5,2) unsigned DEFAULT NULL,
+  `batteryVoltageTS` bigint(20) unsigned DEFAULT NULL,
+  `batteryAlarm` varchar(5) DEFAULT NULL COMMENT 'ok, low',
+  `batteryAlarmTS` bigint(20) unsigned DEFAULT NULL,
+  `buttonState` varchar(10) DEFAULT NULL COMMENT 'notPushed, pushed, null',
+  `buttonStateTS` bigint(20) unsigned DEFAULT NULL,
+  `tagState` varchar(20) DEFAULT NULL COMMENT 'default, temporary, triggered, null',
+  `tagStateTS` bigint(20) unsigned DEFAULT NULL,
+  `tagStateTransitionStatus` varchar(20) DEFAULT NULL COMMENT 'normal, aboutToExit, null',
+  `tagStateTransitionStatusTS` bigint(20) unsigned DEFAULT NULL,
+  `triggerCount` int(10) unsigned DEFAULT NULL,
+  `triggerCountTS` bigint(20) unsigned DEFAULT NULL,
+  `ioStates` varchar(50) DEFAULT NULL COMMENT '[''low'', ''high'', ''pulserate0'', ''pulserate1'', ''null'']',
+  `ioStatesTS` bigint(20) unsigned DEFAULT NULL,
+  `rssi` int(10) unsigned DEFAULT NULL COMMENT '[0, 63]',
+  `rssiLocator` varchar(25) DEFAULT NULL,
+  `rssiLocatorCoords` varchar(50) DEFAULT NULL,
+  `rssiCoordinateSystemId` varchar(25) DEFAULT NULL,
+  `rssiCoordinateSystemName` varchar(50) DEFAULT NULL,
+  `rssiTS` int(20) unsigned DEFAULT NULL,
+  `txRate` int(10) unsigned DEFAULT NULL,
+  `txRateTS` int(20) unsigned DEFAULT NULL,
+  `txPower` decimal(10,2) DEFAULT NULL COMMENT 'dBm',
+  `txPowerTS` bigint(20) unsigned DEFAULT NULL,
+  `lastAreaId` varchar(25) DEFAULT NULL,
+  `lastAreaName` varchar(50) DEFAULT NULL,
+  `lastAreaTS` bigint(20) unsigned DEFAULT NULL,
+  `zones` varchar(100) DEFAULT NULL,
+  `custom` varchar(10) DEFAULT NULL,
+  `customTS` bigint(20) unsigned DEFAULT NULL,
+  `accelerationX` int(10) DEFAULT NULL,
+  `accelerationY` int(10) DEFAULT NULL,
+  `accelerationZ` int(10) DEFAULT NULL,
+  `rssiLocatorCoordX` decimal(10,2) DEFAULT NULL,
+  `rssiLocatorCoordY` decimal(10,2) DEFAULT NULL,
+  `rssiLocatorCoordZ` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+/*Data for the table `quuppa_tag_info` */
+
+insert  into `quuppa_tag_info`(`id`,`tagId`,`name`,`color`,`lastPacketTS`,`acceleration`,`accelerationTS`,`batteryVoltage`,`batteryVoltageTS`,`batteryAlarm`,`batteryAlarmTS`,`buttonState`,`buttonStateTS`,`tagState`,`tagStateTS`,`tagStateTransitionStatus`,`tagStateTransitionStatusTS`,`triggerCount`,`triggerCountTS`,`ioStates`,`ioStatesTS`,`rssi`,`rssiLocator`,`rssiLocatorCoords`,`rssiCoordinateSystemId`,`rssiCoordinateSystemName`,`rssiTS`,`txRate`,`txRateTS`,`txPower`,`txPowerTS`,`lastAreaId`,`lastAreaName`,`lastAreaTS`,`zones`,`custom`,`customTS`,`accelerationX`,`accelerationY`,`accelerationZ`,`rssiLocatorCoordX`,`rssiLocatorCoordY`,`rssiLocatorCoordZ`,`created_at`) values (1,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,NULL,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL),(2,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,4294967295,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL),(3,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,4294967295,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL),(4,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,4294967295,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL),(5,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,4294967295,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL),(6,'001830ed4f4f','Trolley_099','#FF0000',1409746414540,'[-65, 0, -3]',1409746404528,'2.68',1409746423225,'ok',1409746423225,'notPushed',1409746414540,'default',1409746414540,'normal',1409746414540,34286,1409746394506,'[u\'low\', u\'low\', u\'low\', u\'low\']',1409746414540,28,'78c5e56f4078','[-18.95, 22.64, 4.3]','CoordinateSystem1',NULL,4294967295,NULL,NULL,NULL,NULL,'TrackingArea1','KCM',1409746404525,'[]',NULL,1409746423224,-65,0,-3,'-18.95','22.64','4.30',NULL);
+
+/*Table structure for table `quuppa_tag_position` */
+
+DROP TABLE IF EXISTS `quuppa_tag_position`;
+
+CREATE TABLE `quuppa_tag_position` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tagId` varchar(25) DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `positionTS` bigint(20) unsigned DEFAULT NULL,
+  `position` varchar(50) DEFAULT NULL,
+  `smoothedPosition` varchar(50) DEFAULT NULL,
+  `positionAccuracy` decimal(5,2) DEFAULT NULL,
+  `areaId` varchar(25) DEFAULT NULL,
+  `areaName` varchar(50) DEFAULT NULL,
+  `zones` varchar(100) DEFAULT NULL,
+  `coordinateSystemId` varchar(25) DEFAULT NULL,
+  `coordinateSystemName` varchar(50) DEFAULT NULL,
+  `covarianceMatrix` varchar(50) DEFAULT NULL,
+  `positionX` decimal(10,2) DEFAULT NULL,
+  `positionY` decimal(10,2) DEFAULT NULL,
+  `positionZ` decimal(10,2) DEFAULT NULL,
+  `smoothedPositionX` decimal(10,2) DEFAULT NULL,
+  `smoothedPositionY` decimal(10,2) DEFAULT NULL,
+  `smoothedPositionZ` decimal(10,2) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+
+/*Data for the table `quuppa_tag_position` */
+
+insert  into `quuppa_tag_position`(`id`,`tagId`,`name`,`color`,`positionTS`,`position`,`smoothedPosition`,`positionAccuracy`,`areaId`,`areaName`,`zones`,`coordinateSystemId`,`coordinateSystemName`,`covarianceMatrix`,`positionX`,`positionY`,`positionZ`,`smoothedPositionX`,`smoothedPositionY`,`smoothedPositionZ`,`created_at`) values (1,NULL,'Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]',NULL,NULL,NULL,NULL,'[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 15:39:53'),(2,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:11:29'),(3,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:14:04'),(4,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:15:38'),(5,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:16:54'),(6,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:18:08'),(7,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:18:21'),(8,'001830ecece4','Basket_010','#0000FF',NULL,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:20:01'),(9,'001830ecece4','Basket_010','#0000FF',1409746065430,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]',NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 16:28:13'),(10,'001830ecece4','Basket_010','#0000FF',1409746065430,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]','-8.11',NULL,'0.80',NULL,NULL,NULL,'2016-04-11 16:29:59'),(11,'001830ecece4','Basket_010','#0000FF',1409746065430,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]','-8.11','25.06','0.80','-7.25','25.42','0.80','2016-04-11 16:32:28'),(12,'001830ecece4','Basket_010','#0000FF',1409746065430,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]','-8.11','25.06','0.80','-7.25','25.42','0.80','2016-04-11 18:14:44'),(13,'001830ed4f4f','Trolley_099','#FF0000',NULL,NULL,NULL,NULL,NULL,NULL,'[]',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2016-04-11 20:47:23'),(14,'001830ecece4','Basket_010','#0000FF',1409746065430,'[-8.11, 25.06, 0.8]','[-7.25, 25.42, 0.8]','0.57','TrackingArea1','KCM','[{u\'id\': u\'Zone005\', u\'name\': u\'cashier\'}]','CoordinateSystem1',NULL,'[0.24, 0.12, 0.12, 0.16]','-8.11','25.06','0.80','-7.25','25.42','0.80','2016-04-11 20:47:23'),(15,'001830ecf762','Basket_042','#0000FF',1409746057001,'[26.5, -12.83, 0.8]','[26.5, -12.83, 0.8]','0.88','TrackingArea1','KCM','[{u\'id\': u\'Zone001\', u\'name\': u\'Bread\'}]','CoordinateSystem1',NULL,'[0.27, -0.05, -0.05, 0.76]','26.50','-12.83','0.80','26.50','-12.83','0.80','2016-04-11 20:47:24');
+
+/*Table structure for table `resident` */
+
+DROP TABLE IF EXISTS `resident`;
+
+CREATE TABLE `resident` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `firstname` varchar(100) NOT NULL,
+  `lastname` varchar(100) NOT NULL,
+  `nric` varchar(20) NOT NULL,
+  `gender` varchar(10) NOT NULL DEFAULT 'male' COMMENT 'male, female',
+  `birthday` date DEFAULT '0000-00-00',
+  `contact` varchar(20) DEFAULT NULL,
+  `remark` varchar(500) DEFAULT NULL,
+  `lastmodified` datetime DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+/*Data for the table `resident` */
+
+insert  into `resident`(`id`,`firstname`,`lastname`,`nric`,`gender`,`birthday`,`contact`,`remark`,`lastmodified`) values (1,'First Name 1','Last Name 1','NRIC 1','male','1950-01-01',NULL,NULL,'0000-00-00 00:00:00'),(2,'First Name 2','Last Name 2','NRIC 2','female','1951-01-01',NULL,NULL,'0000-00-00 00:00:00'),(3,'First Name 3','Last Name 3','NRIC 3','female','1951-01-01',NULL,NULL,'0000-00-00 00:00:00'),(4,'First Name 4','Last Name 4','NRIC 4','female','1951-01-01',NULL,NULL,'0000-00-00 00:00:00'),(5,'First Name 5','Last Name 5','NRIC 5','male','1951-01-01',NULL,NULL,'0000-00-00 00:00:00');
+
+/*Table structure for table `resident_location` */
+
+DROP TABLE IF EXISTS `resident_location`;
+
+CREATE TABLE `resident_location` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resident_id` int(10) unsigned NOT NULL,
+  `floor_id` int(10) unsigned NOT NULL,
+  `coorx` float NOT NULL,
+  `coory` float NOT NULL,
+  `outside` int(2) DEFAULT '0' COMMENT '1=outside, 0=inside',
+  `azimuth` float unsigned DEFAULT NULL COMMENT '[0-360) degree',
+  `speed` float unsigned DEFAULT NULL,
+  `created_at` datetime DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `humanid` (`resident_id`),
+  KEY `floorid` (`floor_id`),
+  CONSTRAINT `resident_location_ibfk_1` FOREIGN KEY (`resident_id`) REFERENCES `resident` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resident_location_ibfk_2` FOREIGN KEY (`floor_id`) REFERENCES `floor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=274940 DEFAULT CHARSET=latin1;
+
+/*Data for the table `resident_location` */
+
+insert  into `resident_location`(`id`,`resident_id`,`floor_id`,`coorx`,`coory`,`outside`,`azimuth`,`speed`,`created_at`) values (273939,3,2,3.75,11.5,-1,0,0.000000000361778,'2013-10-18 10:49:59'),(273940,2,2,2.25,11.25,-1,326.31,0.000000000652204,'2013-10-18 10:50:00'),(273941,5,2,3.75,4,-1,0,0,'2013-10-18 10:50:00'),(273942,2,2,2.5,11.25,-1,90,0.000000000180889,'2013-10-18 10:50:00'),(273943,3,2,3.25,12,-1,225,0.000000000511631,'2013-10-18 10:50:00'),(273944,2,2,3,11,-1,63.4349,0.00000000040448,'2013-10-18 10:50:00'),(273945,5,2,3.5,3.75,-1,315,0.000000000255815,'2013-10-18 10:50:00'),(273946,3,2,3.75,11.5,-1,45,0.000000000511631,'2013-10-18 10:50:00'),(273947,2,2,3,11,-1,0,0,'2013-10-18 10:50:01'),(273948,5,2,3,3.75,-1,270,0.000000000361778,'2013-10-18 10:50:01'),(273949,2,2,3,11.25,-1,180,0.000000000180889,'2013-10-18 10:50:01'),(273950,5,2,3.75,4.25,-1,123.69,0.000000000652204,'2013-10-18 10:50:06'),(273951,2,2,2.25,11.25,-1,270,0.000000000542666,'2013-10-18 10:50:07'),(273952,3,2,4,12,-1,153.435,0.00000000040448,'2013-10-18 10:50:07'),(273953,2,2,2.25,12,-1,180,0.000000000542666,'2013-10-18 10:50:07'),(273954,3,2,4,12,-1,0,0,'2013-10-18 10:50:07'),(273955,5,2,3.25,4.25,-1,270,0.000000000361778,'2013-10-18 10:50:07'),(273956,2,2,2.25,11.25,-1,0,0.000000000542666,'2013-10-18 10:50:07'),(273957,3,2,4,12,-1,0,0,'2013-10-18 10:50:07'),(273958,2,2,2.5,11,-1,45,0.000000000255815,'2013-10-18 10:50:08'),(273959,3,2,4,12,-1,0,0,'2013-10-18 10:50:08'),(273960,2,2,2,11.25,-1,243.435,0.00000000040448,'2013-10-18 10:50:08'),(273961,3,2,3.25,12,-1,270,0.000000000542666,'2013-10-18 10:50:13'),(273962,5,2,3.75,5.5,-1,158.199,0.000000000974116,'2013-10-18 10:50:13'));
+
+/*Table structure for table `resident_relative` */
+
+DROP TABLE IF EXISTS `resident_relative`;
+
+CREATE TABLE `resident_relative` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `resident_id` int(10) unsigned NOT NULL,
+  `nextofkin_id` int(10) unsigned NOT NULL,
+  `relation` varchar(50) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `humanid` (`resident_id`,`nextofkin_id`),
+  KEY `nextokinid` (`nextofkin_id`),
+  CONSTRAINT `resident_relative_ibfk_1` FOREIGN KEY (`resident_id`) REFERENCES `resident` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `resident_relative_ibfk_2` FOREIGN KEY (`nextofkin_id`) REFERENCES `nextofkin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+/*Data for the table `resident_relative` */
+
+insert  into `resident_relative`(`id`,`resident_id`,`nextofkin_id`,`relation`,`created_at`,`updated_at`) values (6,1,1,'Brother','2012-09-14 09:54:14',NULL);
+
+/*Table structure for table `tag` */
+
+DROP TABLE IF EXISTS `tag`;
+
+CREATE TABLE `tag` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(20) NOT NULL,
+  `mac` varchar(20) DEFAULT NULL,
+  `status` int(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 = active, 0 = inactive',
+  `resident_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `label` (`label`),
+  KEY `humanid` (`resident_id`),
+  CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`resident_id`) REFERENCES `resident` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+/*Data for the table `tag` */
+
+insert  into `tag`(`id`,`label`,`mac`,`status`,`resident_id`,`created_at`,`updated_at`) values (1,'Node1','',1,1,'2012-09-14 10:29:23',NULL),(2,'Node2','',1,NULL,'2013-03-26 22:24:57',NULL),(3,'Node3','',1,NULL,'2013-03-26 22:25:12',NULL),(4,'Node4','',1,NULL,'2013-03-26 22:25:21',NULL),(5,'Node5','',1,NULL,'2013-03-26 22:25:32',NULL),(6,'Node6','',1,NULL,'2012-09-14 10:29:23',NULL),(7,'50F7','',1,2,'2013-03-26 22:42:49',NULL),(8,'035F','',1,3,'2013-03-26 22:43:21',NULL),(9,'0D76','',1,4,'2013-07-15 20:27:23',NULL),(10,'57B0','',1,5,'2013-03-26 22:45:04',NULL);
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `auth_key` varchar(32) DEFAULT '',
+  `password_hash` varchar(255) DEFAULT '',
+  `access_token` varchar(32) DEFAULT NULL,
+  `password_reset_token` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT '',
+  `email_confirm_token` varchar(255) DEFAULT NULL,
+  `role` int(10) unsigned DEFAULT '10',
+  `status` smallint(6) DEFAULT '10',
+  `allowance` int(10) unsigned DEFAULT NULL,
+  `timestamp` int(10) unsigned DEFAULT NULL,
+  `created_at` int(10) unsigned DEFAULT NULL,
+  `updated_at` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Data for the table `user` */
+
+insert  into `user`(`id`,`username`,`auth_key`,`password_hash`,`access_token`,`password_reset_token`,`email`,`email_confirm_token`,`role`,`status`,`allowance`,`timestamp`,`created_at`,`updated_at`) values (1,'master','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,40,10,NULL,NULL,0,0),(2,'admin','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,30,10,298,1457497221,0,0),(3,'manager1','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,20,10,299,1457498221,0,0),(4,'manager2','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,20,10,299,1432481401,0,0),(5,'user1','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,10,10,297,1457685422,0,0),(6,'user2','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,10,10,299,1432560400,0,0),(7,'user3','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,10,10,299,1434507798,0,0),(8,'user4','auth-key-test-admin','$2y$10$vsK92gjucpYK7MP.6w9Pk.N01/uH.EPaHHwnVYEAcSCjNruZ/YTPK','abcd1234',NULL,'zqi2@np.edu.sg',NULL,10,10,299,1434507798,0,0);
+
+/*Table structure for table `usertoken` */
+
+DROP TABLE IF EXISTS `usertoken`;
+
+CREATE TABLE `usertoken` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `token` varchar(32) NOT NULL DEFAULT '',
+  `label` varchar(10) DEFAULT NULL,
+  `ip_address` varchar(32) DEFAULT NULL,
+  `expire` timestamp NULL DEFAULT '0000-00-00 00:00:00',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token` (`token`),
+  KEY `userId` (`user_id`),
+  CONSTRAINT `usertoken_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `usertoken` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
