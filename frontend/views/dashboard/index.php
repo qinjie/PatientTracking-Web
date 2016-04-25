@@ -26,7 +26,7 @@ foreach ($floorList as $item){
     echo "<td>";
     $count++;
     echo "Number: ".$count."<br>";
-    echo "Room: <a href='dashboard/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
+    echo "Room: <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
     echo "Nunmber of patient: ".((new Floor())->getResidentCount($item['id']))."<br>";
     echo "</td>";
     echo "</tr>";

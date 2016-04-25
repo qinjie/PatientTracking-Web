@@ -127,16 +127,31 @@ class Floor extends \yii\db\ActiveRecord
         return $query['firstname']." ".$query['lastname'];
     }
 
-    public function getNextofkinNameList($id, $fid){
+    public function getNextofkinList($id, $fid = null){
         $query = ResidentRelative::find()->where(['resident_id' => $id])->all();
         $str = "";
-        foreach ($query as $item){
-            $tmp = Nextofkin::find()->where(['id' => $item['nextofkin_id']])->one();
-            if ($str == ""){
-                $str .= "<a href='nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
-            } else{
-                $str .= "<br>"."<a href='nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
+        if ($fid == null){
+            foreach ($query as $item){
+                $tmp = Nextofkin::find()->where(['id' => $item['nextofkin_id']])->one();
+                if ($str == ""){
+                    $str .= "<a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a> (".$item['relation'].")";
+                } else{
+                    $str .= "<br>"."<a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a> (".$item['relation'].")";
+                }
             }
+        }
+        else{
+            foreach ($query as $item){
+                $tmp = Nextofkin::find()->where(['id' => $item['nextofkin_id']])->one();
+                if ($str == ""){
+                    $str .= "<a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
+                } else{
+                    $str .= "<br>"."<a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
+                }
+            }
+        }
+        if ($str == null){
+            return "No resident";
         }
         return $str;
     }
@@ -148,6 +163,42 @@ class Floor extends \yii\db\ActiveRecord
 
     public function getNextofkinModelByID($id){
         $query = Nextofkin::findOne(['id' => $id]);
+        return $query;
+    }
+
+    public function getResidentList($id){
+        $query = ResidentRelative::find()->where(['nextofkin_id' => $id])->all();
+        $str = "";
+        foreach ($query as $item){
+            $tmp = Resident::find()->where(['id' => $item['resident_id']])->one();
+            if ($str == ""){
+                $str .= "<a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a> (".$item['relation'].")";
+            }
+            else{
+                $str .= "<br>"."<a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a> (".$item['relation'].")";
+            }
+        }
+        if ($str == null){
+            return "";
+        }
+        return $str;
+    }
+
+    //get count resident
+    public function getResidentNumber(){
+        $query = Resident::find()->count();
+        return $query;
+    }
+
+    //get count next-of-kin
+    public function getNextofkinNumber(){
+        $query = Nextofkin::find()->count();
+        return $query;
+    }
+
+    //get count floor
+    public function getFloorNumber(){
+        $query = Floor::find()->count();
         return $query;
     }
 }

@@ -9,10 +9,27 @@
 namespace frontend\controllers;
 use backend\models\ResidentSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class DashboardController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->render('index');

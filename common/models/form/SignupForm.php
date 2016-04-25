@@ -88,25 +88,21 @@ class SignupForm extends Model
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
-
             $user->role = User::ROLE_USER;
             $user->status = User::STATUS_WAIT;
-            $user->generateAuthKey();
-
             $user->generateEmailConfirmToken();
 
             if ($user->save()) {
                 # send activation email
-//                Yii::$app->mailer->compose(['text' => '@common/mail/emailConfirmToken-html'], ['user' => $user])
-//                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
-//                    ->setTo($this->email)
-//                    ->setSubject('Email confirmation for ' . Yii::$app->name)
-//                    ->send();
-
+                Yii::$app->mailer->compose(['text' => '@common/mail/emailConfirmToken-html'], ['user' => $user])
+                    ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+                    ->setTo($this->email)
+                    ->setSubject('Email confirmation for ' . Yii::$app->name)
+                    ->send();
                 # use RBAC
-                $auth = Yii::$app->authManager;
-                $role = $auth->getRole(User::$roles[$user->role]);
-                $auth->assign($role, $user->getId());
+//                $auth = Yii::$app->authManager;
+//                $role = $auth->getRole(User::$roles[$user->role]);
+//                $auth->assign($role, $user->getId());
 
                 return $user;
             } else {

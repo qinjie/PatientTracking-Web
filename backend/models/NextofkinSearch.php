@@ -61,9 +61,9 @@ class NextofkinSearch extends Nextofkin
                 'remark',
                 'created_at',
                 'updated_at',
-                'fullName' => [
-                    'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
-                    'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
+                'full_Name' => [
+                    'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
+                    'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
                     'label' => 'Full Name',
                     'default' => SORT_ASC
                 ],

@@ -4,14 +4,13 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use frontend\assets\AppAsset;
+use frontend\assets\DashboardAsset;
 use common\widgets\Alert;
 use kartik\nav\NavX;
 
-AppAsset::register($this);
+DashboardAsset::register($this);
 ?>
 
 <?php $this->beginPage() ?>
@@ -24,78 +23,10 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
-<a name="anchorTop" id="anchorTop"></a>
+<body class="hold-transition skin-blue sidebar-mini">
 <?php $this->beginBody() ?>
 <div class="wrap">
     <?php
-    //    NavBar::begin([
-    //        'brandLabel' => Yii::$app->name,
-    //        'brandUrl' => Yii::$app->homeUrl,
-    //        'options' => [
-    //            'class' => 'navbar-inverse navbar-fixed-top',
-    //        ],
-    //    ]);
-    //
-    //    $menuItems = [
-    //        ['label' => 'Home', 'url' => ['/site/index']],
-    ////        ['label' => 'About', 'url' => ['/site/about']],
-    //        ['label' => 'Contact', 'url' => ['/site/contact']],
-    //    ];
-    //
-    //    if (Yii::$app->user->isGuest) {
-    //        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-    //        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    //    } else {
-    //        $username = Yii::$app->user->identity->username;
-    //        // Account
-    //        $menuItems[] = [
-    //            'label' => 'Account (' . $username . ')',
-    //            'items' => [
-    //                ['label' => 'Account',
-    //                    'url' => ['site/account'],
-    //                ],
-    //                ['label' => 'Tokens',
-    //                    'url' => ['user-token/index'],
-    //                ],
-    //                ['label' => 'Logout',
-    //                    'url' => ['/site/logout'],
-    //                    'linkOptions' => ['data-method' => 'post']
-    //                ],
-    //            ],
-    //        ];
-    //        // For testing purpose
-    //        $menuItems[] = [
-    //            'label' => 'Countries',
-    //            'items' => [
-    //                ['label' => 'List',
-    //                    'url' => ['test-country/index'],
-    //                ],
-    //                ['label' => 'Create',
-    //                    'url' => ['test-country/create'],
-    //                ],
-    //            ],
-    //        ];
-    //        $menuItems[] = [
-    //            'label' => 'People',
-    //            'items' => [
-    //                ['label' => 'List',
-    //                    'url' => ['test-person/index'],
-    //                ],
-    //                ['label' => 'Create',
-    //                    'url' => ['test-person/create'],
-    //                ],
-    //            ],
-    //        ];
-    //    }
-    //
-    //    echo Nav::widget([
-    //        'options' => ['class' => 'navbar-nav navbar-right'],
-    //        'items' => $menuItems,
-    //    ]);
-    //
-    //    NavBar::end();
-
     $options = [
         'brandLabel' => 'Patient Tracking',
         'brandUrl' => Yii::$app->homeUrl,
@@ -123,7 +54,7 @@ AppAsset::register($this);
         $items[] = ['label' => 'Resident', 'visible' => !Yii::$app->user->isGuest,
                 'items' => [
                     ['label' => 'Index', 'url' => ['resident/index'] ],
-                    ['label' => 'Next of kin', 'url' => ['resident/nextofkin'] ],
+                    ['label' => 'Next of kin', 'url' => ['nextofkin/index'] ],
                 ]
         ];
         $items[] =

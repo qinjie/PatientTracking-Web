@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'attribute' => 'fullName',
             'value'=>function ($data) use ($id) {
-                return Html::a(Html::encode($data->fullName),'residentdetail?id='.$data->id.'&fid='.$id);}
+                return Html::a(Html::encode($data->fullName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->id.'&fid='.$id);}
         ],
         'gender',
         'birthday',

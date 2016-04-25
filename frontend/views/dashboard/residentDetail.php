@@ -11,7 +11,7 @@ $model = (new Floor())->getResidentModelByID($id);
 ?>
 
     <div align="center">
-        <h1><?= Html::encode((new Floor())->getResidentName($id)) ?></h1>
+        <h1><?= Html::encode($model->fullName) ?></h1>
     </div>
     <br>
     <br>
@@ -20,17 +20,14 @@ $model = (new Floor())->getResidentModelByID($id);
     'model' => $model,
     'attributes' => [
         'id',
-        [
-            'label' => 'Name',
-            'value' => (new Floor())->getResidentName($id),
-        ],
+        'fullName',
         'nric',
         'gender',
         'birthday',
         [
             'label' => 'Next-of-kin',
             'format' => 'raw',
-            'value' => (new Floor())->getNextofkinNameList($id, $fid),
+            'value' => (new Floor())->getNextofkinList($id, $fid),
         ],
         'contact',
         'remark',

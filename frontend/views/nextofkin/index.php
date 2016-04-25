@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use backend\models\Floor;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\NextofkinSearch */
@@ -14,16 +15,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <br>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            [
+                'label'=>'Full Name',
+                'format' => 'raw',
+                'attribute' => 'full_Name',
+                'value'=>function ($data) {
+                    return Html::a(Html::encode($data->full_Name),'nextofkin/view?id='.$data->id);}
+            ],
             'nric',
-            'first_name',
-            'last_name',
             'contact',
             // 'email:email',
             // 'remark',

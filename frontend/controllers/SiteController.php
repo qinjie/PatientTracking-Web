@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use backend\models\Floor;
 use common\models\form\ChangePasswordForm;
 use common\models\form\LoginForm;
 use common\models\form\ResetPasswordRequestForm;
@@ -78,7 +79,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $residentNumber = (new Floor())->getResidentNumber();
+        $nextofkinNumber = (new Floor())->getNextofkinNumber();
+        $floorNubmer = (new Floor())->getFloorNumber();
+        return $this->render('index',
+            [
+                'residentNumber' => $residentNumber,
+                'nextofkinNumber' => $nextofkinNumber,
+                'floorNumber' => $floorNubmer,
+            ]
+            );
     }
 
     /**

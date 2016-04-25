@@ -2,11 +2,11 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use backend\models\Floor;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
 $this->title = 'Residents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -14,21 +14,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <br>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'fullName',
+            [
+                'label'=>'Full Name',
+                'format' => 'raw',
+                'attribute' => 'fullName',
+                'value'=>function ($data) {
+                    return Html::a(Html::encode($data->fullName),'resident/view?id='.$data->id);}
+            ],
             'nric',
             'gender',
-            'birthday',
-            [
-                'label' => 'Floor',
-                'value' => 'floor',
-            ],
+            // 'birthday',
             // 'contact',
             // 'remark',
             // 'lastmodified',

@@ -3,16 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use backend\models\Resident;
-use backend\models\ResidentSearch;
+use backend\models\Nextofkin;
+use backend\models\NextofkinSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ResidentController implements the CRUD actions for Resident model.
+ * NextofkinController implements the CRUD actions for Nextofkin model.
  */
-class ResidentController extends Controller
+class NextofkinController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class ResidentController extends Controller
     }
 
     /**
-     * Lists all Resident models.
+     * Lists all Nextofkin models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ResidentSearch();
+        $searchModel = new NextofkinSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class ResidentController extends Controller
     }
 
     /**
-     * Displays a single Resident model.
+     * Displays a single Nextofkin model.
      * @param integer $id
      * @return mixed
      */
@@ -57,13 +57,13 @@ class ResidentController extends Controller
     }
 
     /**
-     * Creates a new Resident model.
+     * Creates a new Nextofkin model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Resident();
+        $model = new Nextofkin();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,7 +75,7 @@ class ResidentController extends Controller
     }
 
     /**
-     * Updates an existing Resident model.
+     * Updates an existing Nextofkin model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,12 +94,11 @@ class ResidentController extends Controller
     }
 
     /**
-     * Deletes an existing Resident model.
+     * Deletes an existing Nextofkin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-  
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -108,15 +107,15 @@ class ResidentController extends Controller
     }
 
     /**
-     * Finds the Resident model based on its primary key value.
+     * Finds the Nextofkin model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Resident the loaded model
+     * @return Nextofkin the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Resident::findOne($id)) !== null) {
+        if (($model = Nextofkin::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

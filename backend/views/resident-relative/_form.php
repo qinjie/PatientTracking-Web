@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'resident_id')->dropDownList($items1) ?>
+    <?= $form->field($model, 'resident_id')->dropDownList($items1, ['prompt'=>'-- Select --'] ) ?>
 
-    <?= $form->field($model, 'nextofkin_id')->dropDownList($items2) ?>
+    <?= $form->field($model, 'nextofkin_id')->dropDownList($items2, ['prompt'=>'-- Select --'] ) ?>
 
     <?= $form->field($model, 'relation')->textInput(['maxlength' => true]) ?>
 

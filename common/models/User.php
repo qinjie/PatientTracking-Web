@@ -40,7 +40,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_WAIT = 5;
     const STATUS_ACTIVE = 10;
 
-    public static $roles = [40 => 'master', 30 => 'admin', 20 => 'manager', '10' => 'user'];
+    public static $roles = [40 => 'master', 30 => 'admin', 20 => 'manager', 10 => 'user'];
 
     const ROLE_USER = 10;
     const ROLE_MANAGER = 20;

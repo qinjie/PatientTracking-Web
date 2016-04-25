@@ -26,15 +26,11 @@
 .tableOdd{
     width: 100%;
     font-size: 130%;
-    border: 1px solid #f8fdfb;
     background-color: #ffffff;
-
 }
 
 .tableEven{
     width: 100%;
     font-size: 130%;
-    border: 1px solid #f8fdfb;
-    background-color: #f8fdfb;
-
+    background-color: #fbfbfb;
 }
