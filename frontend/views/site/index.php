@@ -42,7 +42,7 @@ $this->title = Yii::$app->name;
         <!-- small box -->
         <div class="small-box bg-yellow">
             <div class="inner">
-                <h3><?php echo $floorNumber ?></h3>
+                <h3><?php echo $floorNumber; ?></h3>
                 <p>Floor number</p>
             </div>
             <div class="icon">
@@ -55,7 +55,7 @@ $this->title = Yii::$app->name;
         <!-- small box -->
         <div class="small-box bg-red">
             <div class="inner">
-                <h3>2</h3>
+                <h3><?php echo $warningNumber; ?></h3>
                 <p>Out of range patient</p>
             </div>
             <div class="icon">

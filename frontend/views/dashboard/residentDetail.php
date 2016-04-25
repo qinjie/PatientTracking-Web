@@ -1,13 +1,13 @@
 <?php
 use yii\helpers\Html;
-use backend\models\Floor;
+use backend\models\CommonFunction;
 use yii\widgets\DetailView;
 
-$this->title = 'Patient Details';
+$this->title = 'Resident Details';
 $this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (new Floor())->getFloorName($fid), 'url' => ['floordetail?id='.$fid]];
+$this->params['breadcrumbs'][] = ['label' => (new CommonFunction())->getFloorName($fid), 'url' => ['floordetail?id='.$fid]];
 $this->params['breadcrumbs'][] = $this->title;
-$model = (new Floor())->getResidentModelByID($id);
+$model = (new CommonFunction())->getResidentModel($id);
 ?>
 
     <div align="center">
@@ -27,7 +27,7 @@ $model = (new Floor())->getResidentModelByID($id);
         [
             'label' => 'Next-of-kin',
             'format' => 'raw',
-            'value' => (new Floor())->getNextofkinList($id, $fid),
+            'value' => (new CommonFunction())->getNextofkinList($id, $fid),
         ],
         'contact',
         'remark',

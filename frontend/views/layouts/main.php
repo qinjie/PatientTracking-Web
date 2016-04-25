@@ -6,11 +6,11 @@
 use yii\helpers\Html;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use frontend\assets\DashboardAsset;
+use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use kartik\nav\NavX;
 
-DashboardAsset::register($this);
+AppAsset::register($this);
 ?>
 
 <?php $this->beginPage() ?>

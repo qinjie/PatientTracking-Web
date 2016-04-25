@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\ResidentLocation */
@@ -12,9 +13,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'resident_id')->dropDownList($items1) ?>
+    <?= $form->field($model, 'resident_id')->widget(Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'floor_id')->dropDownList($items2) ?>
+    <?= $form->field($model, 'floor_id')->widget(Select2::classname(), [
+        'data' => $items2,
+        'options' => ['placeholder' => 'Select a floor ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'coorx')->textInput(['readonly' => !$model->isNewRecord]) ?>
 

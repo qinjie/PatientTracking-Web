@@ -49,8 +49,8 @@ class ResidentRelative extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'resident_id' => 'Resident ID',
-            'nextofkin_id' => 'Nextofkin ID',
+            'resident_id' => 'Resident',
+            'nextofkin_id' => 'Nextofkin',
             'relation' => 'Relation',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

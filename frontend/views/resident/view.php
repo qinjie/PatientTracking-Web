@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use backend\models\Floor;
+use backend\models\CommonFunction;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Resident */
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Next-of-kin',
                 'format' => 'raw',
-                'value' => (new Floor())->getNextofkinList($model->id),
+                'value' => (new CommonFunction())->getNextofkinList($model->id),
             ],
             'contact',
             'remark',

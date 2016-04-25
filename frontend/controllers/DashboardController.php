@@ -14,21 +14,6 @@ use yii\web\Controller;
 
 class DashboardController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['logout'],
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
-    }
 
     public function actionIndex()
     {
