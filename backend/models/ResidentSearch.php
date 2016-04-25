@@ -47,7 +47,7 @@ class ResidentSearch extends Resident
 
     public function search($params, $fid = null)
     {
-        $query = Resident::find();
+        $query = Resident::find()->distinct('id');
         // add conditions that should always apply here
         //filter by floor
         if ($fid != null){
@@ -68,6 +68,9 @@ class ResidentSearch extends Resident
                 'contact',
                 'remark',
                 'lastmodified',
+                'coorx',
+                'coory',
+                'speed',
                 'fullName' => [
                     'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],

@@ -19,9 +19,9 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
-    //get number of resident in $id floor
+    //get number of resident in floor $id
     public function getResidentCount($id){
-        $query = ResidentLocation::find()->where(['floor_id' => $id])->count();
+        $query = ResidentLocation::find()->select(['resident_id'])->where(['floor_id' => $id])->distinct()->count();
         return $query;
     }
 
@@ -63,9 +63,9 @@ class CommonFunction extends \yii\db\ActiveRecord
             foreach ($query as $item){
                 $tmp = Nextofkin::find()->where(['id' => $item['nextofkin_id']])->one();
                 if ($str == ""){
-                    $str .= "<a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a> (".$item['relation'].")";
+                    $str .=  "".$item['relation'].": <a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a>";
                 } else{
-                    $str .= "<br>"."<a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a> (".$item['relation'].")";
+                    $str .= "<br>".$item['relation'].": <a href='".Yii::$app->homeUrl."nextofkin/view?id=".$tmp['id']."'>".$tmp['full_Name']."</a>";
                 }
             }
         }
@@ -73,9 +73,9 @@ class CommonFunction extends \yii\db\ActiveRecord
             foreach ($query as $item){
                 $tmp = Nextofkin::find()->where(['id' => $item['nextofkin_id']])->one();
                 if ($str == ""){
-                    $str .= "<a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
+                    $str .= "".$item['relation'].": <a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
                 } else{
-                    $str .= "<br>"."<a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
+                    $str .= "<br>".$item['relation'].": <a href='".Yii::$app->homeUrl."dashboard/nextofkindetail?id=".$tmp['id']."&fid=".$fid."&rid=".$id."'>".$tmp['first_name']." ".$tmp['last_name']."</a>";
                 }
             }
         }
@@ -104,10 +104,10 @@ class CommonFunction extends \yii\db\ActiveRecord
         foreach ($query as $item){
             $tmp = Resident::find()->where(['id' => $item['resident_id']])->one();
             if ($str == ""){
-                $str .= "<a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a> (".$item['relation'].")";
+                $str .= "".$item['relation']." of: <a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a>";
             }
             else{
-                $str .= "<br>"."<a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a> (".$item['relation'].")";
+                $str .= "<br>".$item['relation']." of: <a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a>";
             }
         }
         if ($str == null){
@@ -133,4 +133,5 @@ class CommonFunction extends \yii\db\ActiveRecord
         $query = Floor::find()->count();
         return $query;
     }
+
 }

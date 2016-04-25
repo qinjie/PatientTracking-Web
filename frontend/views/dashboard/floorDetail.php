@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use backend\models\CommonFunction;
 use yii\grid\GridView;
-/* @var $searchModel backend\models\FloorSearch */
+/* @var $searchModel backend\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = 'Floor Details';
 $this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['index']];
@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div align="center">
-    <h1><?= Html::encode((new CommonFunction())->getFloorName($id)) ?></h1>
+    <h1><?= Html::encode($floorName) ?></h1>
 </div>
 <br>
 <?= GridView::widget([

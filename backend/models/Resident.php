@@ -98,17 +98,17 @@ class Resident extends \yii\db\ActiveRecord
     }
 
     public function getCoorx(){
-        $query = ResidentLocation::find()->where(['id' => $this->id])->one();
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['coorx'];
     }
 
     public function getCoory(){
-        $query = ResidentLocation::find()->where(['id' => $this->id])->one();
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['coory'];
     }
 
     public function getSpeed(){
-        $query = ResidentLocation::find()->where(['id' => $this->id])->one();
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['speed'];
     }
 

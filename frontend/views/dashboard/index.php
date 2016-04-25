@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="patient-index">
 </div>
 <?php
-$floorList = (new CommonFunction())->getAllFloor();
 $count = 0;
 foreach ($floorList as $item){
     if ($count%2 == 0){

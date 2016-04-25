@@ -5,9 +5,8 @@ use yii\widgets\DetailView;
 
 $this->title = 'Resident Details';
 $this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (new CommonFunction())->getFloorName($fid), 'url' => ['floordetail?id='.$fid]];
+$this->params['breadcrumbs'][] = ['label' => $floorName, 'url' => ['floordetail?id='.$fid]];
 $this->params['breadcrumbs'][] = $this->title;
-$model = (new CommonFunction())->getResidentModel($id);
 ?>
 
     <div align="center">
