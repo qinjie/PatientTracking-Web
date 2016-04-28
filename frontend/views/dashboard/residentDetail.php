@@ -13,13 +13,11 @@ else{
 }
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-    <div align="center">
-        <h1><?= Html::encode($model->fullName) ?></h1>
-    </div>
-    <br>
-    <br>
-
+<div align="center">
+    <h1><?= Html::encode($model->fullName) ?></h1>
+</div>
+<br>
+<br>
 <?= DetailView::widget([
     'model' => $model,
     'attributes' => [

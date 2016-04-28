@@ -26,4 +26,14 @@
 .tableDashboard{
     width: 100%;
     font-size: 130%;
+    box-shadow: 1px 1px 1px #888888;
+}
+
+.tableDashboard, th, td {
+    border: solid #D8E8FF 2px;
+    padding: 10px 0px 10px 10px;
+}
+
+.tableDashboard tr:hover td {
+    background-color:#E7ECEA;
 }
