@@ -16,7 +16,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'mac')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'floor_id')->textInput() ?>
+    <?= $form->field($model, 'floor_id')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'position')->textInput() ?>
 

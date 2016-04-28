@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tag */
@@ -18,7 +19,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'resident_id')->textInput() ?>
+    <?= $form->field($model, 'resident_id')->widget(Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 

@@ -111,10 +111,4 @@ class Resident extends \yii\db\ActiveRecord
         $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['speed'];
     }
-
-    public function getFloor(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->one();
-        $result = Floor::find()->where(['id' => $query['floor_id']])->one();
-        return $result['label'];
-    }
 }

@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\Resident;
 use Yii;
 use backend\models\Tag;
 use backend\models\TagSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +66,13 @@ class TagController extends Controller
     public function actionCreate()
     {
         $model = new Tag();
-
+        $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }
@@ -83,12 +86,13 @@ class TagController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }

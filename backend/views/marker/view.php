@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Marker */
 
-$this->title = $model->id;
+$this->title = $model->label;
 $this->params['breadcrumbs'][] = ['label' => 'Markers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

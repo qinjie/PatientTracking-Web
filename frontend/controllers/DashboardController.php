@@ -37,14 +37,28 @@ class DashboardController extends Controller
             ]);
     }
 
-    public function actionResidentdetail($id, $fid){
+    public function actionResidentdetail($id, $fid=null){
         $model = (new CommonFunction())->getResidentModel($id);
-        $floorName = (new CommonFunction())->getFloorName($fid);
+        if ($fid != null){
+            $floorName = (new CommonFunction())->getFloorName($fid);
+        }
+        else{
+            $floorName = null;
+        }
         return $this->render('residentDetail', [
             'id' => $id,
             'fid' => $fid,
             'model' => $model,
             'floorName' => $floorName,
+        ]);
+    }
+
+    public function actionAlertdetail(){
+        $searchModel = new ResidentSearch();
+        $dataProvider = $searchModel->searchAlert(Yii::$app->request->queryParams);
+        return $this->render('alertDetail', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

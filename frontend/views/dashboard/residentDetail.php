@@ -5,7 +5,12 @@ use yii\widgets\DetailView;
 
 $this->title = 'Resident Details';
 $this->params['breadcrumbs'][] = ['label' => 'Dashboard', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $floorName, 'url' => ['floordetail?id='.$fid]];
+if ($floorName != null) {
+    $this->params['breadcrumbs'][] = ['label' => $floorName, 'url' => ['floordetail?id='.$fid]];
+}
+else{
+    $this->params['breadcrumbs'][] = ['label' => 'Alert list', 'url' => ['alertdetail']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

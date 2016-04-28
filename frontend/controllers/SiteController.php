@@ -82,13 +82,13 @@ class SiteController extends Controller
         $residentNumber = (new CommonFunction())->getResidentNumber();
         $nextofkinNumber = (new CommonFunction())->getNextofkinNumber();
         $floorNubmer = (new CommonFunction())->getFloorNumber();
-        $warningNumber = 3;
+        $alertNumber = (new CommonFunction())->getAlertCount();
         return $this->render('index',
             [
                 'residentNumber' => $residentNumber,
                 'nextofkinNumber' => $nextofkinNumber,
                 'floorNumber' => $floorNubmer,
-                'warningNumber' => $warningNumber,
+                'alertNumber' => $alertNumber,
             ]
             );
     }

@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\Floor;
 use Yii;
 use backend\models\Marker;
 use backend\models\MarkerSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +66,14 @@ class MarkerController extends Controller
     public function actionCreate()
     {
         $model = new Marker();
+        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }
@@ -83,12 +87,14 @@ class MarkerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }

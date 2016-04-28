@@ -5,9 +5,11 @@ namespace backend\controllers;
 use Yii;
 use backend\models\UserToken;
 use backend\models\UserTokenSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\models\User;
 
 /**
  * UserTokenController implements the CRUD actions for UserToken model.
@@ -64,12 +66,14 @@ class UserTokenController extends Controller
     public function actionCreate()
     {
         $model = new UserToken();
+        $items1 = ArrayHelper::map(User::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }
@@ -83,12 +87,14 @@ class UserTokenController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $items1 = ArrayHelper::map(User::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items1' => $items1,
             ]);
         }
     }

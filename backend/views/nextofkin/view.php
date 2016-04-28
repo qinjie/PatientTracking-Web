@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Nextofkin */
 
-$this->title = $model->id;
+$this->title = $model->full_Name;
 $this->params['breadcrumbs'][] = ['label' => 'Nextofkins', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

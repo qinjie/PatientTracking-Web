@@ -12,7 +12,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'floor_id')->textInput() ?>
+    <?= $form->field($model, 'floor_id')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'file_type')->textInput(['maxlength' => true]) ?>
 

@@ -6,7 +6,9 @@ $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div align="center">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($this->title);
+        
+        ?></h1>
 </div>
 <br>
 <div class="patient-index">
@@ -15,15 +17,16 @@ $this->params['breadcrumbs'][] = $this->title;
 $count = 0;
 foreach ($floorList as $item){
     if ($count%2 == 0){
-        $css = "tableEven";
+        echo "<div class=\"border row\">";
+        echo "<div class=\"border col-sm-6\">";
     }
     else{
-        $css = "tableOdd";
+        echo "<div class=\"border col-sm-6\">";
     }
-    echo "<table class=\"".$css."\">";
+    $count++;
+    echo "<table class='tableDashboard'>";
     echo "<tr>";
     echo "<td>";
-    $count++;
     echo "Number: ".$count."<br>";
     echo "Room: <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
     echo "Nunmber of patient: ".((new CommonFunction())->getResidentCount($item['id']))."<br>";
@@ -31,5 +34,14 @@ foreach ($floorList as $item){
     echo "</tr>";
     echo "</table>";
     echo "<br>";
+    if ($count%2 == 0) {
+        echo "</div>";
+        echo "</div>";
+    } else {
+        echo "</div>";
+    }
 }
+    if ($count%2 == 1){
+        echo "</div>";
+    }
 ?>

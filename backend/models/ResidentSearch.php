@@ -47,12 +47,114 @@ class ResidentSearch extends Resident
 
     public function search($params, $fid = null)
     {
-        $query = Resident::find()->distinct('id');
+        if ($fid != null){
+            $query = Resident::find()->distinct();
+            $query->joinWith('residentLocations')->andWhere('resident_id in
+            (select r1.resident_id
+            from resident_location as r1
+            where r1.outside = 0 and floor_id = '.$fid.'
+            and (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            and r1.created_at = (select max(r2.created_at) from resident_location as r2 where r1.resident_id = r2.resident_id))');
+        } else{
+            $query = Resident::find();
+        }
         // add conditions that should always apply here
         //filter by floor
-        if ($fid != null){
-            $query->joinWith('residentLocations')->where(['floor_id' => $fid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $dataProvider->setSort([
+            'attributes' => [
+                'id',
+                'firstname',
+                'lastname',
+                'nric',
+                'gender',
+                'birthday',
+                'contact',
+                'remark',
+                'lastmodified',
+                'coorx',
+                'coory',
+                'speed',
+                'fullName' => [
+                    'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
+                    'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
+                    'label' => 'Full Name',
+                    'default' => SORT_ASC
+                ],
+            ]
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
         }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'resident.id' => $this->id,
+            'birthday' => $this->birthday,
+            'lastmodified' => $this->lastmodified,
+            'resident_location.coorx' => $this->coorx,
+            'resident_location.coory' => $this->coory,
+            'resident_location.speed' => $this->speed,
+        ]);
+        $query
+            ->andFilterWhere(['like', 'firstname', $this->firstname])
+            ->andFilterWhere(['like', 'lastname', $this->lastname])
+            ->andFilterWhere(['like', 'nric', $this->nric])
+            ->andFilterWhere(['like', 'gender', $this->gender])
+            ->andFilterWhere(['like', 'contact', $this->contact])
+            ->andFilterWhere(['like', 'remark', $this->remark])
+            ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->fullName.'%"');
+        return $dataProvider;
+    }
+
+    public function searchAlert($params)
+    {
+        $query = Resident::find()->distinct();
+        //select resident when
+        //Scenario 1
+        //  1. resident_location have values in nearest 10 seconds and value is outside
+        //  2. resident_location dont have any value in nearest 10 seconds
+//        $query->joinWith('residentLocations')->andWhere('
+//            resident_id in
+//            (select DISTINCT r1.resident_id
+//            from resident_location as r1
+//            where (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+//            and r1.outside != 0)
+//            or resident_id in
+//            (select r1.resident_id
+//            from resident_location as r1
+//            where r1.resident_id in (select DISTINCT r2.resident_id from resident_location as r2)
+//            and r1.resident_id not in (select DISTINCT r3.resident_id from resident_location as r3
+//            where r3.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
+//            )) and created_at =
+//            (select max(created_at) from resident_location as r1 where resident_id = r1.resident_id)
+//        ');
+        //Scenario 1
+        $query->joinWith('residentLocations')->andWhere('
+            resident_id in
+            (select DISTINCT r1.resident_id
+            from resident_location as r1
+            where (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            and r1.outside != 0
+            and r1.created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id))
+            or resident_id in
+            (select r1.resident_id
+            from resident_location as r1
+            where r1.resident_id in (select DISTINCT r2.resident_id from resident_location as r2)
+            and r1.resident_id not in (select DISTINCT r3.resident_id from resident_location as r3
+            where r3.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            and r1.created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)) 
+        ');
+        // add conditions that should always apply here
+        //filter by floor
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

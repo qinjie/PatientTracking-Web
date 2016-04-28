@@ -9,6 +9,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\db\Query;
 
 
 class CommonFunction extends \yii\db\ActiveRecord
@@ -21,8 +22,63 @@ class CommonFunction extends \yii\db\ActiveRecord
 
     //get number of resident in floor $id
     public function getResidentCount($id){
-        $query = ResidentLocation::find()->select(['resident_id'])->where(['floor_id' => $id])->distinct()->count();
-        return $query;
+        //Scenario 1
+//        $query = Yii::$app->db->createCommand('
+//            select count(r1.id) as cnt from resident_location as r1
+//            where floor_id = '.$id.' and outside = 0
+//            and (created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW())
+//            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
+//        ')->queryAll();
+        //Scenario 2
+        $query = Yii::$app->db->createCommand('
+            select count(id) as cnt
+            from resident_location as r1
+            where floor_id = '.$id.' and outside = 0
+            and created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
+            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
+        ')->queryAll();
+        return $query[0]["cnt"];
+    }
+
+    //get number of resident who is out of range
+    public function getAlertCount(){
+        //Scenario 1
+//        //between nearest 60 seconds and outside
+//        $query = Yii::$app->db->createCommand('
+//            select count(DISTINCT r1.resident_id) as cnt from resident_location as r1
+//            where created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
+//            and (created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW())
+//            and outside = 0
+//        ')->queryAll();
+//        //not between nearest 60 seconds
+//        $tmp1 = Yii::$app->db->createCommand('
+//            select count(distinct r1.resident_id) as cnt
+//            from resident_location as r1;
+//        ')->queryAll();
+//        $tmp2 = Yii::$app->db->createCommand('
+//            select count(distinct r1.resident_id) as cnt
+//            from resident_location as r1
+//            where r1.created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW();
+//        ')->queryAll();
+//        return $query[0]["cnt"]+($tmp1[0]["cnt"] - $tmp2[0]["cnt"]);
+        //Scenario 2
+        $query = Yii::$app->db->createCommand('
+            select count(id) as cnt
+            from resident_location as r1
+            where outside = 1
+            and created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
+            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
+        ')->queryAll();
+        $tmp1 = Yii::$app->db->createCommand('
+            select count(distinct r1.resident_id) as cnt
+            from resident_location as r1;
+        ')->queryAll();
+        $tmp2 = Yii::$app->db->createCommand('
+            select count(distinct r1.resident_id) as cnt
+            from resident_location as r1
+            where r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW();
+        ')->queryAll();
+        return $query[0]["cnt"]+($tmp1[0]["cnt"] - $tmp2[0]["cnt"]);
     }
 
     //get floor name by $id
@@ -80,7 +136,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             }
         }
         if ($str == null){
-            return "No resident";
+            return "";
         }
         return $str;
     }
