@@ -57,27 +57,27 @@ AppAsset::register($this);
                     ['label' => 'Next of kin', 'url' => ['nextofkin/index'] ],
                 ]
         ];
-        $items[] =
-            ['label' => 'Tables', 'visible' => !Yii::$app->user->isGuest,
-                'items' => [
-                    ['label' => 'Quuppa Tag Position',
-                        'visible' => !Yii::$app->user->isGuest,
-                        'items' => [
-                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
-                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
-                        ],
-                    ],
-                    ['label' => 'Quuppa Tag Info',
-                        'visible' => !Yii::$app->user->isGuest,
-                        'items' => [
-                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
-                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
-                        ],
-                    ],
-                    '<li class="divider"></li>',
-
-                ]
-            ];
+//        $items[] =
+//            ['label' => 'Tables', 'visible' => !Yii::$app->user->isGuest,
+//                'items' => [
+//                    ['label' => 'Quuppa Tag Position',
+//                        'visible' => !Yii::$app->user->isGuest,
+//                        'items' => [
+//                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
+//                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
+//                        ],
+//                    ],
+//                    ['label' => 'Quuppa Tag Info',
+//                        'visible' => !Yii::$app->user->isGuest,
+//                        'items' => [
+//                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
+//                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
+//                        ],
+//                    ],
+//                    '<li class="divider"></li>',
+//
+//                ]
+//            ];
         $items[] = [
             'label' => 'Account (' . Yii::$app->user->identity->username . ')',
             'visible' => !Yii::$app->user->isGuest,
@@ -85,9 +85,9 @@ AppAsset::register($this);
                 ['label' => 'Account',
                     'url' => ['site/account'],
                 ],
-                ['label' => 'Tokens',
-                    'url' => ['user-token/index'],
-                ],
+//                ['label' => 'Tokens',
+//                    'url' => ['user-token/index'],
+//                ],
                 ['label' => 'Logout',
                     'url' => ['/site/logout'],
                     'linkOptions' => ['data-method' => 'post']

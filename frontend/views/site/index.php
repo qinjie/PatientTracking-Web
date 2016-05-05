@@ -3,12 +3,13 @@
 
 $this->title = Yii::$app->name;
 ?>
-
+<div class="jumbotron">
+    <h1>Patient Tracking</h1>
+</div>
 <!-- Content Header (Page header) -->
 <h3>
     Quick report
 </h3>
-<br>
 <!-- Main content -->
 <!-- Small boxes (Stat box) -->
 <div class="row">
