@@ -158,10 +158,10 @@ class UserController extends Controller
         $username = Yii::$app->request->post("username");
         $pasword = Yii::$app->request->post("password");
         $MAC = Yii::$app->request->post("MAC");
-        $userId = $this->getUserId($username, $pasword);
+        $userId = self::getUserId($username, $pasword);
         if($userId == -1)
             return '{"result" : "wrong"}';
-        $userTokenId = $this->getUserTokenId($userId, $MAC);
+        $userTokenId = self::getUserTokenId($userId, $MAC);
         $now = date_create(date('Y-m-d H:i:s'));
         $expire = date_format(date_add($now, date_interval_create_from_date_string('1 minutes')), 'Y-m-d H:i:s');
         if($userTokenId == -1)
@@ -175,7 +175,7 @@ class UserController extends Controller
         else
         {
             Yii::$app->db->createCommand()->update('usertoken', ['expire' => $expire], 'id = '.$userTokenId)->execute();
-            $token = $this->getToken($userId);
+            $token = self::getToken($userId);
             return '{"result" : "correct", "token" : "'.$token.'"}';
         }
     }
@@ -225,6 +225,15 @@ class UserController extends Controller
             ->queryAll();
         return json_encode($result);
     }
+    public function actionResidentname($id)
+    {
+        $result = (new \yii\db\Query())
+            ->select(['firstname', 'lastname'])
+            ->from('resident')
+            ->where(['id' => $id])
+            ->all();
+        return json_encode($result[0]);
+    }
     public function actionResident($id)
     {
         $res = $this->getResident($id);
@@ -248,12 +257,14 @@ class UserController extends Controller
     public function actionFloor($id = 'all')
     {
         $result = Yii::$app->db
-            ->createCommand('select floor.id, label, description, width, height, COUNT(resident_id) as `count`
-                            from floor, resident_location, resident
-                            where floor.id = floor_id
-                            and resident.id = resident_id
+            ->createCommand('select floor.id, label, description, width, height, COUNT(resident.id) as `count`
+                            from floor
+                            left join resident_location
+                            on floor.id = floor_id
                             and outside = 0
                             and (\''.$id.'\' = \'all\' or floor.id = \''.$id.'\')
+                            left join resident
+                            on resident.id = resident_id
                             and resident_location.created_at = (
                             select MAX(resident_location.created_at)
                             from resident_location
@@ -271,9 +282,67 @@ class UserController extends Controller
             ->all();
         return json_encode($result);
     }
-    public function actionAlert()
+    public function actionTakecare($id, $username)
     {
-        $data = array( 'message' => 'Your patients are in danger!' );
+        $userId = self::getUserIdByUsername($username);
+        if($userId == -1) return 'failed';
+        $now = date_format(date_create(date('Y-m-d H:i:s')), 'Y-m-d H:i:s');
+        Yii::$app->db->createCommand()
+            ->insert('user_notification', ['user_id' => $userId, 'notification_id' =>$id, 'created_at' => $now])->execute();
+        self::actionUpdatealert($id);
+        return 'success';
+    }
+    public function actionUpdatealert($id)
+    {
+        $result1 = (new \yii\db\Query())
+            ->select('resident_id')
+            ->from('notification')
+            ->where(['id' => $id])
+            ->all();
+        $result2 = (new \yii\db\Query())
+            ->select('user_id')
+            ->from('user_notification')
+            ->where(['notification_id' => $id])
+            ->all();
+        if(count($result1) == 0 || count($result2) == 0)
+            return '404';
+        $resident_id = $result1[0]['resident_id'];
+        $user_id= $result2[0]['user_id'];
+        self::actionAlert($resident_id, '', '1', $id, $user_id);
+        return 'success';
+    }
+    public function actionAlerts($id = 'all')
+    {
+        $result = Yii::$app->db
+            ->createCommand('select notification.id, notification.resident_id, firstname, lastname, last_position, user_id, COUNT(user_id) as `ok`
+                            from notification
+                            left join user_notification
+                            on notification.id = user_notification.notification_id
+                            join resident
+                            on notification.resident_id = resident.id
+                            and (\''.$id.'\' = \'all\' or notification.id = \''.$id.'\')
+                            group by notification.id')
+            ->queryAll();
+        return json_encode($result);
+    }
+    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '')
+    {
+        $query = (new \yii\db\Query())
+            ->select(['firstname', 'lastname'])
+            ->from('resident')
+            ->where(['id' => $resident_id])
+            ->all();
+        if(count($query) == 0)
+            return;
+        $firstname = $query[0]['firstname'];
+        $lastname = $query[0]['lastname'];
+        if($id == '-1')
+        {
+            $now = date_format(date_create(date('Y-m-d H:i:s')), 'Y-m-d H:i:s');
+            Yii::$app->db->createCommand()->insert('notification', ['resident_id' => $resident_id, 'last_position' => $last_position ,'created_at' => $now])->execute();
+            $id = Yii::$app->db->lastInsertID;
+        }
+        $data = array( 'message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id]);
 
         $notification = array( 'title' => 'Urgent', 'body' => 'Patients are in danger!');
         $ids = array();
@@ -347,11 +416,33 @@ class UserController extends Controller
         // Debug GCM response
         return $result;
     }
+    public function actionGetusername($id)
+    {
+        $result = (new \yii\db\Query())
+            ->select('username')
+            ->from('user')
+            ->where(['id' => $id])
+            ->all();
+        if(count($result) == 0)
+            return '404';
+        return $result[0]['username'];
+    }
     public function actionReceive($MAC, $gcm_token)
     {
         Yii::$app->db->createCommand()->update('usertoken', ['gcm_token' => $gcm_token], 'ip_address = \''.$MAC.'\'')->execute();
     }
-
+    public function getUserIdByUsername($username)
+    {
+        $result = (new \yii\db\Query())
+            ->select(['id'])
+            ->limit(1)
+            ->from('user')
+            ->where('username = \''.$username.'\'')
+            ->all();
+        if(count($result) == 0)
+            return -1;
+        return $result[0]['id'];
+    }
     public function getUserId($username, $password)
     {
         $result = (new \yii\db\Query())

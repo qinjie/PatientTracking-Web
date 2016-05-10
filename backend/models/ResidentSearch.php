@@ -118,26 +118,6 @@ class ResidentSearch extends Resident
     public function searchAlert($params)
     {
         $query = Resident::find()->distinct();
-        //select resident when
-        //Scenario 1
-        //  1. resident_location have values in nearest 10 seconds and value is outside
-        //  2. resident_location dont have any value in nearest 10 seconds
-//        $query->joinWith('residentLocations')->andWhere('
-//            resident_id in
-//            (select DISTINCT r1.resident_id
-//            from resident_location as r1
-//            where (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
-//            and r1.outside != 0)
-//            or resident_id in
-//            (select r1.resident_id
-//            from resident_location as r1
-//            where r1.resident_id in (select DISTINCT r2.resident_id from resident_location as r2)
-//            and r1.resident_id not in (select DISTINCT r3.resident_id from resident_location as r3
-//            where r3.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
-//            )) and created_at =
-//            (select max(created_at) from resident_location as r1 where resident_id = r1.resident_id)
-//        ');
-        //Scenario 1
         $query->joinWith('residentLocations')->andWhere('
             resident_id in
             (select DISTINCT r1.resident_id
