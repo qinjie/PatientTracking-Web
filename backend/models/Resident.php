@@ -66,6 +66,7 @@ class Resident extends \yii\db\ActiveRecord
             'coorx' => 'X',
             'coory' => 'Y',
             'speed' => 'Speed',
+            'lastfloor' => 'Last Floor',
         ];
     }
 
@@ -110,5 +111,11 @@ class Resident extends \yii\db\ActiveRecord
     public function getSpeed(){
         $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['speed'];
+    }
+
+    public function getLastfloor(){
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $rs = Floor::find()->where(['id' => $query['floor_id']])->one();
+        return $rs['label'];
     }
 }

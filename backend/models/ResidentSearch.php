@@ -16,6 +16,7 @@ class ResidentSearch extends Resident
     public $coorx;
     public $coory;
     public $speed;
+    public $lastfloor;
     /**
      * @inheritdoc
      */
@@ -24,7 +25,6 @@ class ResidentSearch extends Resident
         return [
             [['id'], 'integer'],
             [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'lastmodified', 'fullName'], 'safe'],
-            [['coorx', 'coory', 'speed'], 'number'],
         ];
     }
 
@@ -150,13 +150,9 @@ class ResidentSearch extends Resident
                 'contact',
                 'remark',
                 'lastmodified',
-                'coorx',
-                'coory',
-                'speed',
                 'fullName' => [
                     'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
-                    'label' => 'Full Name',
                     'default' => SORT_ASC
                 ],
             ]
@@ -175,9 +171,6 @@ class ResidentSearch extends Resident
             'resident.id' => $this->id,
             'birthday' => $this->birthday,
             'lastmodified' => $this->lastmodified,
-            'resident_location.coorx' => $this->coorx,
-            'resident_location.coory' => $this->coory,
-            'resident_location.speed' => $this->speed,
         ]);
         $query
             ->andFilterWhere(['like', 'firstname', $this->firstname])

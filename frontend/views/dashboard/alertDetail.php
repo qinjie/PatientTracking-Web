@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'gender',
         'birthday',
+        'lastfloor',
         'coorx',
         'coory',
         'speed',

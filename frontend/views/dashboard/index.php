@@ -27,7 +27,7 @@ foreach ($floorList as $item){
     echo "<table class='tableDashboard'>";
     echo "<tr>";
     echo "<td>";
-    echo "Number: ".$count."<br>";
+    echo "No. ".$count."<br>";
     echo "Room: <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
     echo "Nunmber of patient: ".((new CommonFunction())->getResidentCount($item['id']))."<br>";
     echo "</td>";

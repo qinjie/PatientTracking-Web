@@ -122,11 +122,6 @@ class UserController extends Controller
         }
     }
 
-
-
-
-
-
     /**
      * Android
      */
@@ -210,29 +205,20 @@ class UserController extends Controller
         $sortParam = $order1.', '.$order2.', '.$order3.', '.$order4;
         $result = Yii::$app->db
             ->createCommand('select resident_id, firstname, lastname, floor_id, label, coorx, coory
-                                            from resident, floor, resident_location
-                                            where resident.id = resident_id
-                                            and floor.id = floor_id
-                                            and outside = 0
-                                            and resident_location.created_at = (
-                                                select MAX(resident_location.created_at)
-                                                from resident_location
-                                                where resident_id = resident.id
-                                                and outside = 0)
-                                            and CONCAT(`firstname`, `lastname`) like \'%' .$name . '%\'
-                                and (\''.$location.'\' = \'all\' or floor_id = \''.$location.'\')
-                                order by '.$sortParam)
+                            from resident, floor, resident_location
+                            where resident.id = resident_id
+                            and floor.id = floor_id
+                            and outside = 0
+                            and resident_location.created_at = (
+                                select MAX(resident_location.created_at)
+                                from resident_location
+                                where resident_id = resident.id
+                                and outside = 0)
+                            and CONCAT(`firstname`, `lastname`) like \'%' .$name . '%\'
+                            and (\''.$location.'\' = \'all\' or floor_id = \''.$location.'\')
+                            order by '.$sortParam)
             ->queryAll();
         return json_encode($result);
-    }
-    public function actionResidentname($id)
-    {
-        $result = (new \yii\db\Query())
-            ->select(['firstname', 'lastname'])
-            ->from('resident')
-            ->where(['id' => $id])
-            ->all();
-        return json_encode($result[0]);
     }
     public function actionResident($id)
     {
@@ -245,32 +231,24 @@ class UserController extends Controller
             ->all();
         return '{"resident" : '.json_encode($res).', "nextofkin" : '.json_encode($nex).'}';
     }
-    public function getResident($id)
-    {
-        $result = (new \yii\db\Query())
-            ->select(['*'])
-            ->from('resident')
-            ->where('id = \''.$id.'\'')
-            ->all();
-        return $result;
-    }
+
     public function actionFloor($id = 'all')
     {
         $result = Yii::$app->db
-            ->createCommand('select floor.id, label, description, width, height, COUNT(resident.id) as `count`
-                            from floor
-                            left join resident_location
-                            on floor.id = floor_id
-                            and outside = 0
-                            and (\''.$id.'\' = \'all\' or floor.id = \''.$id.'\')
-                            left join resident
-                            on resident.id = resident_id
-                            and resident_location.created_at = (
-                            select MAX(resident_location.created_at)
-                            from resident_location
-                            where resident_id = resident.id
-                            and outside = 0)
-                            group by floor.id')
+            ->createCommand('select floor_alias.id, label, description, width, height, COUNT(resident.id) as `count`
+                                from (select * from floor
+                                where (\''.$id.'\' = \'all\' or floor.id = \''.$id.'\')) as `floor_alias`
+                                left join resident_location
+                                on floor_alias.id = floor_id
+                                and outside = 0
+                                left join resident
+                                on resident.id = resident_id
+                                and resident_location.created_at = (
+                                    select MAX(resident_location.created_at)
+                                    from resident_location
+                                    where resident_id = resident.id
+                                    and outside = 0)
+                                group by floor_alias.id')
             ->queryAll();
         return json_encode($result);
     }
@@ -284,8 +262,18 @@ class UserController extends Controller
     }
     public function actionTakecare($id, $username)
     {
+        if(self::isTakencareof($id))
+        {
+            $result = (new \yii\db\Query())
+                ->select('user_id')
+                ->from('user_notification')
+                ->where(['notification_id' => $id])
+                ->all();
+            return self::getUsernameById($result[0]['user_id']);
+        }
         $userId = self::getUserIdByUsername($username);
-        if($userId == -1) return 'failed';
+        if($userId == -1)
+            return 'failed';
         $now = date_format(date_create(date('Y-m-d H:i:s')), 'Y-m-d H:i:s');
         Yii::$app->db->createCommand()
             ->insert('user_notification', ['user_id' => $userId, 'notification_id' =>$id, 'created_at' => $now])->execute();
@@ -314,10 +302,12 @@ class UserController extends Controller
     public function actionAlerts($id = 'all')
     {
         $result = Yii::$app->db
-            ->createCommand('select notification.id, notification.resident_id, firstname, lastname, last_position, user_id, COUNT(user_id) as `ok`
+            ->createCommand('select notification.id, notification.resident_id, firstname, lastname, last_position, user_id, username, COUNT(user_id) as `ok`
                             from notification
                             left join user_notification
                             on notification.id = user_notification.notification_id
+                            join user
+                            on user_notification.user_id = user.id
                             join resident
                             on notification.resident_id = resident.id
                             and (\''.$id.'\' = \'all\' or notification.id = \''.$id.'\')
@@ -325,8 +315,10 @@ class UserController extends Controller
             ->queryAll();
         return json_encode($result);
     }
-    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '')
+    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1')
     {
+        if(!self::isAlertable($resident_id))
+            return;
         $query = (new \yii\db\Query())
             ->select(['firstname', 'lastname'])
             ->from('resident')
@@ -342,7 +334,12 @@ class UserController extends Controller
             Yii::$app->db->createCommand()->insert('notification', ['resident_id' => $resident_id, 'last_position' => $last_position ,'created_at' => $now])->execute();
             $id = Yii::$app->db->lastInsertID;
         }
-        $data = array( 'message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id]);
+        $username = '';
+        if($user_id != -'1')
+        {
+            self::getUsernameById($user_id);
+        }
+        $data = array( 'message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id, 'username' => $username]);
 
         $notification = array( 'title' => 'Urgent', 'body' => 'Patients are in danger!');
         $ids = array();
@@ -357,6 +354,38 @@ class UserController extends Controller
         }
 
         self::sendGoogleCloudMessage( $ids, $notification, $data);
+    }
+    public function actionReceive($MAC, $gcm_token)
+    {
+        Yii::$app->db->createCommand()->update('usertoken', ['gcm_token' => $gcm_token], 'ip_address = \''.$MAC.'\'')->execute();
+    }
+    public function isAlertable($resident_id)
+    {
+        $notification_id = self::latestNotificationId($resident_id);
+        if($notification_id == '-1')
+            return true;
+        return self::isTakencareof($notification_id);
+    }
+    public function latestNotificationId($resident_id)
+    {
+        $result = (new \yii\db\Query())
+            ->select('id')
+            ->limit(1)
+            ->from('Notification')
+            ->where(['resident_id' => $resident_id])
+            ->orderBy('created_at desc')
+            ->all();
+        if(count($result) == 0)return '-1';
+        return $result[0]['id'];
+    }
+    public function isTakencareof($notification_id)
+    {
+        $num = (new \yii\db\Query())
+            ->select('COUNT(id) as \'count\'')
+            ->from('user_notification')
+            ->where(['notification_id' => $notification_id])
+            ->all();
+        return $num[0]['count'] !== '0';
     }
     public function sendGoogleCloudMessage( $ids, $notification, $data)
     {
@@ -416,7 +445,16 @@ class UserController extends Controller
         // Debug GCM response
         return $result;
     }
-    public function actionGetusername($id)
+    public function getResident($id)
+    {
+        $result = (new \yii\db\Query())
+            ->select(['*'])
+            ->from('resident')
+            ->where('id = \''.$id.'\'')
+            ->all();
+        return $result;
+    }
+    public function getUsernameById($id)
     {
         $result = (new \yii\db\Query())
             ->select('username')
@@ -424,12 +462,8 @@ class UserController extends Controller
             ->where(['id' => $id])
             ->all();
         if(count($result) == 0)
-            return '404';
+            return '-1';
         return $result[0]['username'];
-    }
-    public function actionReceive($MAC, $gcm_token)
-    {
-        Yii::$app->db->createCommand()->update('usertoken', ['gcm_token' => $gcm_token], 'ip_address = \''.$MAC.'\'')->execute();
     }
     public function getUserIdByUsername($username)
     {

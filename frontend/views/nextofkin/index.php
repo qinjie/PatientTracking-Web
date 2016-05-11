@@ -8,7 +8,7 @@ use backend\models\Floor;
 /* @var $searchModel backend\models\NextofkinSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Nextofkins';
+$this->title = 'Next-of-kins';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="nextofkin-index">
