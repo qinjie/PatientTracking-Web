@@ -46,8 +46,8 @@ class FloorManager extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userid' => 'Userid',
-            'floorid' => 'Floorid',
+            'userid' => 'User Id',
+            'floorid' => 'Floor Id',
             'created_at' => 'Created At',
         ];
     }

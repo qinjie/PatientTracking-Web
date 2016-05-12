@@ -20,19 +20,36 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'file_type')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
+        [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' => [
+                'showUpload' => false,
+            ]
+        ]
+    ) ?>
 
-    <?= $form->field($model, 'file_name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'thumbnail')->widget(\kartik\file\FileInput::className(),
+        [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' => [
+                'showUpload' => false,
+            ]  ]
+    ) ?>
 
-    <?= $form->field($model, 'file_ext')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'file_type')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'file_path')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'file_name')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'thumbnail_path')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'file_ext')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?= $form->field($model, 'file_path')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
+    <?= $form->field($model, 'thumbnail_path')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'created_at')->textInput()->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'updated_at')->textInput()->hiddenInput()->label(false) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

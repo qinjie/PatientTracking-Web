@@ -5,10 +5,12 @@ namespace backend\controllers;
 use Yii;
 use backend\models\FloorManager;
 use backend\models\FloorManagerSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use backend\models\User;
+use backend\models\Floor;
 /**
  * FloorManagerController implements the CRUD actions for FloorManager model.
  */
@@ -64,12 +66,16 @@ class FloorManagerController extends Controller
     public function actionCreate()
     {
         $model = new FloorManager();
+        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
+        $items2 = ArrayHelper::map(User::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'items1' => $items1,
+                'items2' => $items2,
             ]);
         }
     }
@@ -83,12 +89,16 @@ class FloorManagerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
+        $items2 = ArrayHelper::map(User::find()->all(), 'id', 'username');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'items1' => $items1,
+                'items2' => $items2,
             ]);
         }
     }

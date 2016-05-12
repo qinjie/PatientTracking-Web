@@ -12,9 +12,21 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'userid')->textInput() ?>
+    <?= $form->field($model, 'userid')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $items2,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'floorid')->textInput() ?>
+    <?= $form->field($model, 'floorid')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a resident ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 

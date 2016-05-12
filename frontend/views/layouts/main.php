@@ -50,13 +50,9 @@ AppAsset::register($this);
             'url' => ['/site/login']
         ];
     } else {
-        $items[] = ['label' => 'Dashboard', 'url' => ['dashboard/index']];
-        $items[] = ['label' => 'Resident', 'visible' => !Yii::$app->user->isGuest,
-                'items' => [
-                    ['label' => 'Index', 'url' => ['resident/index'] ],
-                    ['label' => 'Next of kin', 'url' => ['nextofkin/index'] ],
-                ]
-        ];
+        $items[] = ['label' => 'Floor', 'url' => ['dashboard/index']];
+        $items[] = ['label' => 'Resident', 'url' => ['resident/index']];
+        $items[] = ['label' => 'Next of kin', 'url' => ['nextofkin/index']];
 //        $items[] =
 //            ['label' => 'Tables', 'visible' => !Yii::$app->user->isGuest,
 //                'items' => [

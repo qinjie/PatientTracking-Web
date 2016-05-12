@@ -12,8 +12,9 @@ $this->title = 'Next-of-kins';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="nextofkin-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div align="center">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

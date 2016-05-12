@@ -11,8 +11,9 @@ $this->title = 'Residents';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="resident-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div align="center">
+        <h1><?= Html::encode($this->title) ?></h1>
+    </div>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

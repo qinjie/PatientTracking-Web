@@ -6,9 +6,7 @@ $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div align="center">
-    <h1><?= Html::encode($this->title);
-        
-        ?></h1>
+    <h1><?= Html::encode($this->title);?></h1>
 </div>
 <br>
 <div class="patient-index">

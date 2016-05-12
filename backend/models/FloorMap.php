@@ -43,7 +43,7 @@ class FloorMap extends \yii\db\ActiveRecord
             [['file_type', 'file_ext'], 'string', 'max' => 10],
             [['file_name'], 'string', 'max' => 30],
             [['file_path', 'thumbnail_path'], 'string', 'max' => 100],
-            [['file'], 'file'],
+            [['file', 'thumbnail'], 'file'],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
     }
@@ -63,6 +63,8 @@ class FloorMap extends \yii\db\ActiveRecord
             'thumbnail_path' => 'Thumbnail Path',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'file' => 'File',
+            'thumbnail' => 'Thumbnail',
         ];
     }
 

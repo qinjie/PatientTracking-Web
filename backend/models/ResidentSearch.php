@@ -75,9 +75,6 @@ class ResidentSearch extends Resident
                 'contact',
                 'remark',
                 'lastmodified',
-                'coorx',
-                'coory',
-                'speed',
                 'fullName' => [
                     'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],

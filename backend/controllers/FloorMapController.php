@@ -2,14 +2,14 @@
 
 namespace backend\controllers;
 
-use backend\models\Floor;
 use Yii;
 use backend\models\FloorMap;
 use backend\models\FloorMapSearch;
-use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use backend\models\Floor;
 use yii\web\UploadedFile;
 
 /**
@@ -69,7 +69,18 @@ class FloorMapController extends Controller
         $model = new FloorMap();
         $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->thumbnail = UploadedFile::getInstance($model, 'thumbnail');
+            $model->file->saveAs('uploads/'.$model->file->name);
+            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file->name);
+            $model->file_type = 'image/'.$model->file->extension;
+            $model->file_name = $model->file->baseName;
+            $model->file_ext = $model->file->extension;
+            $model->file_path = 'uploads/'.$model->file->name;
+            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file->baseName.'.'.$model->thumbnail->extension;
+            $model->created_at = date('Y-m-d h:m:s');
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
