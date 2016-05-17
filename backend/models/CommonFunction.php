@@ -14,6 +14,7 @@ use yii\db\Query;
 
 class CommonFunction extends \yii\db\ActiveRecord
 {
+    private $timeout = 6;
     //get all floor model
     public function getAllFloor(){
         $query = Floor::find()->all();
@@ -34,7 +35,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             select count(id) as cnt
             from resident_location as r1
             where floor_id = '.$id.' and outside = 0
-            and created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
+            and created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()
             and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
         ')->queryAll();
         return $query[0]["cnt"];
@@ -66,7 +67,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             select count(id) as cnt
             from resident_location as r1
             where outside = 1
-            and created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW()
+            and created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()
             and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
         ')->queryAll();
         $tmp1 = Yii::$app->db->createCommand('
@@ -76,7 +77,7 @@ class CommonFunction extends \yii\db\ActiveRecord
         $tmp2 = Yii::$app->db->createCommand('
             select count(distinct r1.resident_id) as cnt
             from resident_location as r1
-            where r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW();
+            where r1.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW();
         ')->queryAll();
         return $query[0]["cnt"]+($tmp1[0]["cnt"] - $tmp2[0]["cnt"]);
     }

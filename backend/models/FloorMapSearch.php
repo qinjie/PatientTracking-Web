@@ -12,14 +12,17 @@ use backend\models\FloorMap;
  */
 class FloorMapSearch extends FloorMap
 {
+
+    public $floorName;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'floor_id'], 'integer'],
-            [['file_type', 'file_name', 'file_ext', 'file_path', 'thumbnail_path', 'created_at', 'updated_at'], 'safe'],
+            [['id'], 'integer'],
+            [['file_type', 'file_name', 'file_ext', 'file_path', 'thumbnail_path', 'created_at', 'updated_at', 'floorName', 'floor_id'], 'safe'],
         ];
     }
 
@@ -42,12 +45,29 @@ class FloorMapSearch extends FloorMap
     public function search($params)
     {
         $query = FloorMap::find();
+        
+        $query->joinWith('floor');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->setSort([
+            'attributes' =>[
+                'id',
+                'floor_id' => [
+                    'asc' => ['floor.label' => SORT_ASC],
+                    'desc' => ['floor.label' => SORT_DESC],
+                    'default' => SORT_ASC
+                ],
+                'file_type',
+                'file_name',
+                'file_ext',
+            ]
+        ]);
+
 
         $this->load($params);
 
@@ -59,8 +79,7 @@ class FloorMapSearch extends FloorMap
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'floor_id' => $this->floor_id,
+            'floor_map.id' => $this->id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
@@ -69,7 +88,8 @@ class FloorMapSearch extends FloorMap
             ->andFilterWhere(['like', 'file_name', $this->file_name])
             ->andFilterWhere(['like', 'file_ext', $this->file_ext])
             ->andFilterWhere(['like', 'file_path', $this->file_path])
-            ->andFilterWhere(['like', 'thumbnail_path', $this->thumbnail_path]);
+            ->andFilterWhere(['like', 'thumbnail_path', $this->thumbnail_path])
+            ->andWhere('label LIKE "%'.$this->floor_id.'%"');
 
         return $dataProvider;
     }

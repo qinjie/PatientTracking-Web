@@ -43,7 +43,8 @@ class FloorMap extends \yii\db\ActiveRecord
             [['file_type', 'file_ext'], 'string', 'max' => 10],
             [['file_name'], 'string', 'max' => 30],
             [['file_path', 'thumbnail_path'], 'string', 'max' => 100],
-            [['file', 'thumbnail'], 'file'],
+            [['floor_id'], 'unique'],
+            [['file', 'thumbnail'], 'required'],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
     }
@@ -55,7 +56,7 @@ class FloorMap extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'floor_id' => 'Floor ID',
+            'floor_id' => 'Floor Name',
             'file_type' => 'File Type',
             'file_name' => 'File Name',
             'file_ext' => 'File Ext',
@@ -65,7 +66,13 @@ class FloorMap extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'file' => 'File',
             'thumbnail' => 'Thumbnail',
+            'floorName' => Yii::t('app', 'Floor Name'),
         ];
+    }
+
+    public function getFloorName(){
+        $query = Floor::find()->where(['id' => $this->floor_id])->one();
+        return $query['label'];
     }
 
     /**

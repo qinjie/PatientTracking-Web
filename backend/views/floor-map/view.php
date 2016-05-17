@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\models\CommonFunction;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\FloorMap */
@@ -30,12 +31,23 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'floor_id',
+            [
+                'attribute' => 'floor_id',
+                'value' => $model->floorName,
+            ],
             'file_type',
             'file_name',
             'file_ext',
-            'file_path',
-            'thumbnail_path',
+            [
+                'label' => 'File Path',
+                'format' => 'raw',
+                'value' => '<a href="'.Yii::$app->homeUrl.$model->file_path.'">'.$model->file_path.'</a>',
+            ],
+            [
+                'label' => 'Thumbnail Path',
+                'format' => 'raw',
+                'value' => '<a href="'.Yii::$app->homeUrl.$model->thumbnail_path.'">'.$model->thumbnail_path.'</a>',
+            ],
             'created_at',
             'updated_at',
         ],

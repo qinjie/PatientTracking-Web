@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'floor_id')->widget(\kartik\select2\Select2::classname(), [
         'data' => $items1,
-        'options' => ['placeholder' => 'Select a resident ...'],
+        'options' => ['placeholder' => 'Select a floor ...'],
         'pluginOptions' => [
             'allowClear' => true
         ],

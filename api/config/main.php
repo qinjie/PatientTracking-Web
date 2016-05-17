@@ -86,6 +86,16 @@ return [
                         '{id}' => '<id:\\w+>',
                     ],
                 ],
+                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
+                    'controller' => 'v1/resident-location',
+                    'extraPatterns' => [
+                        'GET search' => 'search',
+                    ],
+                    'tokens' => [
+                        # Keep 'id' for default CRUD action
+                        '{id}' => '<id:\\w+>',
+                    ],
+                ],
             ],
         ]
     ],

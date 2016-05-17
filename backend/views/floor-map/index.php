@@ -25,7 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'floor_id',
+            [
+                'attribute' => 'floor_id',
+                'value' => 'floor.label'
+            ],
             'file_type',
             'file_name',
             'file_ext',

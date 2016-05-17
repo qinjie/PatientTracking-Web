@@ -17,6 +17,7 @@ class ResidentSearch extends Resident
     public $coory;
     public $speed;
     public $lastfloor;
+    private $timeout = 6;
     /**
      * @inheritdoc
      */
@@ -53,7 +54,7 @@ class ResidentSearch extends Resident
             (select r1.resident_id
             from resident_location as r1
             where r1.outside = 0 and floor_id = '.$fid.'
-            and (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            and (r1.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())
             and r1.created_at = (select max(r2.created_at) from resident_location as r2 where r1.resident_id = r2.resident_id))');
         } else{
             $query = Resident::find();
@@ -119,7 +120,7 @@ class ResidentSearch extends Resident
             resident_id in
             (select DISTINCT r1.resident_id
             from resident_location as r1
-            where (r1.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            where (r1.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())
             and r1.outside != 0
             and r1.created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id))
             or resident_id in
@@ -127,7 +128,7 @@ class ResidentSearch extends Resident
             from resident_location as r1
             where r1.resident_id in (select DISTINCT r2.resident_id from resident_location as r2)
             and r1.resident_id not in (select DISTINCT r3.resident_id from resident_location as r3
-            where r3.created_at between DATE_SUB(NOW(), INTERVAL 10 second) and NOW())
+            where r3.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())
             and r1.created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)) 
         ');
         // add conditions that should always apply here

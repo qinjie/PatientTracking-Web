@@ -33,7 +33,7 @@ class Tag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['label'], 'required'],
+            [['label', 'status'], 'required'],
             [['status', 'resident_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['label', 'mac'], 'string', 'max' => 20],

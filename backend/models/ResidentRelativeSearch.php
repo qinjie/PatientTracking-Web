@@ -61,17 +61,16 @@ class ResidentRelativeSearch extends ResidentRelative
                 'resident_id' => [
                     'asc' => ['Resident.firstname' => SORT_ASC, 'Resident.lastname' => SORT_ASC],
                     'desc' => ['Resident.firstname' => SORT_DESC, 'Resident.lastname' => SORT_DESC],
-                    'default' => SORT_ASC
                 ],
                 'nextofkin_id' => [
                     'asc' => ['Nextofkin.first_name' => SORT_ASC, 'Nextofkin.last_name' => SORT_ASC],
                     'desc' => ['Nextofkin.first_name' => SORT_DESC, 'Nextofkin.last_name' => SORT_DESC],
-                    'default' => SORT_ASC
                 ],
                 'relation',
                 'created_at',
                 'updated_at',
-            ]
+            ],
+            'defaultOrder' => ['id'=>SORT_ASC],
         ]);
 
         $this->load($params);
@@ -91,7 +90,7 @@ class ResidentRelativeSearch extends ResidentRelative
 
         $query->andFilterWhere(['like', 'relation', $this->relation]);
         $query->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%"')
-            ->andWhere('concat(first_name, \' \', last_name) LIKE "%'.$this->nextofkin_id.'%"');
+              ->andWhere('concat(first_name, \' \', last_name) LIKE "%'.$this->nextofkin_id.'%"');
         return $dataProvider;
     }
 }

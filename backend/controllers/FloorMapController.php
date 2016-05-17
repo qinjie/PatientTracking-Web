@@ -72,16 +72,23 @@ class FloorMapController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
             $model->thumbnail = UploadedFile::getInstance($model, 'thumbnail');
-            $model->file->saveAs('uploads/'.$model->file->name);
-            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file->name);
+            $model->file_name = $model->floor_id;
+            $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
+            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension);
             $model->file_type = 'image/'.$model->file->extension;
-            $model->file_name = $model->file->baseName;
             $model->file_ext = $model->file->extension;
-            $model->file_path = 'uploads/'.$model->file->name;
-            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file->baseName.'.'.$model->thumbnail->extension;
+            $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension;
             $model->created_at = date('Y-m-d h:m:s');
-            $model->save();
-            return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            else{
+                return $this->render('create', [
+                    'model' => $model,
+                    'items1' => $items1,
+                ]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -101,8 +108,26 @@ class FloorMapController extends Controller
         $model = $this->findModel($id);
         $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->thumbnail = UploadedFile::getInstance($model, 'thumbnail');
+            $model->file_name = $model->floor_id;
+            $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
+            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension);
+            $model->file_type = 'image/'.$model->file->extension;
+            $model->file_ext = $model->file->extension;
+            $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension;
+            $model->created_at = date('Y-m-d h:m:s');
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            else{
+                return $this->render('update', [
+                    'model' => $model,
+                    'items1' => $items1,
+                ]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -119,6 +144,7 @@ class FloorMapController extends Controller
      */
     public function actionDelete($id)
     {
+        
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
