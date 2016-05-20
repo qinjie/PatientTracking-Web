@@ -79,7 +79,7 @@ class FloorMapController extends Controller
             $model->file_ext = $model->file->extension;
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
             $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension;
-            $model->created_at = date('Y-m-d h:m:s');
+            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

@@ -128,6 +128,7 @@ class UserController extends Controller
     public $enableCsrfValidation = true;
     public function beforeAction($action)
     {
+        Yii::$app->cache->flush();
         if (in_array($action->id, ['check', 'login'])) {
             $this->enableCsrfValidation = false;
         }
@@ -170,7 +171,7 @@ class UserController extends Controller
         else
         {
             Yii::$app->db->createCommand()->update('usertoken', ['expire' => $expire], 'id = '.$userTokenId)->execute();
-            $token = self::getToken($userId);
+            $token = self::getToken($userId, $MAC);
             return '{"result" : "correct", "token" : "'.$token.'"}';
         }
     }
@@ -222,7 +223,7 @@ class UserController extends Controller
     }
     public function actionResident($id)
     {
-        $res = $this->getResident($id);
+        $res = self::getResident($id);
         $nex = (new \yii\db\Query())
             ->select(['nextofkin.id', 'nric', 'first_name', 'last_name', 'contact', 'email', 'remark', 'relation'])
             ->from(['nextofkin', 'resident_relative'])
@@ -255,8 +256,10 @@ class UserController extends Controller
     public function actionFloors()
     {
         $result = (new \yii\db\Query())
-            ->select(['id', 'label'])
+            ->select(['floor.id', 'label', 'file_path', 'thumbnail_path'])
             ->from('floor')
+            ->leftJoin('floor_map', 'floor.id = floor_id')
+            ->orderBy('floor.id')
             ->all();
         return json_encode($result);
     }
@@ -299,33 +302,36 @@ class UserController extends Controller
         self::actionAlert($resident_id, '', '1', $id, $user_id);
         return 'success';
     }
-    public function actionAlerts($id = 'all')
+    public function actionAlerts($id = 'all', $ok = 'all')
     {
         $result = Yii::$app->db
-            ->createCommand('select notification.id, notification.resident_id, firstname, lastname, last_position, user_id, username, COUNT(user_id) as `ok`
-                            from notification
-                            left join user_notification
-                            on notification.id = user_notification.notification_id
-                            join user
-                            on user_notification.user_id = user.id
-                            join resident
-                            on notification.resident_id = resident.id
-                            and (\''.$id.'\' = \'all\' or notification.id = \''.$id.'\')
-                            group by notification.id')
+            ->createCommand('select * from
+                                ((select notification.id, notification.resident_id, firstname, lastname, last_position, user_id, username, COUNT(user_id) as `ok`
+                                from notification
+                                left join user_notification
+                                on notification.id = user_notification.notification_id
+                                left join user
+                                on user_notification.user_id = user.id
+                                join resident
+                                on notification.resident_id = resident.id
+                                and (\''.$id.'\' = \'all\' or notification.id = \''.$id.'\')
+                                group by notification.id
+                                order by notification.created_at desc) as `alert_alias`)
+                            where (\''.$ok.'\' = \'all\' or alert_alias.ok = \''.$ok.'\')')
             ->queryAll();
         return json_encode($result);
     }
     public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1')
     {
         if(!self::isAlertable($resident_id))
-            return;
+            return 'isNotAlertable';
         $query = (new \yii\db\Query())
             ->select(['firstname', 'lastname'])
             ->from('resident')
             ->where(['id' => $resident_id])
             ->all();
         if(count($query) == 0)
-            return;
+            return 'failed';
         $firstname = $query[0]['firstname'];
         $lastname = $query[0]['lastname'];
         if($id == '-1')
@@ -337,7 +343,7 @@ class UserController extends Controller
         $username = '';
         if($user_id != -'1')
         {
-            self::getUsernameById($user_id);
+            $username = self::getUsernameById($user_id);
         }
         $data = array( 'message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id, 'username' => $username]);
 
@@ -346,14 +352,16 @@ class UserController extends Controller
         $result = (new \yii\db\Query())
             ->select('gcm_token')
             ->from('usertoken')
-            ->where('ip_address = \'f8:32:e4:5f:73:f5\'')
+//            ->where('ip_address = \'f8:32:e4:5f:73:f5\'')
             ->all();
         for($i = 0; $i < count($result); $i++)
         {
-            array_push($ids, $result[$i]['gcm_token']);
+            if($result[$i]['gcm_token'] != NULL)
+                array_push($ids, $result[$i]['gcm_token']);
         }
 
         self::sendGoogleCloudMessage( $ids, $notification, $data);
+        return 'success';
     }
     public function actionReceive($MAC, $gcm_token)
     {
@@ -371,7 +379,7 @@ class UserController extends Controller
         $result = (new \yii\db\Query())
             ->select('id')
             ->limit(1)
-            ->from('Notification')
+            ->from('notification')
             ->where(['resident_id' => $resident_id])
             ->orderBy('created_at desc')
             ->all();
@@ -503,13 +511,13 @@ class UserController extends Controller
             return -1;
         return $result[0]['id'];
     }
-    public function getToken($userId)
+    public function getToken($userId, $MAC)
     {
         $result = (new \yii\db\Query())
             ->select('token')
             ->limit(1)
             ->from('usertoken')
-            ->where('user_id = '.$userId)
+            ->where(['user_id' => $userId, 'ip_address' => $MAC])
             ->all();
         return $result[0]['token'];
     }

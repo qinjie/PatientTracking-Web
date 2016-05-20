@@ -1,5 +1,6 @@
 <?php
 return [
+    'timeZone' => 'Asia/Singapore',
     'name' => 'Patient Tracking',
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [

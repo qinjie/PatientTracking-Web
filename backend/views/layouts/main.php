@@ -1,3 +1,5 @@
+<link rel="shortcut icon" href="../../web/main.ico" type="image/x-icon" />
+
 <?php
 
 /* @var $this \yii\web\View */
@@ -81,7 +83,7 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-
+    
     <div class="container">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
