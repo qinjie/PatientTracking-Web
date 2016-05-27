@@ -18,7 +18,7 @@ $this->title = Yii::$app->name;
         <div class="small-box bg-aqua">
             <div class="inner">
                 <h3><?php echo $residentNumber; ?></h3>
-                <p>Resident Number</p>
+                <p>Resident</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>
@@ -31,7 +31,7 @@ $this->title = Yii::$app->name;
         <div class="small-box bg-green">
             <div class="inner">
                 <h3><?php echo $nextofkinNumber; ?></h3>
-                <p>Next-of-kin number</p>
+                <p>Next-of-kin</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>
@@ -44,7 +44,7 @@ $this->title = Yii::$app->name;
         <div class="small-box bg-yellow">
             <div class="inner">
                 <h3><?php echo $floorNumber; ?></h3>
-                <p>Floor number</p>
+                <p>Floor</p>
             </div>
             <div class="icon">
                 <i class="ion ion-home"></i>

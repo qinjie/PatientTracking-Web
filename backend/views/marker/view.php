@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Marker */
 
-$this->title = $model->label;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Markers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Create', ['create', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -34,6 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'mac',
             'floor_id',
             'position',
+            'pixelx',
+            'pixely',
             'coorx',
             'coory',
             'created_at',

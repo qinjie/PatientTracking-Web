@@ -12,6 +12,8 @@ use Yii;
  * @property string $mac
  * @property integer $floor_id
  * @property integer $position
+ * @property integer $pixelx
+ * @property integer $pixely
  * @property double $coorx
  * @property double $coory
  * @property string $created_at
@@ -35,8 +37,8 @@ class Marker extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['floor_id', 'position'], 'integer'],
-            [['position', 'coorx', 'coory'], 'required'],
+            [['floor_id', 'position', 'pixelx', 'pixely'], 'integer'],
+            [['position', 'pixelx', 'pixely', 'coorx', 'coory'], 'required'],
             [['coorx', 'coory'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
             [['label'], 'string', 'max' => 50],
@@ -56,6 +58,8 @@ class Marker extends \yii\db\ActiveRecord
             'mac' => 'Mac',
             'floor_id' => 'Floor ID',
             'position' => 'Position',
+            'pixelx' => 'Pixelx',
+            'pixely' => 'Pixely',
             'coorx' => 'Coorx',
             'coory' => 'Coory',
             'created_at' => 'Created At',

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Marker */
 
-$this->title = 'Update Marker: ' . $model->label;
+$this->title = 'Update Marker: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Markers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
-        'items1' => $items1,
     ]) ?>
 
 </div>

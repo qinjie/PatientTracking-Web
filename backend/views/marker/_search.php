@@ -25,6 +25,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'position') ?>
 
+    <?php // echo $form->field($model, 'pixelx') ?>
+
+    <?php // echo $form->field($model, 'pixely') ?>
+
     <?php // echo $form->field($model, 'coorx') ?>
 
     <?php // echo $form->field($model, 'coory') ?>

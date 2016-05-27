@@ -18,7 +18,7 @@ class MarkerSearch extends Marker
     public function rules()
     {
         return [
-            [['id', 'floor_id', 'position'], 'integer'],
+            [['id', 'floor_id', 'position', 'pixelx', 'pixely'], 'integer'],
             [['label', 'mac', 'created_at', 'updated_at'], 'safe'],
             [['coorx', 'coory'], 'number'],
         ];
@@ -40,9 +40,14 @@ class MarkerSearch extends Marker
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $id = null)
     {
-        $query = Marker::find();
+        if ($id == null){
+            $query = Marker::find();
+        }
+        else{
+            $query = Marker::find()->where(['floor_id' => $id]);
+        }
 
         // add conditions that should always apply here
 
@@ -63,6 +68,8 @@ class MarkerSearch extends Marker
             'id' => $this->id,
             'floor_id' => $this->floor_id,
             'position' => $this->position,
+            'pixelx' => $this->pixelx,
+            'pixely' => $this->pixely,
             'coorx' => $this->coorx,
             'coory' => $this->coory,
             'created_at' => $this->created_at,

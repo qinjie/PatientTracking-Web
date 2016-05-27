@@ -20,7 +20,6 @@
 .myTable td{
     border: 1px solid #ebf0ee;
     padding: 5px 5px 5px 5px;
-
 }
 
 .tableDashboard{
@@ -29,8 +28,11 @@
     box-shadow: 1px 1px 1px #888888;
 }
 
-.tableDashboard, th, td {
+.tableDashboard, th{
     border: solid #D8E8FF 2px;
+}
+
+.tableDashboard, th, td {
     padding: 10px 0px 10px 10px;
 }
 

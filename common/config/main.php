@@ -57,8 +57,8 @@ return [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
-                'username' => 'qinjie.np@gmail.com',
-                'password' => 'Soe7014Ece',
+                'username' => '',
+                'password' => '',
                 'port' => '587',
                 'encryption' => 'tls',
             ],

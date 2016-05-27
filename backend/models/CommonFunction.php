@@ -21,6 +21,19 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
+    //get Coordinate of Floor_id
+
+    public function getCoordinate($id){
+        $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM Marker where floor_id = '.$id.' order by position ASC ')->queryAll();
+        return $query;
+    }
+
+    //get Thumbnail Path by Floor_id
+    public function getThumbnailPath($id){
+        $query = FloorMap::find()->where(['floor_id' => $id])->one();
+        return $query['thumbnail_path'];
+    }
+
     //get number of resident in floor $id
     public function getResidentCount($id){
         //Scenario 1

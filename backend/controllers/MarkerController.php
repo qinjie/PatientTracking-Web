@@ -2,10 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\models\CommonFunction;
 use backend\models\Floor;
+use backend\models\ResidentSearch;
+use MongoDB\BSON\MaxKey;
 use Yii;
 use backend\models\Marker;
 use backend\models\MarkerSearch;
+use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -37,12 +41,9 @@ class MarkerController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new MarkerSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $floorList = (new CommonFunction())->getAllFloor();
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'floorList' => $floorList,
         ]);
     }
 
@@ -58,22 +59,56 @@ class MarkerController extends Controller
         ]);
     }
 
+    public function actionFloordetail($id){
+        $searchModel = new MarkerSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
+        $floorName = (new CommonFunction())->getFloorName($id);
+        $query = Marker::find()->where(['floor_id' => $id])->orderBy('position DESC')->one();
+        if ($query == null){
+            $nextPosition = 1;
+        }
+        else{
+            $nextPosition = (int) $query['position'] + 1;
+        }
+        return $this->render('floorDetail', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'floorName' => $floorName,
+            'floorId' => $id,
+            'nextPosition' => $nextPosition,
+        ]);
+    }
+
     /**
      * Creates a new Marker model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($x = null, $y = null, $p = null, $f = null)
     {
         $model = new Marker();
         $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if($x != null){
+            $model->pixelx = $x;
+        }
+        if ($y != null){
+            $model->pixely = $y;
+        }
+        if($p != null){
+            $model->position = $p;
+        }
+        if($f != null){
+            $model->floor_id = $f;
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()){
+                echo "Success";
+            }else{
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
-                'items1' => $items1,
             ]);
         }
     }
@@ -87,14 +122,12 @@ class MarkerController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'items1' => $items1,
             ]);
         }
     }
@@ -107,8 +140,25 @@ class MarkerController extends Controller
      */
     public function actionDelete($id)
     {
+        $q = Marker::find()->where(['id' => $id])->one();
         $this->findModel($id)->delete();
-
+        if (Yii::$app->getRequest()->isPjax) {
+            $searchModel = new MarkerSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $q['floor_id']);
+            $query = Marker::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
+            if ($query == null){
+                $nextPosition = 1;
+            }
+            else{
+                $nextPosition = (int) $query['position'] + 1;
+            }
+            return $this->renderAjax('floorDetail', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'nextPosition' => $nextPosition,
+                'floorId' => $q['floor_id'],
+            ]);
+        }
         return $this->redirect(['index']);
     }
 
