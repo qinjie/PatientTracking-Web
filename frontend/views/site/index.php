@@ -20,7 +20,7 @@ $this->title = Yii::$app->name;
                 <h3><?php echo $residentNumber; ?></h3>
                 <p>Resident</p>
             </div>
-            <div class="icon">
+            <div class="icon inner">
                 <i class="ion ion-person"></i>
             </div>
             <a href="resident" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -28,25 +28,25 @@ $this->title = Yii::$app->name;
     </div><!-- ./col -->
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <div class="small-box bg-green">
+        <div class="small-box bg-teal">
             <div class="inner">
                 <h3><?php echo $nextofkinNumber; ?></h3>
                 <p>Next-of-kin</p>
             </div>
-            <div class="icon">
-                <i class="ion ion-person"></i>
+            <div class="icon inner">
+                <i class="ion ion-person-stalker"></i>
             </div>
             <a href="nextofkin" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div><!-- ./col -->
     <div class="col-lg-3 col-xs-6">
         <!-- small box -->
-        <div class="small-box bg-yellow">
+        <div class="small-box bg-green">
             <div class="inner">
                 <h3><?php echo $floorNumber; ?></h3>
                 <p>Floor</p>
             </div>
-            <div class="icon">
+            <div class="icon inner">
                 <i class="ion ion-home"></i>
             </div>
             <a href="dashboard" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
@@ -63,7 +63,7 @@ $this->title = Yii::$app->name;
                     ?></h3>
                 <p>Out of range patient</p>
             </div>
-            <div class="icon">
+            <div class="icon inner">
                 <i class="ion ion-alert-circled
                             "></i>
             </div>

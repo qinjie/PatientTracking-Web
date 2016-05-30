@@ -29,14 +29,6 @@ use yii\widgets\ActiveForm;
         ]
     ) ?>
 
-<!--    --><?//= $form->field($model, 'thumbnail')->widget(\kartik\file\FileInput::className(),
-//        [
-//            'options' => ['accept' => 'image/*'],
-//            'pluginOptions' => [
-//                'showUpload' => false,
-//            ]  ]
-//    ) ?>
-
     <?= $form->field($model, 'file_type')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'file_name')->textInput(['maxlength' => true])->hiddenInput()->label(false) ?>

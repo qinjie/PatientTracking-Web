@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\CommonFunction;
 use Yii;
 use backend\models\FloorMap;
 use backend\models\FloorMapSearch;
@@ -142,7 +143,7 @@ class FloorMapController extends Controller
      */
     public function actionDelete($id)
     {
-        
+        (new CommonFunction())->deleteFloorMap($id);
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

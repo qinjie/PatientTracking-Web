@@ -21,7 +21,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/custom.css',
         'css/AdminLTE.min.css',
-        //'https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css',
+        'css/ionicons/css/ionicons.css',
     ];
     public $js = [
     ];

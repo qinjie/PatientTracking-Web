@@ -15,14 +15,23 @@ use yii\db\Query;
 class CommonFunction extends \yii\db\ActiveRecord
 {
     private $timeout = 6;
+
     //get all floor model
     public function getAllFloor(){
         $query = Floor::find()->all();
         return $query;
     }
 
-    //get Coordinate of Floor_id
+    //delete marker
+    public function deleteFloorMap($id){
+        Yii::$app->db->createCommand('DELETE FROM marker WHERE floor_id = (SELECT floor_id FROM floor_map WHERE id = '.$id.')')->execute();
+        $query = FloorMap::find()->where(['id' => $id])->one();
+        unlink($query['file_path']);
+        unlink($query['thumbnail_path']);
+        return true;
+    }
 
+    //get Coordinate of Floor_id
     public function getCoordinate($id){
         $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM marker where floor_id = '.$id.' order by position ASC ')->queryAll();
         return $query;
@@ -62,26 +71,6 @@ class CommonFunction extends \yii\db\ActiveRecord
 
     //get number of resident who is out of range
     public function getAlertCount(){
-        //Scenario 1
-//        //between nearest 60 seconds and outside
-//        $query = Yii::$app->db->createCommand('
-//            select count(DISTINCT r1.resident_id) as cnt from resident_location as r1
-//            where created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
-//            and (created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW())
-//            and outside = 0
-//        ')->queryAll();
-//        //not between nearest 60 seconds
-//        $tmp1 = Yii::$app->db->createCommand('
-//            select count(distinct r1.resident_id) as cnt
-//            from resident_location as r1;
-//        ')->queryAll();
-//        $tmp2 = Yii::$app->db->createCommand('
-//            select count(distinct r1.resident_id) as cnt
-//            from resident_location as r1
-//            where r1.created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW();
-//        ')->queryAll();
-//        return $query[0]["cnt"]+($tmp1[0]["cnt"] - $tmp2[0]["cnt"]);
-        //Scenario 2
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
             from resident_location as r1
