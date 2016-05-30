@@ -10,7 +10,7 @@ use backend\models\CommonFunction;
 $this->title = 'Floor\'s Maker';
 $this->params['breadcrumbs'][] = ['label' => 'Maker', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$imagePath = (new CommonFunction())->getThumbnailPath($floorId);
+$imagePath = (new CommonFunction())->getImgPath($floorId);
 ?>
 
 <div class="marker-index">
@@ -77,7 +77,32 @@ $imagePath = (new CommonFunction())->getThumbnailPath($floorId);
             // 'created_at',
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>','update', [
+                            'class' => 'activity-update-link',
+                            'title' => Yii::t('yii', 'Update'),
+                            'data-toggle' => 'modal',
+                            'data-target' => '#modal',
+                            'data-id' => $key,
+                            'data-pjax' => '0',
+
+                        ]);
+                    },
+                    'view' => function ($url, $model, $key) {
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','view', [
+                            'class' => 'activity-view-link',
+                            'title' => Yii::t('yii', 'View'),
+                            'data-toggle' => 'modal',
+                            'data-target' => '#modal',
+                            'data-id' => $key,
+                            'data-pjax' => '0',
+
+                        ]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
     <?php Pjax::end() ?>
@@ -88,6 +113,32 @@ $imagePath = (new CommonFunction())->getThumbnailPath($floorId);
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 
 <script>
+    $(".activity-update-link").click(function() {
+        $.get(
+            'update',
+        {
+            id: $(this).closest('tr').data('key')
+        },
+        function (data) {
+            $('.modal-body').html(data);
+            $('#modal').modal();
+        }
+        );
+    });
+
+    $(".activity-view-link").click(function() {
+        $.get(
+            'view',
+            {
+                id: $(this).closest('tr').data('key')
+            },
+            function (data) {
+                $('.modal-body').html(data);
+                $('#modal').modal();
+            }
+        );
+    });
+
     $(function() {
         $("#test").click(function(e) {
             var offset = $(this).offset();

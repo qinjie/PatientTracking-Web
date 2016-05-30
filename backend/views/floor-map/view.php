@@ -52,5 +52,24 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_at',
         ],
     ]) ?>
-
+    <div align="center">
+        <table class="tableFloorMap">
+            <tr>
+                <td>
+                    Thumbnail
+                </td>
+                <td>
+                    Image
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="../../web/<?php echo $model->thumbnail_path; ?>">
+                </td>
+                <td>
+                    <img src="../../web/<?php echo $model->file_path; ?>">
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

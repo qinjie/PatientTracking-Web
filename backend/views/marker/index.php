@@ -30,11 +30,12 @@ foreach ($floorList as $item){
         echo "Room: <a href='".Yii::$app->homeUrl."marker/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
         echo "</td>";
         echo "<td>";
-        echo "<div align='right'><img src='".$filePath."' height='100' ></div>";
+        echo "<div align='right'><img src='".$filePath."' ></div>";
     }
     else{
         echo "Room: ".$item['label']."<br>";
-        echo "You need to upload floor map first!";
+        echo "You need to upload floor map first!<br>";
+        echo "Go to <a href='".Yii::$app->homeUrl."floor-map'>Floor map</a>";
         echo "</td>";
         echo "<td>";
         echo "<div align='right'><img src='na.png' height='100' ></div>";

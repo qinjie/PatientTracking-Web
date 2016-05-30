@@ -9,10 +9,28 @@
     border: solid #D8E8FF 2px;
 }
 
+.tableDashboard td{
+    height: 120px;
+}
+
 .tableDashboard, th, td {
     padding: 10px 0px 10px 10px;
 }
 
 .tableDashboard tr:hover td {
     background-color:#E7ECEA;
+}
+
+.tableFloorMap{
+    border: 1px solid black;
+}
+
+.tableFloorMap td{
+    border: 1px solid #A7AAA9;
+    padding: 5px 5px 5px 5px;
+}
+
+.tableFloorMap tr:nth-child(1) {
+    text-align: center;
+    font-weight: bold;
 }

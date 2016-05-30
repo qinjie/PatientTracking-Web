@@ -34,6 +34,12 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query['thumbnail_path'];
     }
 
+    //get image Path by Floor_id
+    public function getImgPath($id){
+        $query = FloorMap::find()->where(['floor_id' => $id])->one();
+        return $query['file_path'];
+    }
+
     //get number of resident in floor $id
     public function getResidentCount($id){
         //Scenario 1

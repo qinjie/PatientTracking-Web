@@ -22,7 +22,6 @@ use Yii;
 class FloorMap extends \yii\db\ActiveRecord
 {
     public $file;
-    public $thumbnail;
     /**
      * @inheritdoc
      */
@@ -44,7 +43,7 @@ class FloorMap extends \yii\db\ActiveRecord
             [['file_name'], 'string', 'max' => 30],
             [['file_path', 'thumbnail_path'], 'string', 'max' => 100],
             [['floor_id'], 'unique'],
-            [['file', 'thumbnail'], 'required'],
+            [['file'], 'required'],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
     }
@@ -65,7 +64,6 @@ class FloorMap extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'file' => 'File',
-            'thumbnail' => 'Thumbnail',
             'floorName' => Yii::t('app', 'Floor Name'),
         ];
     }

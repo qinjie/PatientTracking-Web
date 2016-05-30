@@ -71,14 +71,13 @@ class FloorMapController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            $model->thumbnail = UploadedFile::getInstance($model, 'thumbnail');
             $model->file_name = $model->floor_id;
             $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
-            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension);
             $model->file_type = 'image/'.$model->file->extension;
             $model->file_ext = $model->file->extension;
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
-            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension;
+            $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
+            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
             $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -110,15 +109,14 @@ class FloorMapController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
-            $model->thumbnail = UploadedFile::getInstance($model, 'thumbnail');
             $model->file_name = $model->floor_id;
             $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
-            $model->thumbnail->saveAs('uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension);
             $model->file_type = 'image/'.$model->file->extension;
             $model->file_ext = $model->file->extension;
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
-            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->thumbnail->extension;
-            $model->created_at = date('Y-m-d h:m:s');
+            $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
+            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
+            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -163,6 +161,43 @@ class FloorMapController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    private function makeThumbnails($imgName)
+    {
+        $uploadsPath = "uploads/";
+        $imgPath = $uploadsPath.$imgName;
+        $thumb_before_word = "thumbnail_";
+        $arr_image_details = getimagesize($imgPath);
+        $original_width = $arr_image_details[0];
+        $original_height = $arr_image_details[1];
+        if ($original_width > 2*$original_height) {
+            $thumbnail_width = 200;
+            $thumbnail_height = intval($original_height*200/$original_width);
+        } else {
+            $thumbnail_height = 100;
+            $thumbnail_width = intval($original_width*100/$original_height);
+        }
+        if ($arr_image_details[2] == 1) {
+            $imgt = "imagegif";
+            $imgcreatefrom = "imagecreatefromgif";
+        }
+        if ($arr_image_details[2] == 2) {
+            $imgt = "imagejpeg";
+            $imgcreatefrom = "imagecreatefromjpeg";
+        }
+        if ($arr_image_details[2] == 3) {
+            $imgt = "imagepng";
+            $imgcreatefrom = "imagecreatefrompng";
+        }
+        if ($imgt) {
+            $old_image = $imgcreatefrom($imgPath);
+            $new_image = imagecreatetruecolor($thumbnail_width, $thumbnail_height);
+            imagealphablending( $new_image, false );
+            imagesavealpha( $new_image, true );
+            imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $thumbnail_width, $thumbnail_height, $original_width, $original_height);
+            $imgt($new_image, $uploadsPath.$thumb_before_word.$imgName);
         }
     }
 }
