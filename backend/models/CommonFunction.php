@@ -24,7 +24,7 @@ class CommonFunction extends \yii\db\ActiveRecord
     //get Coordinate of Floor_id
 
     public function getCoordinate($id){
-        $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM Marker where floor_id = '.$id.' order by position ASC ')->queryAll();
+        $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM marker where floor_id = '.$id.' order by position ASC ')->queryAll();
         return $query;
     }
 
