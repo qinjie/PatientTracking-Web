@@ -69,8 +69,11 @@ class ResidentRelativeController extends Controller
         $model = new ResidentRelative();
         $items1 = ArrayHelper::map(Resident::find()->orderBy('firstname', 'lastname')->all(), 'id', 'fullName');
         $items2 = ArrayHelper::map(Nextofkin::find()->orderBy('first_name', 'last_name')->all(), 'id', 'full_Name');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->created_at = date('Y-m-d H:i:s');
+            if ($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,

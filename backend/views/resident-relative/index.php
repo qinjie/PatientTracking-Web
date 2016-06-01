@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'resident_id',
-                'value' => 'resident.fullName'
+                'value' => 'residentName'
             ],
             [
                 'attribute' => 'nextofkin_id',
-                'value' => 'nextofkin.full_Name'
+                'value' => 'nextofkinName'
             ],
             'relation',
             'created_at',

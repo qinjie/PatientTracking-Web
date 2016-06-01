@@ -12,14 +12,16 @@ use backend\models\FloorManager;
  */
 class FloorManagerSearch extends FloorManager
 {
+    public $userName;
+    public $floorName;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'userid', 'floorid'], 'integer'],
-            [['created_at'], 'safe'],
+            [['id'], 'integer'],
+            [['created_at', 'userid', 'floorid', 'userName', 'floorName'], 'safe'],
         ];
     }
 
@@ -43,10 +45,32 @@ class FloorManagerSearch extends FloorManager
     {
         $query = FloorManager::find();
 
+        $query->joinWith('user');
+        $query->joinWith('floor');
+
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+
+        $dataProvider->setSort([
+            'attributes' =>[
+                'id',
+                'userid' => [
+                    'asc' => ['User.username' => SORT_ASC],
+                    'desc' => ['User.username' => SORT_DESC],
+                ],
+                'floorid' => [
+                    'asc' => ['Floor.label' => SORT_ASC],
+                    'desc' => ['Floor.label' => SORT_DESC],
+                ],
+                'relation',
+                'created_at',
+                'updated_at',
+            ],
+            'defaultOrder' => ['id'=>SORT_ASC],
         ]);
 
         $this->load($params);
@@ -60,10 +84,10 @@ class FloorManagerSearch extends FloorManager
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'userid' => $this->userid,
-            'floorid' => $this->floorid,
             'created_at' => $this->created_at,
         ]);
+        $query->andFilterWhere(['like', 'floor.label', $this->floorid]);
+        $query->andFilterWhere(['like', 'user.username', $this->userid]);
 
         return $dataProvider;
     }

@@ -43,14 +43,16 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
 <!--    Map-->
 
     <div align="center" class="marker-view">
-        <a id="test">
+        <a id="test" onmousemove="showCoords(event)" onmouseout="clearCoor()" class="tooltipCustom">
             <canvas id="myCanvas" width="500" height="500">
                     Your browser does not support the HTML5 canvas tag.
             </canvas>
+            <span>
+                <p id="coorxy"></p>
+            </span>
         </a>
 
     </div>
-
 <!--    List-->
     <br>
     <h2>Marker list</h2>
@@ -58,6 +60,34 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
     echo "<input id='nextPos' type=number value=".$nextPosition." hidden>";
     echo "<input id='markerList' type=text value='".json_encode((new CommonFunction())->getCoordinate($floorId))."' hidden>";
     echo "<script>refresh()</script>";
+    echo "<script>$(\".activity-update-link\").click(function() {
+        $.get(
+            'update',
+            {
+                id: $(this).closest('tr').data('key')
+            },
+            function (data) {
+                $('#modal').modal('show')
+                    .find('#modalContent')
+                    .html(data);
+            }
+        );
+    });
+
+    $(\".activity-view-link\").click(function() {
+        $.get(
+            'view',
+            {
+                id: $(this).closest('tr').data('key')
+            },
+            function (data) {
+                $('#modal').modal('show')
+                    .find('#modalContent')
+                    .html(data);
+            }
+        );
+    });</script>";
+
     ?>
     <?=GridView::widget([
         'dataProvider' => $dataProvider,
@@ -80,7 +110,7 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
             ['class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'update' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>','update', [
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', Url::to(['companies/update']), [
                             'class' => 'activity-update-link',
                             'title' => Yii::t('yii', 'Update'),
                             'data-toggle' => 'modal',
@@ -116,13 +146,14 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
     $(".activity-update-link").click(function() {
         $.get(
             'update',
-        {
-            id: $(this).closest('tr').data('key')
-        },
-        function (data) {
-            $('.modal-body').html(data);
-            $('#modal').modal();
-        }
+            {
+                id: $(this).closest('tr').data('key')
+            },
+            function (data) {
+                $('#modal').modal('show')
+                    .find('#modalContent')
+                    .html(data);
+            }
         );
     });
 
@@ -133,8 +164,9 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
                 id: $(this).closest('tr').data('key')
             },
             function (data) {
-                $('.modal-body').html(data);
-                $('#modal').modal();
+                $('#modal').modal('show')
+                    .find('#modalContent')
+                    .html(data);
             }
         );
     });
@@ -311,6 +343,34 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
             };
         }
     }
+
+    function showCoords(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        var coor = "X: " + x + ", Y: " + y;
+        document.getElementById("coorxy").innerHTML = coor;
+    }
+
+    function clearCoor() {
+        document.getElementById("coorxy").innerHTML = "";
+    }
+
+    //
+    var tooltips = document.querySelectorAll('.tooltipCustom span');
+
+    window.onmousemove = function (e) {
+        var x = (e.clientX + 20) + 'px',
+            y = (e.clientY + 20) + 'px';
+        for (var i = 0; i < tooltips.length; i++) {
+            tooltips[i].style.top = y;
+            tooltips[i].style.left = x;
+        }
+    };
+
+    init_click_handlers(); //first run
+    $("#modal").on("pjax:success", function() {
+        init_click_handlers(); //reactivate links in grid after pjax update
+    });
 
 </script>
 

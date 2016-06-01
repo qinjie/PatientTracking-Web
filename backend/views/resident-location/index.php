@@ -30,11 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'resident_id',
-                'value' => 'resident.fullName'
+                'value' => 'residentName'
             ],
             [
                 'attribute' => 'floor_id',
-                'value' => 'floor.label'
+                'value' => 'floorName'
             ],
             'coorx',
             'coory',

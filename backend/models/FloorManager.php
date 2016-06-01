@@ -46,9 +46,11 @@ class FloorManager extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userid' => 'User Id',
-            'floorid' => 'Floor Id',
+            'userid' => 'Username',
+            'floorid' => 'Floor Name',
             'created_at' => 'Created At',
+            'userName' => 'Username',
+            'floorName' => 'Floor Name',
         ];
     }
 
@@ -66,5 +68,16 @@ class FloorManager extends \yii\db\ActiveRecord
     public function getFloor()
     {
         return $this->hasOne(Floor::className(), ['id' => 'floorid']);
+    }
+
+
+    public function getUserName(){
+        $query = User::find()->where(['id' => $this->userid])->one();
+        return $query['username'];
+    }
+
+    public function getFloorName(){
+        $query = Floor::find()->where(['id' => $this->floorid])->one();
+        return $query['label'];
     }
 }

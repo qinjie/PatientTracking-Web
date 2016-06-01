@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'floor_id',
-                'value' => 'floor.label'
+                'value' => 'floorName'
             ],
             'file_type',
             'file_name',

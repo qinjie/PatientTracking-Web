@@ -101,6 +101,7 @@ class MarkerController extends Controller
             $model->floor_id = $f;
         }
         if ($model->load(Yii::$app->request->post())) {
+            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()){
                 echo "Success";
             }else{
@@ -123,8 +124,10 @@ class MarkerController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return "Success";
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()){
+                return "Success";
+            }
         } else {
             return $this->renderAjax('update', [
                 'model' => $model,
