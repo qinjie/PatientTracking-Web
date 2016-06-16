@@ -21,13 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label'=>'Full Name',
             'format' => 'raw',
-            'attribute' => 'fullName',
+            'attribute' => 'residentName',
             'value'=>function ($data) {
-                return Html::a(Html::encode($data->fullName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->id);}
+                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->resident_id);}
         ],
-        'gender',
-        'birthday',
-        'lastfloor',
+        'residentGender',
+        'residentBirthday',
+        [
+            'label' => 'Last floor',
+            'attribute' => 'floorName',
+            'value' => 'floorName',
+        ],
         'coorx',
         'coory',
         'speed',

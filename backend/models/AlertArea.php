@@ -8,26 +8,27 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "tag".
+ * This is the model class for table "alert_area".
  *
  * @property integer $id
- * @property string $label
- * @property string $mac
- * @property integer $status
- * @property integer $resident_id
+ * @property integer $floor_id
+ * @property integer $position
+ * @property integer $pixelx
+ * @property integer $pixely
  * @property string $created_at
  * @property string $updated_at
  *
- * @property Resident $resident
+ * @property Floor $floor
  */
-class Tag extends \yii\db\ActiveRecord
+class AlertArea extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
+
     public static function tableName()
     {
-        return 'tag';
+        return 'alert_area';
     }
 
     public function behaviors()
@@ -51,12 +52,10 @@ class Tag extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['label', 'status'], 'required'],
-            [['status', 'resident_id'], 'integer'],
+            [['floor_id', 'position', 'pixelx', 'pixely'], 'required'],
+            [['floor_id', 'position', 'pixelx', 'pixely'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['label', 'mac'], 'string', 'max' => 20],
-            [['label'], 'unique'],
-            [['resident_id'], 'exist', 'skipOnError' => true, 'targetClass' => Resident::className(), 'targetAttribute' => ['resident_id' => 'id']],
+            [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
     }
 
@@ -67,10 +66,10 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'label' => 'Label',
-            'mac' => 'Mac',
-            'status' => 'Status',
-            'resident_id' => 'Resident ID',
+            'floor_id' => 'Floor ID',
+            'position' => 'Position',
+            'pixelx' => 'Pixelx',
+            'pixely' => 'Pixely',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -79,8 +78,8 @@ class Tag extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getResident()
+    public function getFloor()
     {
-        return $this->hasOne(Resident::className(), ['id' => 'resident_id']);
+        return $this->hasOne(Floor::className(), ['id' => 'floor_id']);
     }
 }

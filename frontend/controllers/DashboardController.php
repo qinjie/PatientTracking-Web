@@ -7,6 +7,8 @@
  */
 
 namespace frontend\controllers;
+use backend\models\ResidentLocation;
+use backend\models\ResidentLocationSearch;
 use backend\models\ResidentSearch;
 use Yii;
 use backend\models\CommonFunction;
@@ -25,8 +27,8 @@ class DashboardController extends Controller
     }
 
     public function actionFloordetail($id){
-        $searchModel = new ResidentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
+        $searchModel = new ResidentLocationSearch();
+        $dataProvider = $searchModel->searchFloor(Yii::$app->request->queryParams, $id);
         $floorName = (new CommonFunction())->getFloorName($id);
         return $this->render('floorDetail',
             [
@@ -54,7 +56,7 @@ class DashboardController extends Controller
     }
 
     public function actionAlertdetail(){
-        $searchModel = new ResidentSearch();
+        $searchModel = new ResidentLocationSearch();
         $dataProvider = $searchModel->searchAlert(Yii::$app->request->queryParams);
         return $this->render('alertDetail', [
             'searchModel' => $searchModel,

@@ -4,12 +4,26 @@
 $this->title = Yii::$app->name;
 ?>
 <div class="jumbotron">
-    <h1>Patient Tracking</h1>
+    <table align="center">
+        <tr>
+            <td>
+                <img src='main.ico' height="55px">
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <h1>
+                    Patient Tracking
+                </h1>
+            </td>
+        </tr>
+    </table>
 </div>
 <!-- Content Header (Page header) -->
-<h3>
-    Quick report
-</h3>
+<!--<h3>-->
+<!--    Quick report-->
+<!--</h3>-->
 <!-- Main content -->
 <!-- Small boxes (Stat box) -->
 <div class="row">
@@ -56,11 +70,14 @@ $this->title = Yii::$app->name;
         <!-- small box -->
         <div class="small-box bg-red">
             <div class="inner">
-                <h3><?php
-                    \yii\widgets\Pjax::begin(['id' => 'count']);
+                <h3>
+                    <?php \yii\widgets\Pjax::begin(); ?>
+                    <?= \yii\helpers\Html::a("Refresh", [''], ['class' => 'btn hidden', 'id' => 'count']) ?>
+                    <?php
                         echo (new \backend\models\CommonFunction())->getAlertCount();
-                    \yii\widgets\Pjax::end();
-                    ?></h3>
+                        \yii\widgets\Pjax::end();
+                    ?>
+                </h3>
                 <p>Out of range patient</p>
             </div>
             <div class="icon inner">
@@ -75,17 +92,9 @@ $this->title = Yii::$app->name;
 
 <?php
 $script = <<< JS
-
 $(document).ready(function() {
-    setInterval(function(){
-    $.ajax({
-        success: function(){
-            $.pjax.reload({container:"#count", async:false});
-        }
-    })
-    }, 1000);
+    setInterval(function(){ $("#count").click(); }, 1000);
 });
-
 JS;
 $this->registerJs($script);
 ?>

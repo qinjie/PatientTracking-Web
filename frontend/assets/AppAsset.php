@@ -20,7 +20,6 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/custom.css',
-        'css/AdminLTE.min.css',
         'css/ionicons/css/ionicons.css',
     ];
     public $js = [

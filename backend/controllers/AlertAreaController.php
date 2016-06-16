@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Floor;
-use backend\models\FloorSearch;
+use backend\models\AlertArea;
+use backend\models\AlertAreaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FloorController implements the CRUD actions for Floor model.
+ * AlertAreaController implements the CRUD actions for AlertArea model.
  */
-class FloorController extends Controller
+class AlertAreaController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,13 +30,14 @@ class FloorController extends Controller
     }
 
     /**
-     * Lists all Floor models.
+     * Lists all AlertArea models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FloorSearch();
+        $searchModel = new AlertAreaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -44,7 +45,7 @@ class FloorController extends Controller
     }
 
     /**
-     * Displays a single Floor model.
+     * Displays a single AlertArea model.
      * @param integer $id
      * @return mixed
      */
@@ -56,18 +57,16 @@ class FloorController extends Controller
     }
 
     /**
-     * Creates a new Floor model.
+     * Creates a new AlertArea model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Floor();
+        $model = new AlertArea();
 
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -76,7 +75,7 @@ class FloorController extends Controller
     }
 
     /**
-     * Updates an existing Floor model.
+     * Updates an existing AlertArea model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -95,7 +94,7 @@ class FloorController extends Controller
     }
 
     /**
-     * Deletes an existing Floor model.
+     * Deletes an existing AlertArea model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -108,15 +107,15 @@ class FloorController extends Controller
     }
 
     /**
-     * Finds the Floor model based on its primary key value.
+     * Finds the AlertArea model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Floor the loaded model
+     * @return AlertArea the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Floor::findOne($id)) !== null) {
+        if (($model = AlertArea::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

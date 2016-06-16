@@ -34,7 +34,6 @@ AppAsset::register($this);
         'brandLabel' => 'Patient Tracking',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-//            'class' => 'navbar-nav navbar-right',
             'class' => 'navbar-right navbar-inverse navbar-fixed-top',
         ],
     ];
@@ -46,52 +45,28 @@ AppAsset::register($this);
 //            Yii::$app->user->isGuest ?
 //                ['label' => 'Sign Up', 'url' => ['/site/signup']] :
 //                false,
-        ];
-        $items[] = [
-            'label' => 'Login',
-            'visible' => Yii::$app->user->isGuest,
-            'url' => ['/site/login']
+            ['label' => 'Login', 'url' => ['/site/login']]
         ];
     } else {
-        $items[] = ['label' => 'Floor', 'url' => ['dashboard/index']];
-        $items[] = ['label' => 'Resident', 'url' => ['resident/index']];
-        $items[] = ['label' => 'Next of kin', 'url' => ['nextofkin/index']];
-//        $items[] =
-//            ['label' => 'Tables', 'visible' => !Yii::$app->user->isGuest,
-//                'items' => [
-//                    ['label' => 'Quuppa Tag Position',
-//                        'visible' => !Yii::$app->user->isGuest,
-//                        'items' => [
-//                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
-//                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
-//                        ],
-//                    ],
-//                    ['label' => 'Quuppa Tag Info',
-//                        'visible' => !Yii::$app->user->isGuest,
-//                        'items' => [
-//                            ['label' => 'List', 'url' => array('quuppa-tag-position/index')],
-//                            ['label' => 'Create', 'url' => array('quuppa-tag-position/create')],
-//                        ],
-//                    ],
-//                    '<li class="divider"></li>',
-//
-//                ]
-//            ];
-        $items[] = [
-            'label' => 'Account (' . Yii::$app->user->identity->username . ')',
-            'visible' => !Yii::$app->user->isGuest,
-            'items' => [
-                ['label' => 'Account',
-                    'url' => ['site/account'],
-                ],
+        $items = [
+            ['label' => 'Floor', 'url' => ['dashboard/index']],
+            ['label' => 'Resident', 'url' => ['resident/index']],
+            ['label' => 'Next of kin', 'url' => ['nextofkin/index']],
+            [
+                'label' => 'Account (' . Yii::$app->user->identity->username . ')',
+                'items' => [
+                    ['label' => 'Account',
+                        'url' => ['site/account'],
+                    ],
 //                ['label' => 'Tokens',
 //                    'url' => ['user-token/index'],
 //                ],
-                ['label' => 'Logout',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
+                    ['label' => 'Logout',
+                        'url' => ['/site/logout'],
+                        'linkOptions' => ['data-method' => 'post']
+                    ],
                 ],
-            ],
+            ]
         ];
     }
 

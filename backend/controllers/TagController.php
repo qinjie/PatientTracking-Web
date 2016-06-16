@@ -68,7 +68,6 @@ class TagController extends Controller
         $model = new Tag();
         $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
         if ($model->load(Yii::$app->request->post())) {
-            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
             }

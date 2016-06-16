@@ -79,7 +79,6 @@ class FloorMapController extends Controller
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
             $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
             $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
-            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -117,7 +116,6 @@ class FloorMapController extends Controller
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
             $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
             $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
-            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

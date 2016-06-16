@@ -17,16 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
         [
             'label'=>'Full Name',
             'format' => 'raw',
-            'attribute' => 'fullName',
-            'value'=>function ($data) use ($id) {
-                return Html::a(Html::encode($data->fullName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->id.'&fid='.$id);}
+            'attribute' => 'residentName',
+            'value'=>function ($data) {
+                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->resident_id);}
         ],
-        'gender',
-        'birthday',
+        'residentGender',
+        'residentBirthday',
         'coorx',
         'coory',
         'speed',

@@ -25,6 +25,7 @@ class CommonFunction extends \yii\db\ActiveRecord
     //delete marker
     public function deleteFloorMap($id){
         Yii::$app->db->createCommand('DELETE FROM marker WHERE floor_id = (SELECT floor_id FROM floor_map WHERE id = '.$id.')')->execute();
+        Yii::$app->db->createCommand('DELETE FROM alert_area WHERE floor_id = (SELECT floor_id FROM floor_map WHERE id = '.$id.')')->execute();
         $query = FloorMap::find()->where(['id' => $id])->one();
         unlink($query['file_path']);
         unlink($query['thumbnail_path']);
@@ -34,6 +35,12 @@ class CommonFunction extends \yii\db\ActiveRecord
     //get Coordinate of Floor_id
     public function getCoordinate($id){
         $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM marker where floor_id = '.$id.' order by position ASC ')->queryAll();
+        return $query;
+    }
+
+    //get Coordinate alert of Floor_id
+    public function getCoordinateAlert($id){
+        $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM alert_area where floor_id = '.$id.' order by position ASC ')->queryAll();
         return $query;
     }
 
@@ -181,6 +188,8 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $str;
     }
 
+    //GET INDEX INFO
+
     //get count resident
     public function getResidentNumber(){
         $query = Resident::find()->count();
@@ -193,10 +202,53 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
+    //get count resident relative
+    public function getResidentRelativeNumber(){
+        $query = ResidentRelative::find()->count();
+        return $query;
+    }
+
+    //get count resident location
+    public function getResidentLocationNumber(){
+        $query = ResidentLocation::find()->count();
+        return $query;
+    }
+
+    //get count tag
+    public function getTagNumber(){
+        $query = Tag::find()->count();
+        return $query;
+    }
+
     //get count floor
     public function getFloorNumber(){
         $query = Floor::find()->count();
         return $query;
     }
+
+    //get count floor map
+    public function getFloorMapNumber(){
+        $query = FloorMap::find()->count();
+        return $query;
+    }
+
+    //get count marker
+    public function getMarkerNumber(){
+        $query = Marker::find()->count();
+        return $query;
+    }
+
+    //get count floor manager
+    public function getFloorManagerNumber(){
+        $query = FloorManager::find()->count();
+        return $query;
+    }
+
+    //get count alert area
+    public function getAlertAreaNumber(){
+        $query = AlertArea::find()->count();
+        return $query;
+    }
+
 
 }

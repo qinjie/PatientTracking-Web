@@ -22,29 +22,37 @@ foreach ($floorList as $item){
         echo "<div class=\"border col-sm-6\">";
     }
     $count++;
-    echo "<table class='tableDashboard'>";
-    echo "<tr>";
-    echo "<td>";
-    echo "No. ".$count."<br>";
+
     if (file_exists($filePath = (new CommonFunction())->getThumbnailPath($item['id']))){
-        echo "Room: <a href='".Yii::$app->homeUrl."marker/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
+        echo "<a href='".Yii::$app->homeUrl."marker/floordetail?id=".$item['id']."'>";
+        echo "<table class='tableDashboard'>";
+        echo "<tr>";
+        echo "<td>";
+        echo "No. ".$count."<br>";
+        echo "Room: ".$item['label']."<br>";
         echo "</td>";
         echo "<td>";
         echo "<div align='right'><img src='".$filePath."' ></div>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
+        echo "</a>";
     }
     else{
+        echo "<table class='tableDashboard'>";
+        echo "<tr>";
+        echo "<td>";
+        echo "No. ".$count."<br>";
         echo "Room: ".$item['label']."<br>";
         echo "You need to upload floor map first!<br>";
         echo "Go to <a href='".Yii::$app->homeUrl."floor-map'>Floor map</a>";
         echo "</td>";
         echo "<td>";
         echo "<div align='right'><img src='na.png' height='100' ></div>";
+        echo "</td>";
+        echo "</tr>";
+        echo "</table>";
     }
-    echo "</td>";
-    echo "<td>";
-    echo "</td>";
-    echo "</tr>";
-    echo "</table>";
     echo "<br>";
     if ($count%2 == 0) {
         echo "</div>";
@@ -57,3 +65,9 @@ if ($count%2 == 1){
     echo "</div>";
 }
 ?>
+
+<style>
+    a:link {
+        text-decoration: none;
+    }
+</style>

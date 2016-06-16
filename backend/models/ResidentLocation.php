@@ -3,6 +3,9 @@
 namespace backend\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "resident_location".
@@ -28,6 +31,21 @@ class ResidentLocation extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'resident_location';
+    }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                // Modify only created not updated attribute
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created', 'modified'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['modified'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
+        ];
     }
 
     /**
@@ -62,6 +80,8 @@ class ResidentLocation extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'residentName' => Yii::t('app', 'Resident Name'),
             'floorName' => Yii::t('app', 'Floor Name'),
+            'residentGender' => 'Gender',
+            'residentBirthday' => 'Birthday',
         ];
     }
     
@@ -73,6 +93,16 @@ class ResidentLocation extends \yii\db\ActiveRecord
     public function getFloorName(){
         $query = Floor::find()->where(['id' => $this->floor_id])->one();
         return $query['label'];
+    }
+
+    public function getResidentGender(){
+        $query = Resident::find()->where(['id' => $this->floor_id])->one();
+        return $query['gender'];
+    }
+
+    public function getResidentBirthday(){
+        $query = Resident::find()->where(['id' => $this->floor_id])->one();
+        return $query['birthday'];
     }
 
     /**

@@ -2,9 +2,12 @@
 
 namespace backend\controllers;
 
+use backend\models\AlertArea;
+use backend\models\AlertAreaSearch;
 use backend\models\CommonFunction;
 use backend\models\Floor;
 use backend\models\ResidentSearch;
+use common\widgets\Alert;
 use MongoDB\BSON\MaxKey;
 use Yii;
 use backend\models\Marker;
@@ -59,9 +62,18 @@ class MarkerController extends Controller
         ]);
     }
 
+    public function actionViewAlert($id)
+    {
+        return $this->renderAjax('viewAlert', [
+            'model' => $this->findModelAlert($id),
+        ]);
+    }
+
     public function actionFloordetail($id){
         $searchModel = new MarkerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
+        $searchModelAlert = new AlertAreaSearch();
+        $dataProviderAlert = $searchModelAlert->search(Yii::$app->request->queryParams, $id);
         $floorName = (new CommonFunction())->getFloorName($id);
         $query = Marker::find()->where(['floor_id' => $id])->orderBy('position DESC')->one();
         if ($query == null){
@@ -70,12 +82,21 @@ class MarkerController extends Controller
         else{
             $nextPosition = (int) $query['position'] + 1;
         }
+        if ($query == null){
+            $nextPositionAlert = 1;
+        }
+        else{
+            $nextPositionAlert = (int) $query['position'] + 1;
+        }
         return $this->render('floorDetail', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'searchModelAlert' => $searchModelAlert,
+            'dataProviderAlert' => $dataProviderAlert,
             'floorName' => $floorName,
             'floorId' => $id,
             'nextPosition' => $nextPosition,
+            'nextPositionAlert' => $nextPositionAlert,
         ]);
     }
 
@@ -87,7 +108,6 @@ class MarkerController extends Controller
     public function actionCreate($x = null, $y = null, $p = null, $f = null)
     {
         $model = new Marker();
-        $items1 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
         if($x != null){
             $model->pixelx = $x;
         }
@@ -101,7 +121,6 @@ class MarkerController extends Controller
             $model->floor_id = $f;
         }
         if ($model->load(Yii::$app->request->post())) {
-            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()){
                 echo "Success";
             }else{
@@ -109,6 +128,32 @@ class MarkerController extends Controller
             }
         } else {
             return $this->renderAjax('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionCreateAlert($x = null, $y = null, $p = null, $f = null){
+        $model = new AlertArea();
+        if($x != null){
+            $model->pixelx = $x;
+        }
+        if ($y != null){
+            $model->pixely = $y;
+        }
+        if($p != null){
+            $model->position = $p;
+        }
+        if($f != null){
+            $model->floor_id = $f;
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()){
+                echo "Success";
+            }
+        }
+        else{
+            return $this->renderAjax('createAlert', [
                 'model' => $model,
             ]);
         }
@@ -135,6 +180,20 @@ class MarkerController extends Controller
         }
     }
 
+    public function actionUpdateAlert($id){
+        $model = $this->findModelAlert($id);
+
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->save()){
+                return "Success";
+            }
+        } else {
+            return $this->renderAjax('updateAlert', [
+                'model' => $model,
+            ]);
+        }
+    }
+
     /**
      * Deletes an existing Marker model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -147,7 +206,9 @@ class MarkerController extends Controller
         $this->findModel($id)->delete();
         if (Yii::$app->getRequest()->isPjax) {
             $searchModel = new MarkerSearch();
+            $searchModelAlert = new AlertAreaSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $q['floor_id']);
+            $dataProviderAlert = $searchModelAlert->search(Yii::$app->request->queryParams);
             $query = Marker::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
             if ($query == null){
                 $nextPosition = 1;
@@ -155,10 +216,54 @@ class MarkerController extends Controller
             else{
                 $nextPosition = (int) $query['position'] + 1;
             }
+            if ($query == null){
+                $nextPositionAlert = 1;
+            }
+            else{
+                $nextPositionAlert = (int) $query['position'] + 1;
+            }
             return $this->renderAjax('floorDetail', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'searchModelAlert' => $searchModelAlert,
+                'dataProviderAlert' => $dataProviderAlert,
                 'nextPosition' => $nextPosition,
+                'nextPositionAlert' => $nextPositionAlert,
+                'floorId' => $q['floor_id'],
+            ]);
+        }
+        return $this->redirect(['index']);
+    }
+
+    public function actionDeleteAlert($id){
+        $q = AlertArea::find()->where(['id' => $id])->one();
+        $this->findModelAlert($id)->delete();
+        if (Yii::$app->getRequest()->isPjax) {
+            $searchModel = new MarkerSearch();
+            $searchModelAlert = new AlertAreaSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $q['floor_id']);
+            $dataProviderAlert = $searchModelAlert->search(Yii::$app->request->queryParams);
+            $query = Marker::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
+            if ($query == null){
+                $nextPosition = 1;
+            }
+            else{
+                $nextPosition = (int) $query['position'] + 1;
+            }
+            $query = AlertArea::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
+            if ($query == null){
+                $nextPositionAlert = 1;
+            }
+            else{
+                $nextPositionAlert = (int) $query['position'] + 1;
+            }
+            return $this->renderPartial('floorDetail', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'searchModelAlert' => $searchModelAlert,
+                'dataProviderAlert' => $dataProviderAlert,
+                'nextPosition' => $nextPosition,
+                'nextPositionAlert' => $nextPositionAlert,
                 'floorId' => $q['floor_id'],
             ]);
         }
@@ -175,6 +280,15 @@ class MarkerController extends Controller
     protected function findModel($id)
     {
         if (($model = Marker::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findModelAlert($id)
+    {
+        if (($model = AlertArea::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
