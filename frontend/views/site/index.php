@@ -71,9 +71,7 @@ $this->title = Yii::$app->name;
         <div class="small-box bg-red">
             <div class="inner">
                 <h3>
-                    <?php \yii\widgets\Pjax::begin(); ?>
-                    <?= \yii\helpers\Html::a("Refresh", [''], ['class' => 'btn hidden', 'id' => 'count']) ?>
-                    <?php
+                    <?php \yii\widgets\Pjax::begin(['id' => 'count']);
                         echo (new \backend\models\CommonFunction())->getAlertCount();
                         \yii\widgets\Pjax::end();
                     ?>
@@ -81,8 +79,7 @@ $this->title = Yii::$app->name;
                 <p>Out of range patient</p>
             </div>
             <div class="icon inner">
-                <i class="ion ion-alert-circled
-                            "></i>
+                <i class="ion ion-alert-circled"></i>
             </div>
             <a href="dashboard/alertdetail" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
@@ -92,9 +89,16 @@ $this->title = Yii::$app->name;
 
 <?php
 $script = <<< JS
-$(document).ready(function() {
-    setInterval(function(){ $("#count").click(); }, 1000);
-});
+ $(document).ready(function() {
+    setInterval(function(){
+    $.ajax({
+        success: function(){
+            $.pjax.reload({container:"#count", async:false});
+        }
+    })
+    }, 1000);
+ });
+
 JS;
 $this->registerJs($script);
 ?>

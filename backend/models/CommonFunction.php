@@ -58,14 +58,6 @@ class CommonFunction extends \yii\db\ActiveRecord
 
     //get number of resident in floor $id
     public function getResidentCount($id){
-        //Scenario 1
-//        $query = Yii::$app->db->createCommand('
-//            select count(r1.id) as cnt from resident_location as r1
-//            where floor_id = '.$id.' and outside = 0
-//            and (created_at between DATE_SUB(NOW(), INTERVAL 60 second) and NOW())
-//            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
-//        ')->queryAll();
-        //Scenario 2
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
             from resident_location as r1
