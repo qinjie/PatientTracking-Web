@@ -3,7 +3,7 @@ namespace api\common\models;
 
 use Yii;
 
-class ResidentLocation extends \backend\models\ResidentLocation
+class AlertArea extends \backend\models\AlertArea
 {
     public function extraFields()
     {

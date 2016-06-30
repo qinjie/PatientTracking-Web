@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\QuuppaTagPosition;
-use backend\models\QuuppaTagPositionSearch;
+use backend\models\Button;
+use backend\models\ButtonSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * QuuppaTagPositionController implements the CRUD actions for QuuppaTagPosition model.
+ * ButtonController implements the CRUD actions for Button model.
  */
-class QuuppaTagPositionController extends Controller
+class ButtonController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Lists all QuuppaTagPosition models.
+     * Lists all Button models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new QuuppaTagPositionSearch();
+        $searchModel = new ButtonSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Displays a single QuuppaTagPosition model.
+     * Displays a single Button model.
      * @param integer $id
      * @return mixed
      */
@@ -57,13 +57,13 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Creates a new QuuppaTagPosition model.
+     * Creates a new Button model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new QuuppaTagPosition();
+        $model = new Button();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,7 +75,7 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Updates an existing QuuppaTagPosition model.
+     * Updates an existing Button model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +94,7 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Deletes an existing QuuppaTagPosition model.
+     * Deletes an existing Button model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class QuuppaTagPositionController extends Controller
     }
 
     /**
-     * Finds the QuuppaTagPosition model based on its primary key value.
+     * Finds the Button model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return QuuppaTagPosition the loaded model
+     * @return Button the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = QuuppaTagPosition::findOne($id)) !== null) {
+        if (($model = Button::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

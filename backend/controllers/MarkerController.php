@@ -62,13 +62,6 @@ class MarkerController extends Controller
         ]);
     }
 
-    public function actionViewAlert($id)
-    {
-        return $this->renderAjax('viewAlert', [
-            'model' => $this->findModelAlert($id),
-        ]);
-    }
-
     public function actionFloordetail($id){
         $searchModel = new MarkerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $id);
@@ -133,32 +126,6 @@ class MarkerController extends Controller
         }
     }
 
-    public function actionCreateAlert($x = null, $y = null, $p = null, $f = null){
-        $model = new AlertArea();
-        if($x != null){
-            $model->pixelx = $x;
-        }
-        if ($y != null){
-            $model->pixely = $y;
-        }
-        if($p != null){
-            $model->position = $p;
-        }
-        if($f != null){
-            $model->floor_id = $f;
-        }
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()){
-                echo "Success";
-            }
-        }
-        else{
-            return $this->renderAjax('createAlert', [
-                'model' => $model,
-            ]);
-        }
-    }
-
     /**
      * Updates an existing Marker model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -175,20 +142,6 @@ class MarkerController extends Controller
             }
         } else {
             return $this->renderAjax('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionUpdateAlert($id){
-        $model = $this->findModelAlert($id);
-
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()){
-                return "Success";
-            }
-        } else {
-            return $this->renderAjax('updateAlert', [
                 'model' => $model,
             ]);
         }
@@ -235,41 +188,6 @@ class MarkerController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionDeleteAlert($id){
-        $q = AlertArea::find()->where(['id' => $id])->one();
-        $this->findModelAlert($id)->delete();
-        if (Yii::$app->getRequest()->isPjax) {
-            $searchModel = new MarkerSearch();
-            $searchModelAlert = new AlertAreaSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $q['floor_id']);
-            $dataProviderAlert = $searchModelAlert->search(Yii::$app->request->queryParams);
-            $query = Marker::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
-            if ($query == null){
-                $nextPosition = 1;
-            }
-            else{
-                $nextPosition = (int) $query['position'] + 1;
-            }
-            $query = AlertArea::find()->where(['floor_id' => $q['floor_id']])->orderBy('position DESC')->one();
-            if ($query == null){
-                $nextPositionAlert = 1;
-            }
-            else{
-                $nextPositionAlert = (int) $query['position'] + 1;
-            }
-            return $this->renderPartial('floorDetail', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-                'searchModelAlert' => $searchModelAlert,
-                'dataProviderAlert' => $dataProviderAlert,
-                'nextPosition' => $nextPosition,
-                'nextPositionAlert' => $nextPositionAlert,
-                'floorId' => $q['floor_id'],
-            ]);
-        }
-        return $this->redirect(['index']);
-    }
-
     /**
      * Finds the Marker model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -280,15 +198,6 @@ class MarkerController extends Controller
     protected function findModel($id)
     {
         if (($model = Marker::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-
-    protected function findModelAlert($id)
-    {
-        if (($model = AlertArea::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

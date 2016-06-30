@@ -12,9 +12,9 @@ use yii\db\Expression;
  *
  * @property integer $id
  * @property integer $floor_id
- * @property integer $position
- * @property integer $pixelx
- * @property integer $pixely
+ * @property string $quuppa_area_name
+ * @property string $description
+ * @property integer $status
  * @property string $created_at
  * @property string $updated_at
  *
@@ -25,11 +25,11 @@ class AlertArea extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-
     public static function tableName()
     {
         return 'alert_area';
     }
+
 
     public function behaviors()
     {
@@ -52,8 +52,9 @@ class AlertArea extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['floor_id', 'position', 'pixelx', 'pixely'], 'required'],
-            [['floor_id', 'position', 'pixelx', 'pixely'], 'integer'],
+            [['floor_id', 'status'], 'integer'],
+            [['quuppa_area_name', 'description'], 'required'],
+            [['quuppa_area_name', 'description'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
@@ -67,11 +68,12 @@ class AlertArea extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'floor_id' => 'Floor ID',
-            'position' => 'Position',
-            'pixelx' => 'Pixelx',
-            'pixely' => 'Pixely',
+            'quuppa_area_name' => 'Quuppa Area Name',
+            'description' => 'Description',
+            'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'floorName' => 'Floor',
         ];
     }
 
@@ -81,5 +83,11 @@ class AlertArea extends \yii\db\ActiveRecord
     public function getFloor()
     {
         return $this->hasOne(Floor::className(), ['id' => 'floor_id']);
+    }
+
+
+    public function getFloorName(){
+        $query = Floor::find()->where(['id' => $this->floor_id])->one();
+        return $query['label'];
     }
 }

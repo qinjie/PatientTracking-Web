@@ -12,14 +12,15 @@ use backend\models\AlertArea;
  */
 class AlertAreaSearch extends AlertArea
 {
+    public $floorName;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'floor_id', 'position', 'pixelx', 'pixely'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['id', 'floor_id', 'status'], 'integer'],
+            [['quuppa_area_name', 'description', 'created_at', 'updated_at', 'floorName'], 'safe'],
         ];
     }
 
@@ -43,10 +44,27 @@ class AlertAreaSearch extends AlertArea
     {
         $query = AlertArea::find();
 
+        $query->joinWith('floor');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+
+        $dataProvider->setSort([
+            'attributes' =>[
+                'id',
+                'floorName' => [
+                    'asc' => ['Floor.label' => SORT_ASC],
+                    'desc' => ['Floor.label' => SORT_DESC],
+                    'default' => SORT_ASC
+                ],
+                'status',
+                'created_at',
+                'updated_at',
+                'quuppa_area_name',
+                'description',
+            ]
         ]);
 
         $this->load($params);
@@ -61,12 +79,14 @@ class AlertAreaSearch extends AlertArea
         $query->andFilterWhere([
             'id' => $this->id,
             'floor_id' => $this->floor_id,
-            'position' => $this->position,
-            'pixelx' => $this->pixelx,
-            'pixely' => $this->pixely,
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
+
+        $query->andFilterWhere(['like', 'quuppa_area_name', $this->quuppa_area_name])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'floor.label', $this->floorName]);
 
         return $dataProvider;
     }

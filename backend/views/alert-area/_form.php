@@ -12,13 +12,19 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'floor_id')->textInput() ?>
+    <?= $form->field($model, 'floor_id')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $items1,
+        'options' => ['placeholder' => 'Select a floor ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
-    <?= $form->field($model, 'position')->textInput() ?>
+    <?= $form->field($model, 'quuppa_area_name')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'pixelx')->textInput() ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'pixely')->textInput() ?>
+    <?= $form->field($model, 'status')->textInput() ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 

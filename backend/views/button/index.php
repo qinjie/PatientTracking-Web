@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\AlertAreaSearch */
+/* @var $searchModel backend\models\ButtonSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Alert Areas';
+$this->title = 'Buttons';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alert-area-index">
+<div class="button-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Alert Area', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Button', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,12 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'floorName',
-            'quuppa_area_name:ntext',
-            'description:ntext',
-            'status',
-            // 'created_at',
-            // 'updated_at',
+            'tagid:ntext',
+            'created_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -18,18 +18,9 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
 
     <h1 align="center"><p id="Title">Marker</p></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <table width="100%">
-        <tr>
-            <td align="left">
-                <input onclick="reloadAlert()" value="Alert" type="button" id="changeTypeButton" class="btn btn-success">
-            </td>
-            <td align="right">
-                <input onclick="reload()" value="Show edges" type="button" id="reloadButton" class="btn btn-success">
-
-            </td>
-        </tr>
-    </table>
+    <div align="left">
+        <input onclick="reload()" value="Show edges" type="button" id="reloadButton" class="btn btn-success">
+    </div>
 
 <!--    Modal-->
     <?php
@@ -59,39 +50,9 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
     <h2>Marker list</h2>
     <?php Pjax::begin(['id' => 'PjaxGrid']);
     echo "<input id='nextPos' type=number value=".$nextPosition." hidden>";
-    echo "<input id='nextPosAlert' type=number value=".$nextPositionAlert." hidden>";
     echo "<input id='markerList' type=text value='".json_encode((new CommonFunction())->getCoordinate($floorId))."' hidden>";
-    echo "<input id='alertList' type=text value='".json_encode((new CommonFunction())->getCoordinateAlert($floorId))."' hidden>";
     echo "<script>refresh()</script>";
     echo "<script>
-
-    $(\".activity-update-alert\").click(function() {
-        $.get(
-            'update-alert',
-            {
-                id: $(this).closest('tr').data('key')
-            },
-            function (data) {
-                $('#modal').modal('show')
-                    .find('#modalContent')
-                    .html(data);
-            }
-        );
-    });
-
-    $(\".activity-view-alert\").click(function() {
-        $.get(
-            'view-alert',
-            {
-                id: $(this).closest('tr').data('key')
-            },
-            function (data) {
-                $('#modal').modal('show')
-                    .find('#modalContent')
-                    .html(data);
-            }
-        );
-    });
     
     $(\".activity-update-link\").click(function() {
         $.get(
@@ -167,55 +128,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
             ],
         ],
     ]); ?>
-    <h2>Alert area list</h2>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProviderAlert,
-        'filterModel' => $searchModelAlert,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'position',
-            'pixelx',
-            'pixely',
-
-            ['class' => 'yii\grid\ActionColumn',
-                'buttons' => [
-                    'update' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', 'update', [
-                            'class' => 'activity-update-alert',
-                            'title' => Yii::t('yii', 'Update'),
-                            'data-toggle' => 'modal',
-                            'data-target' => '#modal',
-                            'data-id' => $key,
-                            'data-pjax' => '0',
-
-                        ]);
-                    },
-                    'view' => function ($url, $model, $key) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>','view', [
-                            'class' => 'activity-view-alert',
-                            'title' => Yii::t('yii', 'View'),
-                            'data-toggle' => 'modal',
-                            'data-target' => '#modal',
-                            'data-id' => $key,
-                            'data-pjax' => '0',
-
-                        ]);
-                    },
-                ],
-                'urlCreator' => function ($action, $model, $key) {
-                    if ($action === 'delete'){
-                        $url = Url::to(['/marker/delete-alert', 'id' => $model->id]);
-                        return $url;
-
-                    }
-                }
-            ],
-        ],
-    ]); ?>
-
     <?php Pjax::end() ?>
 </div>
 
@@ -252,71 +164,23 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
         );
     });
 
-    $(".activity-update-alert").click(function() {
-        $.get(
-            'update-alert',
-            {
-                id: $(this).closest('tr').data('key')
-            },
-            function (data) {
-                $('#modal').modal('show')
-                    .find('#modalContent')
-                    .html(data);
-            }
-        );
-    });
-
-    $(".activity-view-alert").click(function() {
-        $.get(
-            'view-alert',
-            {
-                id: $(this).closest('tr').data('key')
-            },
-            function (data) {
-                $('#modal').modal('show')
-                    .find('#modalContent')
-                    .html(data);
-            }
-        );
-    });
-
     $(function() {
         $("#image").click(function(e) {
-            var changeType = document.getElementById('changeTypeButton');
-            if (changeType.value == 'Alert'){
-                var offset = $(this).offset();
-                var pos_x = (event.offsetX);
-                var pos_y = (event.offsetY);
-                var f = <?php echo json_encode($floorId); ?>;
-                var p = document.getElementById("nextPos").value;
-                $.ajax({
-                    type: "GET",
-                    url: "create",
-                    data: "x="+pos_x+"&y="+pos_y+"&p="+p+"&f="+f,
-                    success:function(data) {
-                        $('#modal').modal('show')
-                            .find('#modalContent')
-                            .html(data);
-                    }
-                });
-            }
-            else{
-                var offset = $(this).offset();
-                var pos_x = (event.offsetX);
-                var pos_y = (event.offsetY);
-                var f = <?php echo json_encode($floorId); ?>;
-                var p = document.getElementById("nextPosAlert").value;
-                $.ajax({
-                    type: "GET",
-                    url: "create-alert",
-                    data: "x="+pos_x+"&y="+pos_y+"&p="+p+"&f="+f,
-                    success:function(data) {
-                        $('#modal').modal('show')
-                            .find('#modalContent')
-                            .html(data);
-                    }
-                });
-            }
+            var offset = $(this).offset();
+            var pos_x = (event.offsetX);
+            var pos_y = (event.offsetY);
+            var f = <?php echo json_encode($floorId); ?>;
+            var p = document.getElementById("nextPos").value;
+            $.ajax({
+                type: "GET",
+                url: "create",
+                data: "x="+pos_x+"&y="+pos_y+"&p="+p+"&f="+f,
+                success:function(data) {
+                    $('#modal').modal('show')
+                        .find('#modalContent')
+                        .html(data);
+                }
+            });
         });
     });
 
@@ -347,7 +211,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
 
     function reload() {
         var btn = document.getElementById('reloadButton');
-        var changeType = document.getElementById('changeTypeButton');
         if (btn.value == "Show edges") {
             btn.value = "Show original";
         }
@@ -357,26 +220,10 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
         refresh();
     }
 
-    function reloadAlert() {
-        var changeType = document.getElementById('changeTypeButton');
-        var btn = document.getElementById('reloadButton');
-        if (changeType.value == "Alert") {
-            changeType.value = "Marker";
-            document.getElementById('Title').innerHTML = "Alert Area";
-        }
-        else {
-            changeType.value = "Alert";
-            document.getElementById('Title').innerHTML = "Marker";
-        }
-        refresh();
-    }
-
     function refresh() {
         var btn = document.getElementById('reloadButton');
-        var changeType = document.getElementById('changeTypeButton');
         if (btn.value != "Show edges") {
-            if (changeType.value != "Marker") var arr = JSON.parse(document.getElementById("markerList").value);
-            else var arr = JSON.parse(document.getElementById("alertList").value);
+            var arr = JSON.parse(document.getElementById("markerList").value);
             var x = [];
             var y = [];
             var count = 0;
@@ -432,6 +279,9 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
         }
     }
 
+    // Cursor position
+
+
     function showCoords(event) {
         var x = event.offsetX;
         var y = event.offsetY;
@@ -443,7 +293,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
         document.getElementById("coorxy").innerHTML = "";
     }
 
-    //
     var tooltips = document.querySelectorAll('.tooltipCustom span');
 
     window.onmousemove = function (e) {

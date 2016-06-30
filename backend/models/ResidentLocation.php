@@ -40,8 +40,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
                 'class' => TimestampBehavior::className(),
                 // Modify only created not updated attribute
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
                 ],
                 'value' => new Expression('NOW()'),
             ],
@@ -84,7 +83,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
             'residentBirthday' => 'Birthday',
         ];
     }
-    
+
     public function getResidentName(){
         $query = Resident::find()->where(['id' => $this->resident_id])->one();
         return $query['firstname']." ".$query['lastname'];

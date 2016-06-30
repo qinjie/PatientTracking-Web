@@ -19,11 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'floor_id') ?>
 
-    <?= $form->field($model, 'position') ?>
+    <?= $form->field($model, 'quuppa_area_name') ?>
 
-    <?= $form->field($model, 'pixelx') ?>
+    <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'pixely') ?>
+    <?= $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

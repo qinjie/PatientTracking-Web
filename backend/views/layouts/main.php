@@ -63,6 +63,7 @@ AppAsset::register($this);
                 ['label' => 'Marker', 'url' => ['marker/index']],
                 ['label' => 'Floor map', 'url' => ['floor-map/index']],
                 ['label' => 'Floor manager', 'url' => ['floor-manager/index']],
+                ['label' => 'Alert area', 'url' => ['alert-area/index']],
             ]
         ];
 //        $menuItems[] = ['label' => 'User',
