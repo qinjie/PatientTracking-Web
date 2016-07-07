@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentLocation */
+/* @var $model common\models\ResidentLocation */
 
 $this->title = 'Update Resident Location: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];

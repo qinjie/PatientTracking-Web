@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentLocation */
+/* @var $model common\models\ResidentLocation */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -32,6 +32,8 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'coorx')->textInput(['readonly' => !$model->isNewRecord]) ?>
 
     <?= $form->field($model, 'coory')->textInput(['readonly' => !$model->isNewRecord]) ?>
+
+    <?= $form->field($model, 'zone')->textInput() ?>
 
     <?= $form->field($model, 'outside')->textInput() ?>
 

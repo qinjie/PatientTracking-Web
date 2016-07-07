@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'floorName',
-            'quuppa_area_name:ntext',
+            'quuppa_area:ntext',
             'description:ntext',
             'status',
             'created_at',

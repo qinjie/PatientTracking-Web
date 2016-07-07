@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
 use yii\widgets\DetailView;
 
 $this->title = 'Resident Details';

@@ -17,7 +17,14 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'mac')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+
+    <?= $form->field($model, 'status')->widget(Select2::classname(), [
+        'data' => ['1' => 'Active', '0' => 'Inactive'],
+        'options' => ['placeholder' => 'Select status ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <?= $form->field($model, 'resident_id')->widget(Select2::classname(), [
         'data' => $items1,

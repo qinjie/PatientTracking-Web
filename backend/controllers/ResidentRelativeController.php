@@ -3,14 +3,15 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\ResidentRelative;
-use backend\models\ResidentRelativeSearch;
+use common\models\ResidentRelative;
+use common\models\ResidentRelativeSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-use backend\models\Resident;
-use backend\models\Nextofkin;
+use common\models\Resident;
+use common\models\Nextofkin;
 
 /**
  * ResidentRelativeController implements the CRUD actions for ResidentRelative model.
@@ -23,6 +24,15 @@ class ResidentRelativeController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

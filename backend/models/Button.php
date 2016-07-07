@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Resident;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -46,8 +47,8 @@ class Button extends \yii\db\ActiveRecord
     {
         return [
             [['tagid'], 'required'],
-            [['tagid'], 'string'],
-            [['created_at'], 'safe'],
+            [['tagid'], 'string', 'max' => 500],
+            [['created_at', 'residentName'], 'safe'],
         ];
     }
 
@@ -62,4 +63,11 @@ class Button extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
         ];
     }
+
+    public function getResidentName(){
+        $tag = Tag::find()->where(['mac' => $this->tagid])->one();
+        $query = Resident::find()->where(['id' => $tag['resident_id']])->one();
+        return $query['firstname']." ".$query['lastname'];
+    }
+
 }

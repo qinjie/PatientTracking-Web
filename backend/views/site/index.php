@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this yii\web\View */
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
 
 $this->title = 'Patient tracking system';
 
@@ -86,16 +86,30 @@ $this->title = 'Patient tracking system';
                 </div>
                 <div>
                     <div class="info-box">
-                            <a href="resident-location">
-                                <span class="info-box-icon bg-teal-active"><i class="ion ion-location"></i></span>
-                                <div class="info-box-content">
-                                    <font color="black">
-                                        <span class="info-box-number">Resident location</span>
-                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationNumber(); ?></span>
-                                    </font>
+                        <a href="resident-location">
+                            <span class="info-box-icon bg-teal-active"><i class="ion ion-location"></i></span>
+                            <div class="info-box-content">
+                                <font color="black">
+                                    <span class="info-box-number">Current location</span>
+                                    <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationNumber(); ?></span>
+                                </font>
 
-                                </div>
-                            </a>
+                            </div>
+                        </a>
+                    </div><!-- /.info-box -->
+                </div>
+                <div>
+                    <div class="info-box">
+                        <a href="resident-location-history">
+                            <span class="info-box-icon bg-teal-active"><i class="ion ion-ios-book"></i></span>
+                            <div class="info-box-content">
+                                <font color="black">
+                                    <span class="info-box-number">Location history</span>
+                                    <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationHistoryNumber(); ?></span>
+                                </font>
+
+                            </div>
+                        </a>
                     </div><!-- /.info-box -->
                 </div>
                 <div>
@@ -193,14 +207,33 @@ $this->title = 'Patient tracking system';
                         </a>
                     </div><!-- /.info-box -->
                 </div>
+                <div>
+                    <div class="info-box">
+                        <a href="button">
+                            <span class="info-box-icon bg-aqua-active"><i class="ion ion-power"></i></span>
+                            <div class="info-box-content">
+                                <font color="black">
+                                    <span class="info-box-number">Button</span>
+                                    <span class="info-box-text"><?= (new CommonFunction())->getButtonNumber(); ?></span>
+                                </font>
+                            </div>
+                        </a>
+                    </div><!-- /.info-box -->
+                </div>
             </div><!-- ./col -->
         </div><!-- /.row -->
         <!-- Main row -->
     </div>
 </div>
 
+
 <style>
     a:link {
         text-decoration: none;
+    }
+
+    .jumbotron{
+        padding-bottom: 20px;
+        padding-top: 20px;
     }
 </style>

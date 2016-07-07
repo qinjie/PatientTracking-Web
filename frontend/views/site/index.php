@@ -72,7 +72,7 @@ $this->title = Yii::$app->name;
             <div class="inner">
                 <h3>
                     <?php \yii\widgets\Pjax::begin(['id' => 'count']);
-                        echo (new \backend\models\CommonFunction())->getAlertCount();
+                        echo (new \common\models\CommonFunction())->getAlertCount();
                         \yii\widgets\Pjax::end();
                     ?>
                 </h3>

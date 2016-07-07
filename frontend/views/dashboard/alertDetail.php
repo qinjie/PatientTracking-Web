@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use backend\models\CommonFunction;
 use yii\grid\GridView;
 /* @var $searchModel backend\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -35,5 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'coorx',
         'coory',
         'speed',
+        [
+            'label' => 'Type',
+            'attribute' => 'outside',
+            'value' => 'type',
+            'filter' => false,
+        ],
     ],
 ]); ?>

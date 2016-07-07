@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Resident;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;

@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'tagid:ntext',
             'created_at',
+            'residentName',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

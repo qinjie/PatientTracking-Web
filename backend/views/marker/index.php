@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
 
 $this->title = 'Markers';
 $this->params['breadcrumbs'][] = $this->title;
@@ -29,7 +29,7 @@ foreach ($floorList as $item){
         echo "<tr>";
         echo "<td>";
         echo "No. ".$count."<br>";
-        echo "Room: ".$item['label']."<br>";
+        echo "Room: <font color='#3b9bfc'>".$item['label']."</font><br>";
         echo "</td>";
         echo "<td>";
         echo "<div align='right'><img src='".$filePath."' ></div>";

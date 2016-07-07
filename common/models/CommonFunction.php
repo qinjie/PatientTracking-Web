@@ -6,10 +6,17 @@
  * Time: 10:50 AM
  */
 
-namespace backend\models;
+namespace common\models;
 
+use api\common\models\AlertArea;
+use api\common\models\Button;
+use backend\models\Floor;
+use backend\models\FloorManager;
+use backend\models\FloorMap;
+use backend\models\Marker;
+use backend\models\ResidentLocationHistory;
+use backend\models\Tag;
 use Yii;
-use yii\db\Query;
 
 
 class CommonFunction extends \yii\db\ActiveRecord
@@ -27,8 +34,12 @@ class CommonFunction extends \yii\db\ActiveRecord
         Yii::$app->db->createCommand('DELETE FROM marker WHERE floor_id = (SELECT floor_id FROM floor_map WHERE id = '.$id.')')->execute();
         Yii::$app->db->createCommand('DELETE FROM alert_area WHERE floor_id = (SELECT floor_id FROM floor_map WHERE id = '.$id.')')->execute();
         $query = FloorMap::find()->where(['id' => $id])->one();
-        unlink($query['file_path']);
-        unlink($query['thumbnail_path']);
+        if (file_exists($filePath = $query['file_path'])){
+            unlink($query['file_path']);
+        }
+        if (file_exists($filePath = $query['thumbnail_path'])){
+            unlink($query['thumbnail_path']);
+        }
         return true;
     }
 
@@ -60,10 +71,9 @@ class CommonFunction extends \yii\db\ActiveRecord
     public function getResidentCount($id){
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
-            from resident_location as r1
+            from resident_location
             where floor_id = '.$id.' and outside = 0
             and created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()
-            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
         ')->queryAll();
         return $query[0]["cnt"];
     }
@@ -72,21 +82,11 @@ class CommonFunction extends \yii\db\ActiveRecord
     public function getAlertCount(){
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
-            from resident_location as r1
-            where outside = 1
-            and created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()
-            and created_at = (select max(created_at) from resident_location as r2 where r1.resident_id = r2.resident_id)
+            from resident_location
+            where (outside != 0 or 
+            created_at not between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())
         ')->queryAll();
-        $tmp1 = Yii::$app->db->createCommand('
-            select count(distinct r1.resident_id) as cnt
-            from resident_location as r1;
-        ')->queryAll();
-        $tmp2 = Yii::$app->db->createCommand('
-            select count(distinct r1.resident_id) as cnt
-            from resident_location as r1
-            where r1.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW();
-        ')->queryAll();
-        return $query[0]["cnt"]+($tmp1[0]["cnt"] - $tmp2[0]["cnt"]);
+        return $query[0]["cnt"];
     }
 
     //get floor name by $id
@@ -212,6 +212,12 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
+    //get count resident location history
+    public function getResidentLocationHistoryNumber(){
+        $query = ResidentLocationHistory::find()->count();
+        return $query;
+    }
+
     //get count floor
     public function getFloorNumber(){
         $query = Floor::find()->count();
@@ -239,6 +245,12 @@ class CommonFunction extends \yii\db\ActiveRecord
     //get count alert area
     public function getAlertAreaNumber(){
         $query = AlertArea::find()->count();
+        return $query;
+    }
+
+    //get count button
+    public function getButtonNumber(){
+        $query = Button::find()->count();
         return $query;
     }
 

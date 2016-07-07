@@ -7,16 +7,28 @@
  */
 
 namespace frontend\controllers;
-use backend\models\ResidentLocation;
-use backend\models\ResidentLocationSearch;
-use backend\models\ResidentSearch;
+use common\models\ResidentLocationSearch;
 use Yii;
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 
 class DashboardController extends Controller
 {
-
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     public function actionIndex()
     {
         $floorList = (new CommonFunction())->getAllFloor();

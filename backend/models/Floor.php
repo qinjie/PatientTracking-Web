@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\ResidentLocation;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -17,6 +18,7 @@ use yii\db\Expression;
  * @property double $height
  * @property string $created_at
  * @property string $updated_at
+ * @property string quuppa_id
  *
  * @property FloorManager[] $floorManagers
  * @property FloorMap[] $floorMaps
@@ -60,6 +62,8 @@ class Floor extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['label'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 500],
+            [['quuppa_id'], 'string', 'max' => 20],
+            [['quuppa_id'], 'unique'],
         ];
     }
 

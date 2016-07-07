@@ -1,11 +1,10 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\ResidentLocation;
 
 /**
  * ResidentLocationSearch represents the model behind the search form about `backend\models\ResidentLocation`.
@@ -16,6 +15,7 @@ class ResidentLocationSearch extends ResidentLocation
     public $floorName;
     public $residentGender;
     public $residentBirthday;
+    public $type;
     private $timeout = 6;
     /**
      * @inheritdoc
@@ -25,7 +25,7 @@ class ResidentLocationSearch extends ResidentLocation
         return [
             [['id', 'outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
-            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday'], 'safe'],
+            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday', 'zone', 'type'], 'safe'],
         ];
     }
 
@@ -73,6 +73,7 @@ class ResidentLocationSearch extends ResidentLocation
                 ],
                 'coorx',
                 'coory',
+                'zone',
                 'outside',
                 'azimuth',
                 'speed',
@@ -98,13 +99,15 @@ class ResidentLocationSearch extends ResidentLocation
             'created_at' => $this->created_at,
         ]);
         $query->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%"')
+            ->andFilterWhere(['like', 'zone', $this->zone])
             ->andFilterWhere(['like', 'Floor.label', $this->floor_id]);
         return $dataProvider;
     }
 
     public function searchFloor($params, $fid){
         $query = ResidentLocation::find();
-        $query->andWhere('floor_id = '.$fid.' and resident_location.created_at = (select max(created_at) from resident_location as r1 where resident_id = r1.resident_id) and (outside = 0) and (resident_location.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())');
+        $query->andWhere('floor_id = '.$fid.'
+        and (outside = 0) and (resident_location.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([
@@ -159,14 +162,17 @@ class ResidentLocationSearch extends ResidentLocation
             ->andFilterWhere(['like', 'coory', $this->coory])
             ->andFilterWhere(['like', 'speed', $this->speed])
             ->andFilterWhere(['like', 'azimuth', $this->azimuth])
+            ->andFilterWhere(['like', 'zone', $this->zone])
             ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->residentName.'%"');
 
         return $dataProvider;
     }
 
+    //outside = 0: inside a ward; outside = 1: outside a ward, inside lobby; outside = 2: no signal
+
     public function searchAlert($params){
         $query = ResidentLocation::find();
-        $query->andWhere('resident_location.created_at = (select max(created_at) from resident_location as r1 where resident_id = r1.resident_id) and ( (outside = 1) or (resident_location.created_at not between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()) )');
+        $query->andWhere('(outside != 0) or (resident_location.created_at not between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([
@@ -195,6 +201,8 @@ class ResidentLocationSearch extends ResidentLocation
                     'desc' => ['Floor.label' => SORT_DESC],
                     'default' => SORT_ASC
                 ],
+                'type',
+                'outside',
                 'coorx',
                 'coory',
                 'speed',
@@ -220,6 +228,7 @@ class ResidentLocationSearch extends ResidentLocation
             ->andFilterWhere(['like', 'coorx', $this->coorx])
             ->andFilterWhere(['like', 'coory', $this->coory])
             ->andFilterWhere(['like', 'speed', $this->speed])
+            ->andFilterWhere(['like', 'zone', $this->zone])
             ->andFilterWhere(['like', 'azimuth', $this->azimuth])
             ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->residentName.'%"');
 

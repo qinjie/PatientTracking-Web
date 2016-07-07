@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\ResidentLocationSearch */
+/* @var $searchModel common\models\ResidentLocationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Resident Locations';
@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'coorx',
             'coory',
+            // 'zone',
             // 'outside',
             // 'azimuth',
             'speed',

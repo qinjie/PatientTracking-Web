@@ -5,7 +5,7 @@ use yii\widgets\DetailView;
 use backend\models\Floor;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentLocation */
+/* @var $model common\models\ResidentLocation */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'coorx',
             'coory',
+            'zone',
             'outside',
             'azimuth',
             'speed',

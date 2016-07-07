@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentRelative */
+/* @var $model common\models\ResidentRelative */
 
 $this->title = 'Create Resident Relative';
 $this->params['breadcrumbs'][] = ['label' => 'Resident Relatives', 'url' => ['index']];

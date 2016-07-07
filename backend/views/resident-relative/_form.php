@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentRelative */
+/* @var $model common\models\ResidentRelative */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

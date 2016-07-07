@@ -1,7 +1,7 @@
 <?php
 namespace frontend\controllers;
 
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
 use common\models\form\ChangePasswordForm;
 use common\models\form\LoginForm;
 use common\models\form\ResetPasswordRequestForm;
@@ -33,15 +33,13 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'change-email', 'change-password', 'signup', 'request-password-reset'],
                 'rules' => [
                     [
-                        'actions' => ['signup', 'request-password-reset'],
+                        'actions' => ['signup', 'login', 'request-password-reset', 'reset-password', 'error'],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'change-password', 'change-email'],
+                        'actions' => ['index', 'logout', 'change-password', 'account'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -64,10 +62,6 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
     }

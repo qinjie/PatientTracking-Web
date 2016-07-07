@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'label') ?>
 
+    <?= $form->field($model, 'quuppa_id') ?>
+
     <?= $form->field($model, 'description') ?>
 
     <?= $form->field($model, 'width') ?>

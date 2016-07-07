@@ -12,7 +12,7 @@ use yii\db\Expression;
  *
  * @property integer $id
  * @property integer $floor_id
- * @property string $quuppa_area_name
+ * @property string $quuppa_area
  * @property string $description
  * @property integer $status
  * @property string $created_at
@@ -53,8 +53,8 @@ class AlertArea extends \yii\db\ActiveRecord
     {
         return [
             [['floor_id', 'status'], 'integer'],
-            [['quuppa_area_name', 'description'], 'required'],
-            [['quuppa_area_name', 'description'], 'string'],
+            [['quuppa_area'], 'required'],
+            [['quuppa_area', 'description'], 'string', 'max' => 500],
             [['created_at', 'updated_at'], 'safe'],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
@@ -68,7 +68,7 @@ class AlertArea extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'floor_id' => 'Floor ID',
-            'quuppa_area_name' => 'Quuppa Area Name',
+            'quuppa_area' => 'Quuppa Area Name',
             'description' => 'Description',
             'status' => 'Status',
             'created_at' => 'Created At',

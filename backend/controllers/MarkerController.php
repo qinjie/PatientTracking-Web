@@ -2,18 +2,12 @@
 
 namespace backend\controllers;
 
-use backend\models\AlertArea;
 use backend\models\AlertAreaSearch;
-use backend\models\CommonFunction;
-use backend\models\Floor;
-use backend\models\ResidentSearch;
-use common\widgets\Alert;
-use MongoDB\BSON\MaxKey;
+use common\models\CommonFunction;
 use Yii;
 use backend\models\Marker;
 use backend\models\MarkerSearch;
-use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,6 +23,15 @@ class MarkerController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use backend\models\CommonFunction;
 use yii\grid\GridView;
 /* @var $searchModel backend\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */

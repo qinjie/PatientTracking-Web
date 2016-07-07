@@ -3,14 +3,15 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\ResidentLocation;
-use backend\models\ResidentLocationSearch;
+use common\models\ResidentLocation;
+use common\models\ResidentLocationSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use backend\models\Floor;
-use backend\models\Resident;
+use common\models\Resident;
 
 /**
  * ResidentLocationController implements the CRUD actions for ResidentLocation model.
@@ -23,6 +24,15 @@ class ResidentLocationController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

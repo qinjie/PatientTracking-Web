@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use backend\models\CommonFunction;
+use common\models\CommonFunction;
 
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,15 +22,17 @@ foreach ($floorList as $item){
         echo "<div class=\"border col-sm-6\">";
     }
     $count++;
+    echo "<a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>";
     echo "<table class='tableDashboard'>";
     echo "<tr>";
     echo "<td>";
     echo "No. ".$count."<br>";
-    echo "Room: <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>".$item['label']."</a><br>";
-    echo "Number of patient: ".((new CommonFunction())->getResidentCount($item['id']))."<br>";
+    echo "Room: <font color='#3b9bfc'>".$item['label']."</font><br>";
+    echo "Number of patient: <font color='#3b9bfc'>".((new CommonFunction())->getResidentCount($item['id']))."</font><br>";
     echo "</td>";
     echo "</tr>";
     echo "</table>";
+    echo "</a>";
     echo "<br>";
     if ($count%2 == 0) {
         echo "</div>";
@@ -43,3 +45,9 @@ foreach ($floorList as $item){
         echo "</div>";
     }
 ?>
+
+<style>
+    a:link {
+        text-decoration: none;
+    }
+</style>

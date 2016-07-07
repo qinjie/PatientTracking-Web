@@ -1,18 +1,22 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Nextofkin;
 
 /**
- * NextofkinSearch represents the model behind the search form about `backend\models\Nextofkin`.
+ * ResidentSearch represents the model behind the search form about `backend\models\Resident`.
  */
-class NextofkinSearch extends Nextofkin
+class ResidentSearch extends Resident
 {
-    public $full_Name;
+    public $fullName;
+    public $coorx;
+    public $coory;
+    public $speed;
+    public $lastfloor;
+    private $timeout = 6;
     /**
      * @inheritdoc
      */
@@ -20,7 +24,7 @@ class NextofkinSearch extends Nextofkin
     {
         return [
             [['id'], 'integer'],
-            [['nric', 'first_name', 'last_name', 'contact', 'email', 'remark', 'created_at', 'updated_at', 'full_Name'], 'safe'],
+            [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'lastmodified', 'fullName'], 'safe'],
         ];
     }
 
@@ -40,12 +44,12 @@ class NextofkinSearch extends Nextofkin
      *
      * @return ActiveDataProvider
      */
+
     public function search($params)
     {
-        $query = Nextofkin::find();
-
+        $query = Resident::find();
         // add conditions that should always apply here
-
+        //filter by floor
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -53,17 +57,17 @@ class NextofkinSearch extends Nextofkin
         $dataProvider->setSort([
             'attributes' => [
                 'id',
+                'firstname',
+                'lastname',
                 'nric',
-                'first_name',
-                'last_name',
+                'gender',
+                'birthday',
                 'contact',
-                'email',
                 'remark',
-                'created_at',
-                'updated_at',
-                'full_Name' => [
-                    'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
-                    'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
+                'lastmodified',
+                'fullName' => [
+                    'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
+                    'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
                     'label' => 'Full Name',
                     'default' => SORT_ASC
                 ],
@@ -80,18 +84,18 @@ class NextofkinSearch extends Nextofkin
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'resident.id' => $this->id,
+            'birthday' => $this->birthday,
+            'lastmodified' => $this->lastmodified,
         ]);
-
-        $query->andFilterWhere(['like', 'nric', $this->nric])
-            ->andFilterWhere(['like', 'first_name', $this->first_name])
-            ->andFilterWhere(['like', 'last_name', $this->last_name])
+        $query
+            ->andFilterWhere(['like', 'firstname', $this->firstname])
+            ->andFilterWhere(['like', 'lastname', $this->lastname])
+            ->andFilterWhere(['like', 'nric', $this->nric])
+            ->andFilterWhere(['like', 'gender', $this->gender])
             ->andFilterWhere(['like', 'contact', $this->contact])
-            ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'remark', $this->remark])
-            ->andWhere('concat(first_name, \' \', last_name) LIKE "%'.$this->full_Name.'%"');
+            ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->fullName.'%"');
         return $dataProvider;
     }
 }

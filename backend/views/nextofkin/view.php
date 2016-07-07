@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Nextofkin */
+/* @var $model common\models\Nextofkin */
 
 $this->title = $model->full_Name;
 $this->params['breadcrumbs'][] = ['label' => 'Nextofkins', 'url' => ['index']];

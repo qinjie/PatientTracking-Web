@@ -1,7 +1,8 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
+use backend\models\Floor;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -19,6 +20,7 @@ use yii\db\Expression;
  * @property double $azimuth
  * @property double $speed
  * @property string $created_at
+ * @property string $zone
  *
  * @property Resident $resident
  * @property Floor $floor
@@ -56,7 +58,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
             [['resident_id', 'floor_id', 'coorx', 'coory'], 'required'],
             [['resident_id', 'floor_id', 'outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
-            [['created_at'], 'safe'],
+            [['created_at', 'zone'], 'safe'],
             [['resident_id'], 'exist', 'skipOnError' => true, 'targetClass' => Resident::className(), 'targetAttribute' => ['resident_id' => 'id']],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
@@ -73,6 +75,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
             'floor_id' => 'Floor',
             'coorx' => 'Coorx',
             'coory' => 'Coory',
+            'zone' => 'Zone',
             'outside' => 'Outside',
             'azimuth' => 'Azimuth',
             'speed' => 'Speed',
@@ -102,6 +105,12 @@ class ResidentLocation extends \yii\db\ActiveRecord
     public function getResidentBirthday(){
         $query = Resident::find()->where(['id' => $this->floor_id])->one();
         return $query['birthday'];
+    }
+
+    public function getType(){
+        if ($this->outside == 0) return 'Time out';
+        if ($this->outside == 1) return 'Out of ward';
+        return 'Out of tracking zone';
     }
 
     /**

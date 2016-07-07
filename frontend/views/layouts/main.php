@@ -58,9 +58,6 @@ AppAsset::register($this);
                     ['label' => 'Account',
                         'url' => ['site/account'],
                     ],
-//                ['label' => 'Tokens',
-//                    'url' => ['user-token/index'],
-//                ],
                     ['label' => 'Logout',
                         'url' => ['/site/logout'],
                         'linkOptions' => ['data-method' => 'post']

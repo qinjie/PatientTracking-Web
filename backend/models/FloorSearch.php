@@ -19,7 +19,7 @@ class FloorSearch extends Floor
     {
         return [
             [['id'], 'integer'],
-            [['label', 'description', 'created_at', 'updated_at'], 'safe'],
+            [['label', 'description', 'created_at', 'updated_at', 'quuppa_id'], 'safe'],
             [['width', 'height'], 'number'],
         ];
     }
@@ -68,7 +68,9 @@ class FloorSearch extends Floor
         ]);
 
         $query->andFilterWhere(['like', 'label', $this->label])
+            ->andFilterWhere(['like', 'quuppa_id', $this->quuppa_id])
             ->andFilterWhere(['like', 'description', $this->description]);
+
 
         return $dataProvider;
     }

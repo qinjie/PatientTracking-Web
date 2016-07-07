@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -46,21 +46,6 @@ class Resident extends \yii\db\ActiveRecord
             [['nric', 'contact'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 10],
             [['remark'], 'string', 'max' => 500],
-        ];
-    }
-
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                // Modify only created not updated attribute
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-                'value' => new Expression('NOW()'),
-            ],
         ];
     }
 

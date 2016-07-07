@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Nextofkin */
+/* @var $model common\models\Nextofkin */
 
 $this->title = 'Create Nextofkin';
 $this->params['breadcrumbs'][] = ['label' => 'Nextofkins', 'url' => ['index']];

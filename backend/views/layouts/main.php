@@ -53,7 +53,8 @@ AppAsset::register($this);
                 ['label' => 'Resident', 'url' => ['resident/index']],
                 ['label' => 'Next of kin', 'url' => ['nextofkin/index']],
                 ['label' => 'Resident Relative', 'url' => ['resident-relative/index']],
-                ['label' => 'Resident Location', 'url' => ['resident-location/index']],
+                ['label' => 'Current Location', 'url' => ['resident-location/index']],
+                ['label' => 'Location History', 'url' => ['resident-location-history/index']],
                 ['label' => 'Tag', 'url' => ['tag/index']],
             ]
         ];
@@ -64,6 +65,7 @@ AppAsset::register($this);
                 ['label' => 'Floor map', 'url' => ['floor-map/index']],
                 ['label' => 'Floor manager', 'url' => ['floor-manager/index']],
                 ['label' => 'Alert area', 'url' => ['alert-area/index']],
+                ['label' => 'Button', 'url' => ['button/index']],
             ]
         ];
 //        $menuItems[] = ['label' => 'User',
@@ -73,9 +75,16 @@ AppAsset::register($this);
 //            ]
 //        ];
         $menuItems[] = [
-            'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-            'url' => ['/site/logout'],
-            'linkOptions' => ['data-method' => 'post']
+            'label' => 'Account (' . Yii::$app->user->identity->username . ')',
+            'items' => [
+                ['label' => 'Account',
+                    'url' => ['site/account'],
+                ],
+                ['label' => 'Logout',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ],
+            ],
         ];
     }
     echo Nav::widget([

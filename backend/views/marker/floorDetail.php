@@ -4,8 +4,8 @@ use yii\grid\GridView;
 use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use yii\widgets\Pjax;
-use backend\models\CommonFunction;
-/* @var $searchModel backend\models\ResidentSearch */
+use common\models\CommonFunction;
+/* @var $searchModel common\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title = 'Floor\'s Maker';
 $this->params['breadcrumbs'][] = ['label' => 'Maker', 'url' => ['index']];
@@ -303,11 +303,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
             tooltips[i].style.left = x;
         }
     };
-
-    init_click_handlers(); //first run
-    $("#modal").on("pjax:success", function() {
-        init_click_handlers(); //reactivate links in grid after pjax update
-    });
 
 </script>
 

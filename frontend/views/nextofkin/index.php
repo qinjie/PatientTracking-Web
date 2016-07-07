@@ -2,10 +2,9 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use backend\models\Floor;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\NextofkinSearch */
+/* @var $searchModel common\models\NextofkinSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Next-of-kins';
