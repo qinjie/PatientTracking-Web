@@ -18,7 +18,7 @@ class ResidentLocationHistorySearch extends ResidentLocationHistory
     public function rules()
     {
         return [
-            [['id', 'resident_id', 'floor_id', 'outside'], 'integer'],
+            [['id', 'outside'], 'integer'],
             [['tagid', 'zone', 'created_at'], 'safe'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
         ];
@@ -61,8 +61,6 @@ class ResidentLocationHistorySearch extends ResidentLocationHistory
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'resident_id' => $this->resident_id,
-            'floor_id' => $this->floor_id,
             'coorx' => $this->coorx,
             'coory' => $this->coory,
             'outside' => $this->outside,

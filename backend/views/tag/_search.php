@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'label') ?>
 
-    <?= $form->field($model, 'mac') ?>
+    <?= $form->field($model, 'tagid') ?>
 
     <?= $form->field($model, 'status') ?>
 

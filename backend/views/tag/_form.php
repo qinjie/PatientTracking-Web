@@ -15,7 +15,7 @@ use kartik\select2\Select2;
 
     <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mac')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'tagid')->textInput(['maxlength' => true]) ?>
 
 
     <?= $form->field($model, 'status')->widget(Select2::classname(), [

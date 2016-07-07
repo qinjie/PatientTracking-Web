@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'label',
-            'mac',
+            'tagid',
             'status',
             'resident_id',
             'created_at',

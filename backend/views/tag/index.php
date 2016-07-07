@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'label',
-            'mac',
+            'tagid',
             'status',
             'resident_id',
             // 'created_at',

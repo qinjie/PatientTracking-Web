@@ -35,7 +35,7 @@ class ResidentLocationHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resident_id', 'floor_id', 'outside'], 'integer'],
+            [['outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
             [['created_at'], 'safe'],
             [['tagid'], 'string', 'max' => 20],
@@ -50,9 +50,7 @@ class ResidentLocationHistory extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'resident_id' => 'Resident ID',
             'tagid' => 'Tagid',
-            'floor_id' => 'Floor ID',
             'coorx' => 'Coorx',
             'coory' => 'Coory',
             'zone' => 'Zone',

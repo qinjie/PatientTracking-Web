@@ -20,7 +20,7 @@ class AlertAreaSearch extends AlertArea
     {
         return [
             [['id', 'floor_id', 'status'], 'integer'],
-            [['quuppa_area', 'description', 'created_at', 'updated_at', 'floorName'], 'safe'],
+            [['quuppa_id', 'description', 'created_at', 'updated_at', 'floorName'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class AlertAreaSearch extends AlertArea
                 'status',
                 'created_at',
                 'updated_at',
-                'quuppa_area',
+                'quuppa_id',
                 'description',
             ]
         ]);
@@ -84,7 +84,7 @@ class AlertAreaSearch extends AlertArea
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'quuppa_area', $this->quuppa_area])
+        $query->andFilterWhere(['like', 'quuppa_id', $this->quuppa_id])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'floor.label', $this->floorName]);
 

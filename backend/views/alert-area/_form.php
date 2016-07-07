@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'quuppa_area')->textInput() ?>
+    <?= $form->field($model, 'quuppa_id')->textInput() ?>
 
     <?= $form->field($model, 'description')->textInput() ?>
 

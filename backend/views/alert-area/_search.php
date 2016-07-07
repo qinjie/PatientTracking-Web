@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'floor_id') ?>
 
-    <?= $form->field($model, 'quuppa_area') ?>
+    <?= $form->field($model, 'quuppa_id') ?>
 
     <?= $form->field($model, 'description') ?>
 

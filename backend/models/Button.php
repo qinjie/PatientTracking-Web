@@ -65,9 +65,13 @@ class Button extends \yii\db\ActiveRecord
     }
 
     public function getResidentName(){
-        $tag = Tag::find()->where(['mac' => $this->tagid])->one();
+        $tag = Tag::find()->where(['tagid' => $this->tagid])->one();
         $query = Resident::find()->where(['id' => $tag['resident_id']])->one();
         return $query['firstname']." ".$query['lastname'];
     }
 
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['tagid' => 'tagid']);
+    }
 }

@@ -19,7 +19,7 @@ class TagSearch extends Tag
     {
         return [
             [['id', 'status', 'resident_id'], 'integer'],
-            [['label', 'mac', 'created_at', 'updated_at'], 'safe'],
+            [['label', 'tagid', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class TagSearch extends Tag
         ]);
 
         $query->andFilterWhere(['like', 'label', $this->label])
-            ->andFilterWhere(['like', 'mac', $this->mac]);
+            ->andFilterWhere(['like', 'tagid', $this->tagid]);
 
         return $dataProvider;
     }

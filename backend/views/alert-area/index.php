@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'floorName',
-            'quuppa_area:ntext',
+            'quuppa_id:ntext',
             'description:ntext',
             'status',
             // 'created_at',

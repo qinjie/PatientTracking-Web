@@ -13,7 +13,7 @@ use yii\db\Expression;
  *
  * @property integer $id
  * @property string $label
- * @property string $mac
+ * @property string $tagid
  * @property integer $status
  * @property integer $resident_id
  * @property string $created_at
@@ -55,7 +55,7 @@ class Tag extends \yii\db\ActiveRecord
             [['label', 'status'], 'required'],
             [['status', 'resident_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['label', 'mac'], 'string', 'max' => 20],
+            [['label', 'tagid'], 'string', 'max' => 20],
             [['label'], 'unique'],
             [['resident_id'], 'exist', 'skipOnError' => true, 'targetClass' => Resident::className(), 'targetAttribute' => ['resident_id' => 'id']],
         ];
@@ -69,7 +69,7 @@ class Tag extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'label' => 'Label',
-            'mac' => 'Mac',
+            'tagid' => 'Mac',
             'status' => 'Status',
             'resident_id' => 'Resident ID',
             'created_at' => 'Created At',
