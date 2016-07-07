@@ -24,7 +24,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput() ?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
+    <?= $form->field($model, 'status')->widget(\kartik\select2\Select2::classname(), [
+        'data' => ['1' => 'Active', '0' => 'Inactive'],
+        'options' => ['placeholder' => 'Select status ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
