@@ -1,5 +1,5 @@
-<link rel="shortcut icon" href="../../web/main.ico" type="icon" />
-<link rel="shortcut icon" href="../web/main.ico" type="icon" />
+<link rel="shortcut icon" href="../../web/favicon.ico" type="icon" />
+<link rel="shortcut icon" href="../web/favicon.ico" type="icon" />
 
 <?php
 
