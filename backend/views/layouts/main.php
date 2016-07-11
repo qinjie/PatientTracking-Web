@@ -1,4 +1,5 @@
-<link rel="shortcut icon" href="../../web/main.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="../../web/main.ico" type="icon" />
+<link rel="shortcut icon" href="../web/main.ico" type="icon" />
 
 <?php
 
