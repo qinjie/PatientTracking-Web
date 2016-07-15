@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'nextofkinName'
             ],
             'relation',
-            'created_at',
+//            'created_at',
             // 'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],

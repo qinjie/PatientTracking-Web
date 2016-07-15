@@ -5,21 +5,21 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use backend\models\ButtonHistory;
 
 /**
- * ButtonSearch represents the model behind the search form about `backend\models\Button`.
+ * ButtonHistorySearch represents the model behind the search form about `backend\models\ButtonHistory`.
  */
-class ButtonSearch extends Button
+class ButtonHistorySearch extends ButtonHistory
 {
-    public $residentName;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'resident_id'], 'integer'],
-            [['created_at', 'residentName'], 'safe'],
+            [['id'], 'integer'],
+            [['tagid', 'created_at'], 'safe'],
         ];
     }
 
@@ -41,28 +41,12 @@ class ButtonSearch extends Button
      */
     public function search($params)
     {
-        $query = Button::find();
-        $query->joinWith('resident');
+        $query = ButtonHistory::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['created_at'=>SORT_DESC]]
-        ]);
-
-        $dataProvider->setSort([
-            'attributes' => [
-                'id',
-                'resident_id',
-                'created_at',
-                'residentName' => [
-                    'asc' => ['resident.firstname' => SORT_ASC, 'resident.lastname' => SORT_ASC],
-                    'desc' => ['resident.firstname' => SORT_DESC, 'resident.lastname' => SORT_DESC],
-                    'label' => 'Full Name',
-                    'default' => SORT_ASC
-                ],
-            ]
         ]);
 
         $this->load($params);
@@ -76,11 +60,10 @@ class ButtonSearch extends Button
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'resident_id' => $this->resident_id,
             'created_at' => $this->created_at,
         ]);
 
-        $query->andWhere('concat(resident.firstname, \' \', resident.lastname) LIKE "%'.$this->residentName.'%"');
+        $query->andFilterWhere(['like', 'tagid', $this->tagid]);
 
         return $dataProvider;
     }

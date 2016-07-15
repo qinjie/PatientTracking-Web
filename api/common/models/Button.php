@@ -3,7 +3,7 @@ namespace api\common\models;
 
 use Yii;
 
-class Button extends \backend\models\Button
+class Button extends \backend\models\ButtonHistory
 {
     public function extraFields()
     {

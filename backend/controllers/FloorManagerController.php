@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\components\AccessRule;
 use Yii;
 use backend\models\FloorManager;
 use backend\models\FloorManagerSearch;
@@ -25,12 +26,15 @@ class FloorManagerController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [\common\models\User::ROLE_MANAGER, \common\models\User::ROLE_ADMIN, \common\models\User::ROLE_MASTER],
                     ],
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

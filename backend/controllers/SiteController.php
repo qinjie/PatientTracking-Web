@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\components\AccessRule;
 use common\models\form\ResetPasswordForm;
 use common\models\form\ResetPasswordRequestForm;
 use common\models\User;
@@ -8,6 +9,7 @@ use common\models\form\ChangePasswordForm;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidParamException;
+use yii\base\UserException;
 use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -27,13 +29,21 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
-                        'actions' => ['signup', 'login', 'request-password-reset', 'reset-password', 'error'],
+                        'actions' => ['login', 'request-password-reset', 'reset-password', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', 'logout', 'change-password', 'account'],
+                        'actions' => ['index','change-password', 'account'],
+                        'allow' => true,
+                        'roles' => [\common\models\User::ROLE_MANAGER, \common\models\User::ROLE_ADMIN, \common\models\User::ROLE_MASTER],
+                    ],
+                    [
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -73,7 +83,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->identity->role > User::ROLE_USER){
+                return $this->goBack();
+            }
+            else{
+                Yii::$app->user->logout();
+                throw new UserException("You are not allow to go to this website.");
+            }
         } else {
             return $this->render('login', [
                 'model' => $model,

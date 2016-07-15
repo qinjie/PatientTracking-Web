@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use backend\models\Floor;
+use backend\models\Tag;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;

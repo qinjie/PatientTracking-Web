@@ -1,10 +1,6 @@
 <?php
 namespace console\controllers;
 
-use api\common\models\CarPark;
-use common\components\rbac\UserRoleRule;
-use common\models\auth\CarParkOwnerRule;
-use common\models\auth\CreatorRule;
 use Yii;
 use yii\console\Controller;
 

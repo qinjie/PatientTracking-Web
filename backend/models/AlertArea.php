@@ -74,6 +74,7 @@ class AlertArea extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'floorName' => 'Floor',
+            'statusName' => Yii::t('app', 'Status'),
         ];
     }
 
@@ -89,5 +90,10 @@ class AlertArea extends \yii\db\ActiveRecord
     public function getFloorName(){
         $query = Floor::find()->where(['id' => $this->floor_id])->one();
         return $query['label'];
+    }
+
+    public function getStatusName(){
+        if ($this->status == 1) return "Active";
+        return "Inactive";
     }
 }

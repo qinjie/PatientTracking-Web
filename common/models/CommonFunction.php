@@ -8,8 +8,9 @@
 
 namespace common\models;
 
-use api\common\models\AlertArea;
-use api\common\models\Button;
+use backend\models\AlertArea;
+use backend\models\Button;
+use backend\models\ButtonHistory;
 use backend\models\Floor;
 use backend\models\FloorManager;
 use backend\models\FloorMap;
@@ -200,6 +201,12 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
+    //get count user
+    public function getUserNumber(){
+        $query = User::find()->count();
+        return $query;
+    }
+
     //get count resident location
     public function getResidentLocationNumber(){
         $query = ResidentLocation::find()->count();
@@ -251,6 +258,12 @@ class CommonFunction extends \yii\db\ActiveRecord
     //get count button
     public function getButtonNumber(){
         $query = Button::find()->count();
+        return $query;
+    }
+
+    //get count button history
+    public function getButtonHistoryNumber(){
+        $query = ButtonHistory::find()->count();
         return $query;
     }
 

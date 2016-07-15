@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ButtonSearch */
+/* @var $model backend\models\ButtonHistorySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="button-search">
+<div class="button-history-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'resident_id') ?>
+    <?= $form->field($model, 'tagid') ?>
 
     <?= $form->field($model, 'created_at') ?>
 

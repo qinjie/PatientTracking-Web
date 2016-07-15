@@ -45,13 +45,15 @@ AppAsset::register($this);
 //            Yii::$app->user->isGuest ?
 //                ['label' => 'Sign Up', 'url' => ['/site/signup']] :
 //                false,
+            ['label' => 'Sign up', 'url' => ['/site/signup']],
             ['label' => 'Login', 'url' => ['/site/login']]
         ];
     } else {
         $items = [
-            ['label' => 'Floor', 'url' => ['dashboard/index']],
             ['label' => 'Resident', 'url' => ['resident/index']],
             ['label' => 'Next of kin', 'url' => ['nextofkin/index']],
+            ['label' => 'Floor', 'url' => ['dashboard/index']],
+            ['label' => 'Alert', 'url' => ['dashboard/alertdetail']],
             [
                 'label' => 'Account (' . Yii::$app->user->identity->username . ')',
                 'items' => [
@@ -63,7 +65,7 @@ AppAsset::register($this);
                         'linkOptions' => ['data-method' => 'post']
                     ],
                 ],
-            ]
+            ],
         ];
     }
 

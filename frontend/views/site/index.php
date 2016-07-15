@@ -26,64 +26,68 @@ $this->title = Yii::$app->name;
 <!--</h3>-->
 <!-- Main content -->
 <!-- Small boxes (Stat box) -->
+<p align="left">
+    <h2><font color="#00BCD4">Quick Report</font></h2>
+</p>
+<br>
 <div class="row">
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-aqua">
-            <div class="inner">
-                <h3><?php echo $residentNumber; ?></h3>
-                <p>Resident</p>
+    <a href="resident">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3><?php echo $residentNumber; ?></h3>
+                    <p>Resident</p>
+                </div>
+                <div class="icon inner">
+                    <i class="ion ion-person"></i>
+                </div>
             </div>
-            <div class="icon inner">
-                <i class="ion ion-person"></i>
-            </div>
-            <a href="resident" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-    </div><!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-teal">
-            <div class="inner">
-                <h3><?php echo $nextofkinNumber; ?></h3>
-                <p>Next-of-kin</p>
+    </a>
+    <a href="nextofkin">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-teal">
+                <div class="inner">
+                    <h3><?php echo $nextofkinNumber; ?></h3>
+                    <p>Next-of-kin</p>
+                </div>
+                <div class="icon inner">
+                    <i class="ion ion-person-stalker"></i>
+                </div>
             </div>
-            <div class="icon inner">
-                <i class="ion ion-person-stalker"></i>
-            </div>
-            <a href="nextofkin" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-    </div><!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-            <div class="inner">
-                <h3><?php echo $floorNumber; ?></h3>
-                <p>Floor</p>
+    </a>
+    <a href="dashboard">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3><?php echo $floorNumber; ?></h3>
+                    <p>Floor</p>
+                </div>
+                <div class="icon inner">
+                    <i class="ion ion-home"></i>
+                </div>
             </div>
-            <div class="icon inner">
-                <i class="ion ion-home"></i>
-            </div>
-            <a href="dashboard" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-    </div><!-- ./col -->
-    <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-            <div class="inner">
-                <h3>
-                    <?php \yii\widgets\Pjax::begin(['id' => 'count']);
+    </a>
+    <a href="dashboard/alertdetail">
+        <div class="col-lg-3 col-xs-6">
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>
+                        <?php \yii\widgets\Pjax::begin(['id' => 'count']);
                         echo (new \common\models\CommonFunction())->getAlertCount();
                         \yii\widgets\Pjax::end();
-                    ?>
-                </h3>
-                <p>Out of range patient</p>
+                        ?>
+                    </h3>
+                    <p>Alert patient</p>
+                </div>
+                <div class="icon inner">
+                    <i class="ion ion-alert-circled"></i>
+                </div>
             </div>
-            <div class="icon inner">
-                <i class="ion ion-alert-circled"></i>
-            </div>
-            <a href="dashboard/alertdetail" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
         </div>
-    </div><!-- ./col -->
+    </a>
 </div><!-- /.row -->
 <!-- Main row -->
 

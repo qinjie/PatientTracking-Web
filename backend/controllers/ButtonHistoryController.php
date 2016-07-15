@@ -5,17 +5,17 @@ namespace backend\controllers;
 use common\components\AccessRule;
 use common\models\User;
 use Yii;
-use backend\models\Floor;
-use backend\models\FloorSearch;
+use backend\models\ButtonHistory;
+use backend\models\ButtonHistorySearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * FloorController implements the CRUD actions for Floor model.
+ * ButtonHistoryController implements the CRUD actions for ButtonHistory model.
  */
-class FloorController extends Controller
+class ButtonHistoryController extends Controller
 {
     /**
      * @inheritdoc
@@ -45,13 +45,14 @@ class FloorController extends Controller
     }
 
     /**
-     * Lists all Floor models.
+     * Lists all ButtonHistory models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new FloorSearch();
+        $searchModel = new ButtonHistorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -59,7 +60,7 @@ class FloorController extends Controller
     }
 
     /**
-     * Displays a single Floor model.
+     * Displays a single ButtonHistory model.
      * @param integer $id
      * @return mixed
      */
@@ -71,46 +72,44 @@ class FloorController extends Controller
     }
 
     /**
-     * Creates a new Floor model.
+     * Creates a new ButtonHistory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new Floor();
-
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->save()){
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing Floor model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
+//    public function actionCreate()
+//    {
+//        $model = new ButtonHistory();
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
+//
+//    /**
+//     * Updates an existing ButtonHistory model.
+//     * If update is successful, the browser will be redirected to the 'view' page.
+//     * @param integer $id
+//     * @return mixed
+//     */
+//    public function actionUpdate($id)
+//    {
+//        $model = $this->findModel($id);
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
 
     /**
-     * Deletes an existing Floor model.
+     * Deletes an existing ButtonHistory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -123,15 +122,15 @@ class FloorController extends Controller
     }
 
     /**
-     * Finds the Floor model based on its primary key value.
+     * Finds the ButtonHistory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Floor the loaded model
+     * @return ButtonHistory the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Floor::findOne($id)) !== null) {
+        if (($model = ButtonHistory::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

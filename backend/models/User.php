@@ -68,6 +68,8 @@ class User extends \yii\db\ActiveRecord
             'timestamp' => 'Timestamp',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'roleName' => 'Role',
+            'statusName' => 'Status',
         ];
     }
 
@@ -85,5 +87,23 @@ class User extends \yii\db\ActiveRecord
     public function getUsertokens()
     {
         return $this->hasMany(Usertoken::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return int
+     */
+    public function getRoleName()
+    {
+        if ($this->role == 20) return 'Manager';
+        if ($this->role == 30) return 'Admin';
+        if ($this->role == 40) return 'Master';
+        return 'User';
+    }
+
+    public function getStatusName(){
+        if ($this->status == 0) return "Deleted";
+        if ($this->status == 1) return "Blocked";
+        if ($this->status == 5) return "Wait";
+        return "Active";
     }
 }

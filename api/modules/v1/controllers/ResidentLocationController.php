@@ -9,11 +9,15 @@
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
+use backend\models\Tag;
+use common\models\ResidentLocation;
+use Faker\Provider\DateTime;
 use Yii;
 
 class ResidentLocationController extends CustomActiveController
 {
     public $modelClass = 'api\common\models\ResidentLocation';
+    public $timeout = 6;
 
     public function behaviors()
     {

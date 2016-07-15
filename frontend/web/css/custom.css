@@ -514,3 +514,12 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e73f7c', endColorstr='#d81b60', GradientType=0) !important;
     color: #fff;
 }
+
+a:link {
+    text-decoration: none;
+}
+
+.jumbotron{
+    padding-bottom: 10px;
+    padding-top: 0px;
+}

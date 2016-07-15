@@ -4,18 +4,17 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\AlertArea */
+/* @var $model backend\models\ButtonHistory */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Alert Areas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Button Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="alert-area-view">
+<div class="button-history-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -29,12 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'floorName',
-            'quuppa_id:ntext',
-            'description:ntext',
-            'statusName',
+            'tagid',
             'created_at',
-            'updated_at',
         ],
     ]) ?>
 

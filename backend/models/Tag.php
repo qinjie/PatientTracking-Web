@@ -69,11 +69,13 @@ class Tag extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'label' => 'Label',
-            'tagid' => 'Mac',
+            'tagid' => 'Tag ID',
             'status' => 'Status',
             'resident_id' => 'Resident ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'residentName' => Yii::t('app', 'Resident Name'),
+            'statusName' => Yii::t('app', 'Status'),
         ];
     }
 
@@ -83,5 +85,15 @@ class Tag extends \yii\db\ActiveRecord
     public function getResident()
     {
         return $this->hasOne(Resident::className(), ['id' => 'resident_id']);
+    }
+
+    public function getResidentName(){
+        $query = Resident::find()->where(['id' => $this->resident_id])->one();
+        return $query['firstname']." ".$query['lastname'];
+    }
+
+    public function getStatusName(){
+        if ($this->status == 1) return "Active";
+        return "Inactive";
     }
 }

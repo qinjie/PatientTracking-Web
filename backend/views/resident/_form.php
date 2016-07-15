@@ -20,8 +20,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'gender')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'birthday')->textInput() ?>
-
+    <?=
+   kartik\date\DatePicker::widget([
+        'model' => $model,
+        'attribute' => 'birthday',
+        'options' => ['placeholder' => 'Enter birthday ...'],
+        'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd',
+        ]
+    ]);
+    ?>
     <?= $form->field($model, 'contact')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'remark')->textInput(['maxlength' => true]) ?>

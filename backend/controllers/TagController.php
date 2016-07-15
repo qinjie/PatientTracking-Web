@@ -2,7 +2,9 @@
 
 namespace backend\controllers;
 
+use common\components\AccessRule;
 use common\models\Resident;
+use common\models\User;
 use Yii;
 use backend\models\Tag;
 use backend\models\TagSearch;
@@ -25,12 +27,15 @@ class TagController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [User::ROLE_MANAGER, User::ROLE_ADMIN, User::ROLE_MASTER],
                     ],
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

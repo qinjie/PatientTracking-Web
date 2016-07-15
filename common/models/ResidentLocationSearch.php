@@ -15,7 +15,7 @@ class ResidentLocationSearch extends ResidentLocation
     public $floorName;
     public $residentGender;
     public $residentBirthday;
-    public $type;
+    public $outsideName;
     private $timeout = 6;
     /**
      * @inheritdoc
@@ -25,7 +25,7 @@ class ResidentLocationSearch extends ResidentLocation
         return [
             [['id', 'outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
-            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday', 'zone', 'type'], 'safe'],
+            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday', 'zone', 'outsideName'], 'safe'],
         ];
     }
 
@@ -139,6 +139,7 @@ class ResidentLocationSearch extends ResidentLocation
                 'coorx',
                 'coory',
                 'speed',
+                'outside',
             ]
         ]);
         $this->load($params);
@@ -219,6 +220,7 @@ class ResidentLocationSearch extends ResidentLocation
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'outside' => $this->outside,
             'created_at' => $this->created_at,
         ]);
         $query

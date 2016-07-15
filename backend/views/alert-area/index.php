@@ -28,7 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'floorName',
             'quuppa_id:ntext',
             'description:ntext',
-            'status',
+            [
+                'attribute'=>'status',
+                'value'=>'statusName',
+                'filter'=>array(1=>"Active", 0=>"Inactive"),
+            ],
             // 'created_at',
             // 'updated_at',
 

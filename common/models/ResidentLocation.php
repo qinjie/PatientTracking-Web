@@ -107,7 +107,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
         return $query['birthday'];
     }
 
-    public function getType(){
+    public function getOutsideName(){
         if ($this->outside == 0) return 'Time out';
         if ($this->outside == 1) return 'Out of ward';
         return 'Out of tracking zone';

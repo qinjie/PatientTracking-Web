@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\components\AccessRule;
 use Yii;
 use common\models\UserToken;
 use backend\models\UserTokenSearch;
@@ -25,12 +26,15 @@ class UserTokenController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [\common\models\User::ROLE_MANAGER, User::ROLE_ADMIN, User::ROLE_MASTER],
                     ],
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

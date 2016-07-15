@@ -3,7 +3,9 @@
 namespace backend\controllers;
 
 use backend\models\AlertAreaSearch;
+use common\components\AccessRule;
 use common\models\CommonFunction;
+use common\models\User;
 use Yii;
 use backend\models\Marker;
 use backend\models\MarkerSearch;
@@ -25,12 +27,15 @@ class MarkerController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [User::ROLE_MANAGER, User::ROLE_ADMIN, User::ROLE_MASTER],
                     ],
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),

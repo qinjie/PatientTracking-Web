@@ -11,6 +11,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div align="center">
     <h1><?= Html::encode($this->title) ?></h1>
 </div>
+<div align="left">
+    <?= Html::a('Back to Dashboard', ['/dashboard'], ['class' => 'btn btn-success']) ?>
+</div>
 <br>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
@@ -35,10 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'coory',
         'speed',
         [
-            'label' => 'Type',
-            'attribute' => 'outside',
-            'value' => 'type',
-            'filter' => false,
+            'attribute'=>'outside',
+            'value'=>'outsideName',
+            'filter'=>array(0=>"Time out", 1=>"Out of ward", 2=>"Out of tracking zone"),
         ],
     ],
 ]); ?>

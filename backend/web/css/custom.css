@@ -578,7 +578,7 @@
 }
 .info-box-content {
     padding: 5px 10px;
-    margin-left: 90px;
+    margin-left: 65px;
 }
 .info-box-number {
     display: block;
@@ -598,4 +598,13 @@
 }
 .progress-description {
     margin: 0;
+}
+
+a:link {
+     text-decoration: none;
+ }
+
+.jumbotron{
+    padding-bottom: 10px;
+    padding-top: 0px;
 }

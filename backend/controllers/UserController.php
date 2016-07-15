@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use common\components\AccessRule;
 use Yii;
 use backend\models\User;
 use backend\models\UserSearch;
+use yii\base\UserException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -23,12 +25,15 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'ruleConfig' => [
+                    'class' => AccessRule::className(),
+                ],
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => [\common\models\User::ROLE_MANAGER, \common\models\User::ROLE_ADMIN, \common\models\User::ROLE_MASTER],
                     ],
-                ],
+                ]
             ],
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -61,6 +66,10 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $query = User::find()->where(['id' => $id])->one();
+        if ($query['role'] >= Yii::$app->user->identity->role){
+            throw new UserException("You can't see user who have role equal or greater than you");
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

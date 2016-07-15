@@ -8,6 +8,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div align="center">
     <h1><?= Html::encode($this->title);?></h1>
 </div>
+<div align="right">
+    <?= Html::a('Go to Alert', ['alertdetail'], ['class' => 'btn btn-danger']) ?>
+</div>
 <br>
 <div class="patient-index">
 </div>

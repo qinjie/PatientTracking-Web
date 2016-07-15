@@ -57,6 +57,7 @@ AppAsset::register($this);
                 ['label' => 'Current Location', 'url' => ['resident-location/index']],
                 ['label' => 'Location History', 'url' => ['resident-location-history/index']],
                 ['label' => 'Tag', 'url' => ['tag/index']],
+                ['label' => 'User', 'url' => ['user/index']],
             ]
         ];
         $menuItems[] = ['label' => 'Floor',
@@ -67,6 +68,7 @@ AppAsset::register($this);
                 ['label' => 'Floor manager', 'url' => ['floor-manager/index']],
                 ['label' => 'Alert area', 'url' => ['alert-area/index']],
                 ['label' => 'Button', 'url' => ['button/index']],
+                ['label' => 'Button History', 'url' => ['button-history/index']],
             ]
         ];
 //        $menuItems[] = ['label' => 'User',

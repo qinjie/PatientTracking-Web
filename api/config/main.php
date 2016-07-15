@@ -67,26 +67,6 @@ return [
 //                'GET <version:\w+>/account/logout-current-session' => '<version>/account/logout-current-session',
                 # API for ActiveRecords
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/quuppa-tag-info',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/quuppa-tag-position',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
                     'controller' => 'v1/quuppa-button',
                     'extraPatterns' => [
                         'GET search' => 'search',
@@ -98,36 +78,6 @@ return [
                 ],
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
                     'controller' => 'v1/resident-location',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/tag',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/floor-map',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/alert-area',
                     'extraPatterns' => [
                         'GET search' => 'search',
                     ],

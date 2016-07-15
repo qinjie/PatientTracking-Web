@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'nric',
             'contact',
-            // 'email:email',
+            'email:email',
             // 'remark',
             // 'created_at',
             // 'updated_at',

@@ -12,14 +12,15 @@ use backend\models\Tag;
  */
 class TagSearch extends Tag
 {
+    public $residentName;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'status', 'resident_id'], 'integer'],
-            [['label', 'tagid', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['label', 'tagid', 'created_at', 'updated_at', 'residentName', 'resident_id'], 'safe'],
         ];
     }
 
@@ -43,10 +44,26 @@ class TagSearch extends Tag
     {
         $query = Tag::find();
 
+        $query->joinWith('resident');
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+
+        $dataProvider->setSort([
+            'attributes' =>[
+                'id',
+                'label',
+                'tagid',
+                'status',
+                'resident_id' => [
+                    'asc' => ['Resident.firstname' => SORT_ASC, 'Resident.lastname' => SORT_ASC],
+                    'desc' => ['Resident.firstname' => SORT_DESC, 'Resident.lastname' => SORT_DESC],
+                ],
+            ],
+            'defaultOrder' => ['id'=>SORT_ASC],
         ]);
 
         $this->load($params);
@@ -61,13 +78,16 @@ class TagSearch extends Tag
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'resident_id' => $this->resident_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'label', $this->label])
             ->andFilterWhere(['like', 'tagid', $this->tagid]);
+
+        $query->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%"');
+
+
 
         return $dataProvider;
     }
