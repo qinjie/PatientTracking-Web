@@ -12,6 +12,7 @@ use yii\data\ActiveDataProvider;
 class NextofkinSearch extends Nextofkin
 {
     public $full_Name;
+    public $residentList;
     /**
      * @inheritdoc
      */

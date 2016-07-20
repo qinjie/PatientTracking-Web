@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\FloorManager */
 
-$this->title = $model->id;
+$this->title = $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Floor Managers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

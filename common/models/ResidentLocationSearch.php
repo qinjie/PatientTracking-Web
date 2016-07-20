@@ -16,7 +16,6 @@ class ResidentLocationSearch extends ResidentLocation
     public $residentGender;
     public $residentBirthday;
     public $outsideName;
-    private $timeout = 6;
     /**
      * @inheritdoc
      */
@@ -107,7 +106,7 @@ class ResidentLocationSearch extends ResidentLocation
     public function searchFloor($params, $fid){
         $query = ResidentLocation::find();
         $query->andWhere('floor_id = '.$fid.'
-        and (outside = 0) and (resident_location.created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())');
+        and (outside = 0) and (resident_location.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([
@@ -139,6 +138,7 @@ class ResidentLocationSearch extends ResidentLocation
                 'coorx',
                 'coory',
                 'speed',
+                'azimuth',
                 'outside',
             ]
         ]);
@@ -173,7 +173,7 @@ class ResidentLocationSearch extends ResidentLocation
 
     public function searchAlert($params){
         $query = ResidentLocation::find();
-        $query->andWhere('(outside != 0) or (resident_location.created_at not between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())');
+        $query->andWhere('(outside != 0) or (resident_location.created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([
@@ -207,6 +207,7 @@ class ResidentLocationSearch extends ResidentLocation
                 'coorx',
                 'coory',
                 'speed',
+                'azimuth',
             ]
         ]);
         $this->load($params);

@@ -17,7 +17,6 @@ use Yii;
 class ResidentLocationController extends CustomActiveController
 {
     public $modelClass = 'api\common\models\ResidentLocation';
-    public $timeout = 6;
 
     public function behaviors()
     {

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\models\Floor;
 use Yii;
 use common\models\Resident;
 use common\models\ResidentSearch;
@@ -47,10 +48,16 @@ class ResidentController extends Controller
     {
         $searchModel = new ResidentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $roleArray = [];
+        $query = Floor::find()->all();
+        foreach ($query as $item){
+            $roleArray += [$item['id'] => $item['label']];
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'roleArray' => $roleArray,
         ]);
     }
 

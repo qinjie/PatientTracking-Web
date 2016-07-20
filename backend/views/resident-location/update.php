@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\ResidentLocation */
 
-$this->title = 'Update Resident Location: ' . $model->id;
+$this->title = 'Update Location of ' . $model->residentName;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->residentName, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="resident-location-update">

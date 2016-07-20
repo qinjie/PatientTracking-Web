@@ -19,7 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'label',
-            'mac',
             'floor_id',
             'position',
             'pixelx',

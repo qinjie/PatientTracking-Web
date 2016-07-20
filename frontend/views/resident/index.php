@@ -6,6 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $roleArray array */
 
 $this->title = 'Residents';
 $this->params['breadcrumbs'][] = $this->title;
@@ -32,7 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'nric',
             'gender',
             'birthday',
-            'contact',
+            [
+                'attribute'=>'lastFloorId',
+                'value'=>'lastFloor',
+                'filter'=>$roleArray,
+            ],
             // 'remark',
             // 'lastmodified',
         ],

@@ -15,9 +15,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php
+    $roleArray = [];
+    if (Yii::$app->user->identity->role >= 20) $roleArray += [10 => 'User'];
+    if (Yii::$app->user->identity->role >= 30) $roleArray += [20 => 'Manager'];
+    if (Yii::$app->user->identity->role >= 40) $roleArray += [30 => 'Admin'];
+    ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -39,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'role',
                 'value'=>'roleName',
-                'filter'=>array(10 => 'User', 20 => 'Manager', 30 => 'Admin', 40 => 'Master'),
+                'filter'=>$roleArray,
             ],
             // 'email_confirm_token:email',
             // 'allowance',

@@ -54,18 +54,18 @@ AppAsset::register($this);
                 ['label' => 'Resident', 'url' => ['resident/index']],
                 ['label' => 'Next of kin', 'url' => ['nextofkin/index']],
                 ['label' => 'Resident Relative', 'url' => ['resident-relative/index']],
-                ['label' => 'Current Location', 'url' => ['resident-location/index']],
-                ['label' => 'Location History', 'url' => ['resident-location-history/index']],
                 ['label' => 'Tag', 'url' => ['tag/index']],
                 ['label' => 'User', 'url' => ['user/index']],
+                ['label' => 'Current Location', 'url' => ['resident-location/index']],
+                ['label' => 'Location History', 'url' => ['resident-location-history/index']],
             ]
         ];
         $menuItems[] = ['label' => 'Floor',
             'items' => [
                 ['label' => 'Floor', 'url' => ['floor/index']],
-                ['label' => 'Marker', 'url' => ['marker/index']],
                 ['label' => 'Floor map', 'url' => ['floor-map/index']],
                 ['label' => 'Floor manager', 'url' => ['floor-manager/index']],
+                ['label' => 'Marker', 'url' => ['marker/index']],
                 ['label' => 'Alert area', 'url' => ['alert-area/index']],
                 ['label' => 'Button', 'url' => ['button/index']],
                 ['label' => 'Button History', 'url' => ['button-history/index']],

@@ -33,7 +33,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'change-password', 'signup', 'request-password-reset'],
+                'only' => ['index', 'logout', 'change-password', 'signup', 'request-password-reset'],
                 'rules' => [
                     [
                         'actions' => ['signup', 'request-password-reset'],
@@ -41,7 +41,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'change-password'],
+                        'actions' => ['index', 'logout', 'change-password'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

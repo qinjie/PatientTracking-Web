@@ -28,7 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'coorx',
             'coory',
             'zone',
-            'outside',
+            [
+                'attribute'=>'outside',
+                'value'=>'outsideName',
+                'filter'=>array(0=>"Inside", 1=>"Outside"),
+            ],
             // 'azimuth',
             'speed',
             // 'created_at',

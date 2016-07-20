@@ -60,4 +60,9 @@ class ResidentLocationHistory extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
         ];
     }
+
+    public function getOutsideName(){
+        if ($this->outside == 0) return 'Inside';
+        return 'Outside';
+    }
 }

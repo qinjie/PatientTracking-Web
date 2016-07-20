@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Button */
 
-$this->title = $model->id;
+$this->title = $model->residentName;
 $this->params['breadcrumbs'][] = ['label' => 'Buttons', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

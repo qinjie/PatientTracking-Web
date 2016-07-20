@@ -94,4 +94,22 @@ class Nextofkin extends \yii\db\ActiveRecord
         return $this->first_name." ".$this->last_name;
     }
 
+    public function getResidentList(){
+        $query = ResidentRelative::find()->where(['nextofkin_id' => $this->id])->all();
+        $str = "";
+        foreach ($query as $item){
+            $tmp = Resident::find()->where(['id' => $item['resident_id']])->one();
+            if ($str == ""){
+                $str .= "".$item['relation']." of: <a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a>";
+            }
+            else{
+                $str .= "<br>".$item['relation']." of: <a href='".Yii::$app->homeUrl."resident/view?id=".$tmp['id']."'>".$tmp['fullName']."</a>";
+            }
+        }
+        if ($str == null){
+            return "";
+        }
+        return $str;
+    }
+
 }

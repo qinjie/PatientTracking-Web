@@ -7,7 +7,7 @@ use backend\models\Floor;
 /* @var $this yii\web\View */
 /* @var $model common\models\ResidentLocation */
 
-$this->title = $model->id;
+$this->title = 'Location of '.$model->residentName;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -41,7 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'coorx',
             'coory',
             'zone',
-            'outside',
+            [
+                'attribute'=>'outside',
+                'value'=>'outsideName',
+                'filter'=>array(0=>"Time out", 1=>"Outside"),
+            ],
             'azimuth',
             'speed',
             'created_at',

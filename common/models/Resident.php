@@ -8,6 +8,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "resident".
@@ -71,7 +72,8 @@ class Resident extends \yii\db\ActiveRecord
             'coorx' => 'X',
             'coory' => 'Y',
             'speed' => 'Speed',
-            'lastfloor' => 'Last Floor',
+            'lastFloor' => 'Last Floor',
+            'lastFloorId' => 'Last Floor',
         ];
     }
 
@@ -118,9 +120,18 @@ class Resident extends \yii\db\ActiveRecord
         return $query['speed'];
     }
 
-    public function getLastfloor(){
+    public function getLastFloor(){
         $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         $rs = Floor::find()->where(['id' => $query['floor_id']])->one();
         return $rs['label'];
+    }
+    public function getLastFloorId(){
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['floor_id'];
+    }
+
+    public function getAzimuth(){
+        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['azimuth'];
     }
 }

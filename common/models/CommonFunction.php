@@ -22,8 +22,6 @@ use Yii;
 
 class CommonFunction extends \yii\db\ActiveRecord
 {
-    private $timeout = 6;
-
     //get all floor model
     public function getAllFloor(){
         $query = Floor::find()->all();
@@ -74,7 +72,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             select count(id) as cnt
             from resident_location
             where floor_id = '.$id.' and outside = 0
-            and created_at between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW()
+            and created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
         ')->queryAll();
         return $query[0]["cnt"];
     }
@@ -85,7 +83,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             select count(id) as cnt
             from resident_location
             where (outside != 0 or 
-            created_at not between DATE_SUB(NOW(), INTERVAL '.$this->timeout.' second) and NOW())
+            created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())
         ')->queryAll();
         return $query[0]["cnt"];
     }

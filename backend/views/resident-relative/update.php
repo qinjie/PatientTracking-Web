@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\ResidentRelative */
 
-$this->title = 'Update Resident Relative: ' . $model->id;
+$this->title = 'Update Relationship of ' . $model->residentName;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Relatives', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->residentName, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="resident-relative-update">

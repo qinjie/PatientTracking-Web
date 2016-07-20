@@ -28,13 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'label',
             'tagid',
             [
+                'label' => 'Resident',
+                'attribute' => 'resident_id',
+                'value' => 'residentName'
+            ],
+            [
                 'attribute'=>'status',
                 'value'=>'statusName',
                 'filter'=>array(1=>"Active", 0=>"Inactive"),
-            ],
-            [
-                'attribute' => 'resident_id',
-                'value' => 'residentName'
             ],
             // 'created_at',
             // 'updated_at',

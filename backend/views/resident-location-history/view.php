@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\ResidentLocationHistory */
 
-$this->title = $model->id;
+$this->title = $model->tagid;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Location Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 use common\models\CommonFunction;
 
-$this->title = 'Patient tracking system';
+$this->title = 'Patient Tracking System';
 
 ?>
 
@@ -12,10 +12,7 @@ $this->title = 'Patient tracking system';
         <table align="center">
             <tr>
                 <td>
-                    <img src='main.ico' height="65px" width="65px">
-                </td>
-                <td>
-                    &nbsp;
+                    <img src='main.ico' height="55px">
                 </td>
                 <td>
                     <h1>
@@ -42,108 +39,104 @@ $this->title = 'Patient tracking system';
                         <i class="ion ion-person"></i>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 col-sm-6">
-                        <div>
-                            <div class="info-box">
-                                <a href="resident">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-person"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Resident</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getResidentNumber(); ?></span>
-                                        </font>
+                <div>
+                    <div>
+                        <div class="info-box">
+                            <a href="resident">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-person"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Resident</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="nextofkin">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-person-add"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Next of kin</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getNextofkinNumber(); ?></span>
-                                        </font>
-
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="resident-relative">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-person-stalker"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Resident relative</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getResidentRelativeNumber(); ?></span>
-                                        </font>
-
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="user">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-person"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">User</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getUserNumber(); ?></span>
-                                        </font>
-
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
                     </div>
-                    <div class="col-lg-6 col-sm-6">
-                        <div>
-                            <div class="info-box">
-                                <a href="tag">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-pinpoint"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Tag</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getTagNumber(); ?></span>
-                                        </font>
+                    <div>
+                        <div class="info-box">
+                            <a href="nextofkin">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-person-add"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Next of kin</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getNextofkinNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="resident-location">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-location"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Current location</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationNumber(); ?></span>
-                                        </font>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="resident-relative">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-person-stalker"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Resident relative</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentRelativeNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="resident-location-history">
-                                    <span class="info-box-icon bg-teal-active"><i class="ion ion-ios-book"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Location history</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationHistoryNumber(); ?></span>
-                                        </font>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="user">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-person"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">User</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getUserNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="tag">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-pinpoint"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Tag</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getTagNumber(); ?></span>
+                                    </font>
+
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="resident-location">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-location"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Current location</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationNumber(); ?></span>
+                                    </font>
+
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="resident-location-history">
+                                <span class="info-box-icon bg-teal-active"><i class="ion ion-ios-book"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Location history</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationHistoryNumber(); ?></span>
+                                    </font>
+
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
                     </div>
                 </div>
             </div><!-- ./col -->
@@ -158,105 +151,101 @@ $this->title = 'Patient tracking system';
                         <i class="ion ion-home"></i>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 col-sm-6">
-                        <div>
-                            <div class="info-box">
-                                <a href="floor">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-home"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Floor</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getFloorNumber(); ?></span>
-                                        </font>
+                <div>
+                    <div>
+                        <div class="info-box">
+                            <a href="floor">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-home"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Floor</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getFloorNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="floor-map">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-map"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Floor map</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getFloorMapNumber(); ?></span>
-                                        </font>
-
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="floor-manager">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-home"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Floor manager</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getFloorManagerNumber(); ?></span>
-                                        </font>
-
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="button-history">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-ios-book-outline"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Button History</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getButtonHistoryNumber(); ?></span>
-                                        </font>
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
                     </div>
-                    <div class="col-lg-6 col-sm-6">
-                        <div>
-                            <div class="info-box">
-                                <a href="marker">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-android-locate"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Marker</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getMarkerNumber(); ?></span>
-                                        </font>
+                    <div>
+                        <div class="info-box">
+                            <a href="floor-map">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-map"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Floor map</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getFloorMapNumber(); ?></span>
+                                    </font>
 
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="alert-area">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-alert-circled"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Alert area</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getAlertAreaNumber(); ?></span>
-                                        </font>
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
-                        <div>
-                            <div class="info-box">
-                                <a href="button">
-                                    <span class="info-box-icon bg-aqua-active"><i class="ion ion-power"></i></span>
-                                    <div class="info-box-content">
-                                        <font color="black">
-                                            <span class="info-box-number">Button</span>
-                                            <span class="info-box-text"><?= (new CommonFunction())->getButtonNumber(); ?></span>
-                                        </font>
-                                    </div>
-                                </a>
-                            </div><!-- /.info-box -->
-                        </div>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="floor-manager">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-home"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Floor manager</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getFloorManagerNumber(); ?></span>
+                                    </font>
+
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="marker">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-android-locate"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Marker</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getMarkerNumber(); ?></span>
+                                    </font>
+
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="alert-area">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-alert-circled"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Alert area</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getAlertAreaNumber(); ?></span>
+                                    </font>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="button">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-power"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Button</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getButtonNumber(); ?></span>
+                                    </font>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
+                    </div>
+                    <div>
+                        <div class="info-box">
+                            <a href="button-history">
+                                <span class="info-box-icon bg-aqua-active"><i class="ion ion-ios-book-outline"></i></span>
+                                <div class="info-box-content">
+                                    <font color="black">
+                                        <span class="info-box-number">Button History</span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getButtonHistoryNumber(); ?></span>
+                                    </font>
+                                </div>
+                            </a>
+                        </div><!-- /.info-box -->
                     </div>
                 </div>
             </div><!-- ./col -->

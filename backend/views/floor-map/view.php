@@ -7,7 +7,7 @@ use backend\models\CommonFunction;
 /* @var $this yii\web\View */
 /* @var $model backend\models\FloorMap */
 
-$this->title = $model->id;
+$this->title = $model->floorName;
 $this->params['breadcrumbs'][] = ['label' => 'Floor Maps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

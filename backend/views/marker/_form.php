@@ -14,8 +14,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'label')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'mac')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'floor_id')->textInput()->hiddenInput()->label(false) ?>
 
     <?= $form->field($model, 'position')->textInput()->hiddenInput()->label(false) ?>

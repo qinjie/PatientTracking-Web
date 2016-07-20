@@ -38,12 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'coorx',
             'coory',
-            // 'zone',
-            // 'outside',
-            // 'azimuth',
             'speed',
+            [
+                'attribute'=>'outside',
+                'value'=>'outsideName',
+                'filter'=>array(0=>"Inside", 1=>"Outside"),
+            ],
+            // 'azimuth',
             // 'created_at',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

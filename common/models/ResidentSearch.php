@@ -15,8 +15,9 @@ class ResidentSearch extends Resident
     public $coorx;
     public $coory;
     public $speed;
-    public $lastfloor;
-    private $timeout = 6;
+    public $azimuth;
+    public $lastFloor;
+    public $lastFloorId;
     /**
      * @inheritdoc
      */
@@ -24,7 +25,7 @@ class ResidentSearch extends Resident
     {
         return [
             [['id'], 'integer'],
-            [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'lastmodified', 'fullName'], 'safe'],
+            [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'lastmodified', 'fullName', 'coorx', 'coory', 'speed', 'azimuth', 'lastFloorId'], 'safe'],
         ];
     }
 
@@ -50,6 +51,7 @@ class ResidentSearch extends Resident
         $query = Resident::find();
         // add conditions that should always apply here
         //filter by floor
+        $query->joinWith('residentLocations');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -60,6 +62,10 @@ class ResidentSearch extends Resident
                 'firstname',
                 'lastname',
                 'nric',
+                'lastFloorId' =>[
+                    'asc' => ['resident_location.floor_id' => SORT_ASC],
+                    'desc' => ['resident_location.floor_id' => SORT_DESC],
+                ],
                 'gender',
                 'birthday',
                 'contact',
@@ -68,8 +74,23 @@ class ResidentSearch extends Resident
                 'fullName' => [
                     'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
-                    'label' => 'Full Name',
                     'default' => SORT_ASC
+                ],
+                'coorx' => [
+                    'asc' => ['resident_locationresident_location.coorx' => SORT_ASC],
+                    'desc' => ['resident_location.coorx' => SORT_DESC],
+                ],
+                'coory' => [
+                    'asc' => ['resident_location.coory' => SORT_ASC],
+                    'desc' => ['resident_location.coory' => SORT_DESC],
+                ],
+                'speed' => [
+                    'asc' => ['resident_location.speed' => SORT_ASC],
+                    'desc' => ['resident_location.speed' => SORT_DESC],
+                ],
+                'azimuth' => [
+                    'asc' => ['resident_location.azimuth' => SORT_ASC],
+                    'desc' => ['resident_location.azimuth' => SORT_DESC],
                 ],
             ]
         ]);
@@ -87,6 +108,11 @@ class ResidentSearch extends Resident
             'resident.id' => $this->id,
             'birthday' => $this->birthday,
             'lastmodified' => $this->lastmodified,
+            'azimuth' => $this->azimuth,
+            'coorx' => $this->coorx,
+            'coory' => $this->coory,
+            'speed' => $this->speed,
+            'resident_location.floor_id' => $this->lastFloorId,
         ]);
         $query
             ->andFilterWhere(['like', 'firstname', $this->firstname])

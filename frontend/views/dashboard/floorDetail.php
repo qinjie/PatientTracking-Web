@@ -28,5 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'coorx',
         'coory',
         'speed',
+        'azimuth',
     ],
 ]); ?>

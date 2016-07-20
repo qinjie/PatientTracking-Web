@@ -14,8 +14,6 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../config/main-local.php')
 );
 
-date_default_timezone_set('Asia/Singapore');
-
 $application = new yii\web\Application($config);
 $application->run();
 

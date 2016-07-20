@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 use common\models\CommonFunction;
 /* @var $searchModel common\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = 'Floor\'s Maker';
+$this->title = $floorName;
 $this->params['breadcrumbs'][] = ['label' => 'Maker', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $imagePath = (new CommonFunction())->getImgPath($floorId);
@@ -92,7 +92,7 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
             'position',
             'id',
             'label',
-            'mac',
+//            'mac',
             'pixelx',
             'pixely',
             'coorx',

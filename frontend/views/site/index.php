@@ -80,7 +80,7 @@ $this->title = Yii::$app->name;
                         \yii\widgets\Pjax::end();
                         ?>
                     </h3>
-                    <p>Alert patient</p>
+                    <p>Alert</p>
                 </div>
                 <div class="icon inner">
                     <i class="ion ion-alert-circled"></i>

@@ -37,10 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'coorx',
         'coory',
         'speed',
+        'azimuth',
         [
             'attribute'=>'outside',
-            'value'=>'outsideName',
-            'filter'=>array(0=>"Time out", 1=>"Out of ward", 2=>"Out of tracking zone"),
+            'value'=>'outsideAlert',
+            'filter'=>array(0=>"Time out", 1=>"Outside"),
         ],
     ],
 ]); ?>
