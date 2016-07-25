@@ -46,7 +46,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             // 'azimuth',
             // 'created_at',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{view} {delete}',
+            ],        ],
     ]); ?>
 </div>

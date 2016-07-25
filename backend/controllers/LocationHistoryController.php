@@ -2,12 +2,9 @@
 
 namespace backend\controllers;
 
-use common\components\AccessRule;
-use common\models\User;
 use Yii;
 use backend\models\ResidentLocationHistory;
 use backend\models\ResidentLocationHistorySearch;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,18 +20,6 @@ class ResidentLocationHistoryController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'ruleConfig' => [
-                    'class' => AccessRule::className(),
-                ],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => [User::ROLE_MANAGER, User::ROLE_ADMIN, User::ROLE_MASTER],
-                    ],
-                ]
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

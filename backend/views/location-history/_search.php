@@ -21,9 +21,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'coorx') ?>
 
-    <?php  echo $form->field($model, 'coory') ?>
+    <?= $form->field($model, 'coory') ?>
 
-    <?php  echo $form->field($model, 'zone') ?>
+    <?= $form->field($model, 'zone') ?>
 
     <?php // echo $form->field($model, 'outside') ?>
 
