@@ -14,9 +14,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-    </p>
+    <?php
+        if (Yii::$app->user->identity->role == \common\models\User::ROLE_MASTER)
+        {
+            echo "<p align=\"right\">
+                        ".Html::a('Clear all data', ['delete', '' => ''], [
+                    'class' => 'btn btn-danger',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to clear all location data?',
+                        'method' => 'post',
+                    ],
+                ])
+                ."</p>";
+        }
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

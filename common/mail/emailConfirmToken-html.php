@@ -18,5 +18,5 @@ Hi, <?= Html::encode($user->username) ?>!
 Follow the link below to confirm your email address:
 
 <?= $confirmLink ?>
-
+<br>
 If you have not registered on our website, then simply delete this email.

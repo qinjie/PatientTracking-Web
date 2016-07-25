@@ -32,6 +32,12 @@ class ButtonHistoryController extends Controller
                     [
                         'allow' => true,
                         'roles' => [User::ROLE_MANAGER, User::ROLE_ADMIN, User::ROLE_MASTER],
+                        'actions' => ['index', 'view'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => [User::ROLE_MASTER],
+                        'actions' => ['delete'],
                     ],
                 ]
             ],
@@ -114,9 +120,9 @@ class ButtonHistoryController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function actionDelete()
     {
-        $this->findModel($id)->delete();
+        ButtonHistory::deleteAll();
 
         return $this->redirect(['index']);
     }
