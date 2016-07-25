@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'attribute' => 'residentName',
             'value'=>function ($data) {
-                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->resident_id);}
+                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'resident/view?id='.$data->resident_id);}
         ],
         'residentGender',
         'residentBirthday',
@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'speed',
         'azimuth',
         [
+            'label' => 'Alert type',
             'attribute'=>'outside',
             'value'=>'outsideAlert',
             'filter'=>array(0=>"Time out", 1=>"Outside"),

@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentLocationHistory */
+/* @var $model backend\models\LocationHistory */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Resident Location Histories', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Location Histories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resident-location-history-view">
+<div class="location-history-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -33,9 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'coorx',
             'coory',
             'zone',
-            'outside',
-            'azimuth',
-            'speed',
             'created_at',
         ],
     ]) ?>

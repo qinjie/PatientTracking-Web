@@ -56,8 +56,8 @@ AppAsset::register($this);
                 ['label' => 'Resident Relative', 'url' => ['resident-relative/index']],
                 ['label' => 'Tag', 'url' => ['tag/index']],
                 ['label' => 'User', 'url' => ['user/index']],
-                ['label' => 'Current Location', 'url' => ['resident-location/index']],
-                ['label' => 'Location History', 'url' => ['resident-location-history/index']],
+                ['label' => 'Current Location', 'url' => ['location/index']],
+                ['label' => 'Location History', 'url' => ['location-history/index']],
             ]
         ];
         $menuItems[] = ['label' => 'Floor',

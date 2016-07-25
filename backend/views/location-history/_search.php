@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ResidentLocationHistorySearch */
+/* @var $model backend\models\LocationHistorySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="resident-location-history-search">
+<div class="location-history-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -24,12 +24,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'coory') ?>
 
     <?= $form->field($model, 'zone') ?>
-
-    <?php // echo $form->field($model, 'outside') ?>
-
-    <?php // echo $form->field($model, 'azimuth') ?>
-
-    <?php // echo $form->field($model, 'speed') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

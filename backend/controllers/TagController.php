@@ -82,6 +82,7 @@ class TagController extends Controller
     {
         $model = new Tag();
         $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
+        $items2 = ArrayHelper::map(User::find()->all(), 'id', 'username');
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -90,6 +91,7 @@ class TagController extends Controller
             return $this->render('create', [
                 'model' => $model,
                 'items1' => $items1,
+                'items2' => $items2,
             ]);
         }
     }
@@ -104,12 +106,14 @@ class TagController extends Controller
     {
         $model = $this->findModel($id);
         $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
+        $items2 = ArrayHelper::map(User::find()->all(), 'id', 'username');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
                 'items1' => $items1,
+                'items2' => $items2,
             ]);
         }
     }

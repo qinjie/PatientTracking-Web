@@ -5,13 +5,13 @@ use yii\widgets\DetailView;
 use backend\models\Floor;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ResidentLocation */
+/* @var $model common\models\Location */
 
 $this->title = 'Location of '.$model->residentName;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resident-location-view">
+<div class="location-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -33,6 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'resident_id',
                 'value' => $model->residentName,
+            ],
+            [
+                'attribute' => 'user_id',
+                'value' => $model->userName,
             ],
             [
                 'attribute' => 'floor_id',

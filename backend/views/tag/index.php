@@ -33,6 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'residentName'
             ],
             [
+                'label' => 'User',
+                'attribute' => 'user_id',
+                'value' => 'userName'
+            ],
+            [
                 'attribute'=>'status',
                 'value'=>'statusName',
                 'filter'=>array(1=>"Active", 0=>"Inactive"),

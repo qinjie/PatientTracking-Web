@@ -7,9 +7,9 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * ResidentLocationSearch represents the model behind the search form about `backend\models\ResidentLocation`.
+ * LocationSearch represents the model behind the search form about `backend\models\Location`.
  */
-class ResidentLocationSearch extends ResidentLocation
+class LocationSearch extends Location
 {
     public $residentName;
     public $floorName;
@@ -24,7 +24,7 @@ class ResidentLocationSearch extends ResidentLocation
         return [
             [['id', 'outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
-            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday', 'zone', 'outsideName'], 'safe'],
+            [['created_at', 'resident_id', 'floor_id', 'residentName', 'floorName', 'residentGender', 'residentBirthday', 'zone', 'outsideName', 'user_id', 'userName'], 'safe'],
         ];
     }
 
@@ -46,11 +46,13 @@ class ResidentLocationSearch extends ResidentLocation
      */
     public function search($params)
     {
-        $query = ResidentLocation::find();
+        $query = Location::find();
 
         $query->joinWith('resident');
 
         $query->joinWith('floor');
+
+        $query->joinWith('user');
 
         // add conditions that should always apply here
 
@@ -63,6 +65,11 @@ class ResidentLocationSearch extends ResidentLocation
                 'resident_id' => [
                     'asc' => ['Resident.firstname' => SORT_ASC, 'Resident.lastname' => SORT_ASC],
                     'desc' => ['Resident.firstname' => SORT_DESC, 'Resident.lastname' => SORT_DESC],
+                    'default' => SORT_ASC
+                ],
+                'user_id' => [
+                    'asc' => ['User.username' => SORT_ASC],
+                    'desc' => ['User.username' => SORT_DESC],
                     'default' => SORT_ASC
                 ],
                 'floor_id' => [
@@ -97,16 +104,17 @@ class ResidentLocationSearch extends ResidentLocation
             'speed' => $this->speed,
             'created_at' => $this->created_at,
         ]);
-        $query->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%"')
+        $query->andWhere('(concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%" or "'.$this->resident_id.'" = "")')
+            ->andFilterWhere(['like', 'username', $this->user_id])
             ->andFilterWhere(['like', 'zone', $this->zone])
             ->andFilterWhere(['like', 'Floor.label', $this->floor_id]);
         return $dataProvider;
     }
 
     public function searchFloor($params, $fid){
-        $query = ResidentLocation::find();
+        $query = Location::find();
         $query->andWhere('floor_id = '.$fid.'
-        and (outside = 0) and (resident_location.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
+        and (outside = 0) and (location.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([
@@ -172,8 +180,8 @@ class ResidentLocationSearch extends ResidentLocation
     //outside = 0: inside a ward; outside = 1: outside a ward, inside lobby; outside = 2: no signal
 
     public function searchAlert($params){
-        $query = ResidentLocation::find();
-        $query->andWhere('(outside != 0) or (resident_location.created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
+        $query = Location::find();
+        $query->andWhere('(outside != 0) or (location.created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
         $query->joinWith('resident');
         $query->joinWith('floor');
         $dataProvider = new ActiveDataProvider([

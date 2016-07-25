@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ResidentLocationSearch */
+/* @var $model common\models\LocationSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="resident-location-search">
+<div class="location-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'resident_id') ?>
+
+    <?= $form->field($model, 'user_id') ?>
 
     <?= $form->field($model, 'floor_id') ?>
 

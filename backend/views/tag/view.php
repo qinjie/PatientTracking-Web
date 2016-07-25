@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'tagid',
             'statusName',
             'residentName',
+            'userName',
             'created_at',
             'updated_at',
         ],

@@ -23,7 +23,7 @@ use yii\helpers\Html;
  * @property string $remark
  * @property string $lastmodified
  *
- * @property ResidentLocation[] $residentLocations
+ * @property Location[] $residentLocations
  * @property ResidentRelative[] $residentRelatives
  * @property Tag[] $tags
  */
@@ -71,6 +71,7 @@ class Resident extends \yii\db\ActiveRecord
             'floor' => Yii::t('app', 'Floor'),
             'coorx' => 'X',
             'coory' => 'Y',
+            'lastTime' => 'Last signal',
             'speed' => 'Speed',
             'lastFloor' => 'Last Floor',
             'lastFloorId' => 'Last Floor',
@@ -82,7 +83,7 @@ class Resident extends \yii\db\ActiveRecord
      */
     public function getResidentLocations()
     {
-        return $this->hasMany(ResidentLocation::className(), ['resident_id' => 'id']);
+        return $this->hasMany(Location::className(), ['resident_id' => 'id']);
     }
 
     /**
@@ -106,32 +107,37 @@ class Resident extends \yii\db\ActiveRecord
     }
 
     public function getCoorx(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['coorx'];
     }
 
     public function getCoory(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['coory'];
     }
 
+    public function getLastTime(){
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['created_at'];
+    }
+
     public function getSpeed(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['speed'];
     }
 
     public function getLastFloor(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         $rs = Floor::find()->where(['id' => $query['floor_id']])->one();
         return $rs['label'];
     }
     public function getLastFloorId(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['floor_id'];
     }
 
     public function getAzimuth(){
-        $query = ResidentLocation::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
+        $query = Location::find()->where(['resident_id' => $this->id])->orderBy('created_at DESC')->one();
         return $query['azimuth'];
     }
 }

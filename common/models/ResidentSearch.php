@@ -14,6 +14,7 @@ class ResidentSearch extends Resident
     public $fullName;
     public $coorx;
     public $coory;
+    public $lastTime;
     public $speed;
     public $azimuth;
     public $lastFloor;
@@ -77,20 +78,20 @@ class ResidentSearch extends Resident
                     'default' => SORT_ASC
                 ],
                 'coorx' => [
-                    'asc' => ['resident_locationresident_location.coorx' => SORT_ASC],
-                    'desc' => ['resident_location.coorx' => SORT_DESC],
+                    'asc' => ['location.coorx' => SORT_ASC],
+                    'desc' => ['location.coorx' => SORT_DESC],
                 ],
                 'coory' => [
-                    'asc' => ['resident_location.coory' => SORT_ASC],
-                    'desc' => ['resident_location.coory' => SORT_DESC],
+                    'asc' => ['location.coory' => SORT_ASC],
+                    'desc' => ['location.coory' => SORT_DESC],
                 ],
                 'speed' => [
-                    'asc' => ['resident_location.speed' => SORT_ASC],
-                    'desc' => ['resident_location.speed' => SORT_DESC],
+                    'asc' => ['location.speed' => SORT_ASC],
+                    'desc' => ['location.speed' => SORT_DESC],
                 ],
                 'azimuth' => [
-                    'asc' => ['resident_location.azimuth' => SORT_ASC],
-                    'desc' => ['resident_location.azimuth' => SORT_DESC],
+                    'asc' => ['location.azimuth' => SORT_ASC],
+                    'desc' => ['location.azimuth' => SORT_DESC],
                 ],
             ]
         ]);
@@ -112,7 +113,7 @@ class ResidentSearch extends Resident
             'coorx' => $this->coorx,
             'coory' => $this->coory,
             'speed' => $this->speed,
-            'resident_location.floor_id' => $this->lastFloorId,
+            'location.floor_id' => $this->lastFloorId,
         ]);
         $query
             ->andFilterWhere(['like', 'firstname', $this->firstname])

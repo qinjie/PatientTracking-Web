@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\ResidentLocationHistory;
+use backend\models\LocationHistory;
 
 /**
- * ResidentLocationHistorySearch represents the model behind the search form about `backend\models\ResidentLocationHistory`.
+ * LocationHistorySearch represents the model behind the search form about `backend\models\LocationHistory`.
  */
-class ResidentLocationHistorySearch extends ResidentLocationHistory
+class LocationHistorySearch extends LocationHistory
 {
     /**
      * @inheritdoc
@@ -18,9 +18,9 @@ class ResidentLocationHistorySearch extends ResidentLocationHistory
     public function rules()
     {
         return [
-            [['id', 'outside'], 'integer'],
+            [['id'], 'integer'],
             [['tagid', 'zone', 'created_at'], 'safe'],
-            [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
+            [['coorx', 'coory'], 'number'],
         ];
     }
 
@@ -42,7 +42,7 @@ class ResidentLocationHistorySearch extends ResidentLocationHistory
      */
     public function search($params)
     {
-        $query = ResidentLocationHistory::find();
+        $query = LocationHistory::find();
 
         // add conditions that should always apply here
 
@@ -63,9 +63,6 @@ class ResidentLocationHistorySearch extends ResidentLocationHistory
             'id' => $this->id,
             'coorx' => $this->coorx,
             'coory' => $this->coory,
-            'outside' => $this->outside,
-            'azimuth' => $this->azimuth,
-            'speed' => $this->speed,
             'created_at' => $this->created_at,
         ]);
 

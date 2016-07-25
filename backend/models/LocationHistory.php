@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 
 /**
- * This is the model class for table "resident_location_history".
+ * This is the model class for table "location_history".
  *
  * @property integer $id
  * @property integer $resident_id
@@ -14,19 +14,16 @@ use Yii;
  * @property double $coorx
  * @property double $coory
  * @property string $zone
- * @property integer $outside
- * @property double $azimuth
- * @property double $speed
  * @property string $created_at
  */
-class ResidentLocationHistory extends \yii\db\ActiveRecord
+class LocationHistory extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'resident_location_history';
+        return 'location_history';
     }
 
     /**
@@ -35,8 +32,7 @@ class ResidentLocationHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['outside'], 'integer'],
-            [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
+            [['coorx', 'coory'], 'number'],
             [['created_at'], 'safe'],
             [['tagid'], 'string', 'max' => 20],
             [['zone'], 'string', 'max' => 50],
@@ -54,15 +50,7 @@ class ResidentLocationHistory extends \yii\db\ActiveRecord
             'coorx' => 'Coorx',
             'coory' => 'Coory',
             'zone' => 'Zone',
-            'outside' => 'Outside',
-            'azimuth' => 'Azimuth',
-            'speed' => 'Speed',
             'created_at' => 'Created At',
         ];
-    }
-
-    public function getOutsideName(){
-        if ($this->outside == 0) return 'Inside';
-        return 'Outside';
     }
 }

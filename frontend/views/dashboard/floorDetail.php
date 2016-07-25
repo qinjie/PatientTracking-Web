@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'attribute' => 'residentName',
             'value'=>function ($data) {
-                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'dashboard/residentdetail?id='.$data->resident_id);}
+                return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'resident/view?id='.$data->resident_id);}
         ],
         'residentGender',
         'residentBirthday',

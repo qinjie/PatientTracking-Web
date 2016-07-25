@@ -23,7 +23,6 @@ $this->title = 'Patient Tracking System';
         </table>
     </div>
 
-
     <div class="body-content">
         <!-- Main content -->
         <!-- Small boxes (Stat box) -->
@@ -112,12 +111,12 @@ $this->title = 'Patient Tracking System';
                     </div>
                     <div>
                         <div class="info-box">
-                            <a href="resident-location">
+                            <a href="location">
                                 <span class="info-box-icon bg-teal-active"><i class="ion ion-location"></i></span>
                                 <div class="info-box-content">
                                     <font color="black">
                                         <span class="info-box-number">Current location</span>
-                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationNumber(); ?></span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getLocationNumber(); ?></span>
                                     </font>
 
                                 </div>
@@ -126,12 +125,12 @@ $this->title = 'Patient Tracking System';
                     </div>
                     <div>
                         <div class="info-box">
-                            <a href="resident-location-history">
+                            <a href="location-history">
                                 <span class="info-box-icon bg-teal-active"><i class="ion ion-ios-book"></i></span>
                                 <div class="info-box-content">
                                     <font color="black">
                                         <span class="info-box-number">Location history</span>
-                                        <span class="info-box-text"><?= (new CommonFunction())->getResidentLocationHistoryNumber(); ?></span>
+                                        <span class="info-box-text"><?= (new CommonFunction())->getLocationHistoryNumber(); ?></span>
                                     </font>
 
                                 </div>

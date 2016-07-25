@@ -4,19 +4,30 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\ResidentLocationHistorySearch */
+/* @var $searchModel backend\models\LocationHistorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Resident Location Histories';
+$this->title = 'Location Histories';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resident-location-history-index">
+<div class="location-history-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-    </p>
+    <?php
+        if (Yii::$app->user->identity->role == \common\models\User::ROLE_MASTER)
+        {
+            echo "<p align=\"right\">
+                    ".Html::a('Clear all data', ['delete', '' => ''], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Are you sure you want to clear all location data?',
+                            'method' => 'post',
+                        ],
+                    ])
+                ."</p>";
+        }
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -28,14 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'coorx',
             'coory',
             'zone',
-            [
-                'attribute'=>'outside',
-                'value'=>'outsideName',
-                'filter'=>array(0=>"Inside", 1=>"Outside"),
-            ],
-            // 'azimuth',
-            'speed',
-            // 'created_at',
+            'created_at',
 
             ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {delete}'],
         ],

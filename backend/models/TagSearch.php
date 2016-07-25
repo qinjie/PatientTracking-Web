@@ -13,6 +13,7 @@ use backend\models\Tag;
 class TagSearch extends Tag
 {
     public $residentName;
+    public $userName;
     /**
      * @inheritdoc
      */
@@ -20,7 +21,7 @@ class TagSearch extends Tag
     {
         return [
             [['id', 'status'], 'integer'],
-            [['label', 'tagid', 'created_at', 'updated_at', 'residentName', 'resident_id'], 'safe'],
+            [['label', 'tagid', 'created_at', 'updated_at', 'residentName', 'resident_id', 'user_id', 'userName'], 'safe'],
         ];
     }
 
@@ -45,6 +46,7 @@ class TagSearch extends Tag
         $query = Tag::find();
 
         $query->joinWith('resident');
+        $query->joinWith('user');
 
         // add conditions that should always apply here
 
@@ -62,6 +64,10 @@ class TagSearch extends Tag
                     'asc' => ['Resident.firstname' => SORT_ASC, 'Resident.lastname' => SORT_ASC],
                     'desc' => ['Resident.firstname' => SORT_DESC, 'Resident.lastname' => SORT_DESC],
                 ],
+                'user_id' => [
+                    'asc' => ['User.username' => SORT_ASC],
+                    'desc' => ['User.username' => SORT_DESC],
+                ],
             ],
             'defaultOrder' => ['id'=>SORT_ASC],
         ]);
@@ -77,17 +83,16 @@ class TagSearch extends Tag
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            'tag.status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'label', $this->label])
-            ->andFilterWhere(['like', 'tagid', $this->tagid]);
+            ->andFilterWhere(['like', 'tagid', $this->tagid])
+            ->andFilterWhere(['like', 'username', $this->user_id]);
 
-        $query->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%"');
-
-
+        $query->andWhere('(concat(firstname, \' \', lastname) LIKE "%'.$this->resident_id.'%" or "'.$this->resident_id.'" = "")');
 
         return $dataProvider;
     }

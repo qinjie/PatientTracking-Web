@@ -22,29 +22,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true])->textInput(['readonly' => !$model->isNewRecord]) ?>
-
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true])->textInput(['readonly' => !$model->isNewRecord]) ?>
-
-    <?= $form->field($model, 'access_token')->textInput(['maxlength' => true])->textInput(['readonly' => !$model->isNewRecord]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true])->textInput(['readonly' => !$model->isNewRecord]) ?>
-
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'email_confirm_token')->textInput(['maxlength' => true])->textInput(['readonly' => !$model->isNewRecord]) ?>
-
-    <?= $form->field($model, 'role')->widget(\kartik\select2\Select2::classname(), [
-        'data' => $roleArray,
+    <?= $form->field($model, 'status')->widget(\kartik\select2\Select2::classname(), [
+        'data' => ['0' => 'Deleted', '1' => 'Blocked', '5' => 'Waiting', '10' => 'Active'],
         'options' => ['placeholder' => 'Select status ...'],
         'pluginOptions' => [
             'allowClear' => true
         ],
     ]); ?>
 
-    <?= $form->field($model, 'status')->widget(\kartik\select2\Select2::classname(), [
-        'data' => ['0' => 'Deleted', '1' => 'Blocked', '5' => 'Waiting', '10' => 'Active'],
-        'options' => ['placeholder' => 'Select status ...'],
+    <?= $form->field($model, 'role')->widget(\kartik\select2\Select2::classname(), [
+        'data' => $roleArray,
+        'options' => ['placeholder' => 'Select role ...'],
         'pluginOptions' => [
             'allowClear' => true
         ],

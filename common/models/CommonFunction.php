@@ -15,7 +15,7 @@ use backend\models\Floor;
 use backend\models\FloorManager;
 use backend\models\FloorMap;
 use backend\models\Marker;
-use backend\models\ResidentLocationHistory;
+use backend\models\LocationHistory;
 use backend\models\Tag;
 use Yii;
 
@@ -70,8 +70,8 @@ class CommonFunction extends \yii\db\ActiveRecord
     public function getResidentCount($id){
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
-            from resident_location
-            where floor_id = '.$id.' and outside = 0
+            from location
+            where resident_id is not NULL and floor_id = '.$id.' and outside = 0
             and created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
         ')->queryAll();
         return $query[0]["cnt"];
@@ -81,8 +81,8 @@ class CommonFunction extends \yii\db\ActiveRecord
     public function getAlertCount(){
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
-            from resident_location
-            where (outside != 0 or 
+            from location
+            where resident_id is not NULL and (outside != 0 or 
             created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())
         ')->queryAll();
         return $query[0]["cnt"];
@@ -96,7 +96,7 @@ class CommonFunction extends \yii\db\ActiveRecord
 
     //get all resident in floor $id
     public function getResidentInFloor($id){
-        $query = ResidentLocation::find()->where(['floor_id' => $id])->all();
+        $query = Location::find()->where(['floor_id' => $id])->all();
         return $query;
     }
 
@@ -205,9 +205,9 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
-    //get count resident location
-    public function getResidentLocationNumber(){
-        $query = ResidentLocation::find()->count();
+    //get count location
+    public function getLocationNumber(){
+        $query = Location::find()->count();
         return $query;
     }
 
@@ -217,9 +217,9 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query;
     }
 
-    //get count resident location history
-    public function getResidentLocationHistoryNumber(){
-        $query = ResidentLocationHistory::find()->count();
+    //get count location history
+    public function getLocationHistoryNumber(){
+        $query = LocationHistory::find()->count();
         return $query;
     }
 

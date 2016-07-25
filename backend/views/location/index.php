@@ -4,18 +4,18 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\ResidentLocationSearch */
+/* @var $searchModel common\models\LocationSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Resident Locations';
+$this->title = 'Locations';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resident-location-index">
+<div class="location-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
-        <?= Html::a('Create Resident Location', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Location', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -33,6 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'residentName'
             ],
             [
+                'attribute' => 'user_id',
+                'value' => 'userName'
+            ],
+            [
                 'attribute' => 'floor_id',
                 'value' => 'floorName'
             ],
@@ -48,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_at',
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template'=>'{view} {delete}',
-            ],        ],
+            ],
+        ],
     ]); ?>
 </div>

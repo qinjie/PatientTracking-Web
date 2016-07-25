@@ -9,10 +9,11 @@ use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
- * This is the model class for table "resident_location".
+ * This is the model class for table "location".
  *
  * @property integer $id
  * @property integer $resident_id
+ * @property integer $user_id
  * @property integer $floor_id
  * @property double $coorx
  * @property double $coory
@@ -25,14 +26,14 @@ use yii\db\Expression;
  * @property Resident $resident
  * @property Floor $floor
  */
-class ResidentLocation extends \yii\db\ActiveRecord
+class Location extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'resident_location';
+        return 'location';
     }
 
     public function behaviors()
@@ -55,11 +56,12 @@ class ResidentLocation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resident_id', 'floor_id', 'coorx', 'coory'], 'required'],
+            [['floor_id', 'coorx', 'coory'], 'required'],
             [['resident_id', 'floor_id', 'outside'], 'integer'],
             [['coorx', 'coory', 'azimuth', 'speed'], 'number'],
             [['created_at', 'zone'], 'safe'],
             [['resident_id'], 'exist', 'skipOnError' => true, 'targetClass' => Resident::className(), 'targetAttribute' => ['resident_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['floor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Floor::className(), 'targetAttribute' => ['floor_id' => 'id']],
         ];
     }
@@ -72,6 +74,7 @@ class ResidentLocation extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'resident_id' => 'Resident',
+            'user_id' => 'Username',
             'floor_id' => 'Last floor',
             'coorx' => 'Coorx',
             'coory' => 'Coory',
@@ -80,30 +83,41 @@ class ResidentLocation extends \yii\db\ActiveRecord
             'azimuth' => 'Azimuth',
             'speed' => 'Speed',
             'created_at' => 'Created At',
-            'residentName' => Yii::t('app', 'Resident Name'),
-            'floorName' => Yii::t('app', 'Floor Name'),
+            'residentName' => 'Resident Name',
+            'userName' => 'Username',
+            'floorName' => 'Floor Name',
             'residentGender' => 'Gender',
             'residentBirthday' => 'Birthday',
         ];
     }
 
     public function getResidentName(){
+        if ($this->resident == NULL) return "";
         $query = Resident::find()->where(['id' => $this->resident_id])->one();
         return $query['firstname']." ".$query['lastname'];
     }
 
+    public function getUserName(){
+        if ($this->user_id == NULL) return "";
+        $query = User::find()->where(['id' => $this->user_id])->one();
+        return $query['username'];
+    }
+
     public function getFloorName(){
+        if ($this->floor_id == NULL) return "";
         $query = Floor::find()->where(['id' => $this->floor_id])->one();
         return $query['label'];
     }
 
     public function getResidentGender(){
-        $query = Resident::find()->where(['id' => $this->floor_id])->one();
+        if ($this->resident_id == NULL) return "";
+        $query = Resident::find()->where(['id' => $this->resident_id])->one();
         return $query['gender'];
     }
 
     public function getResidentBirthday(){
-        $query = Resident::find()->where(['id' => $this->floor_id])->one();
+        if ($this->resident_id == NULL) return "";
+        $query = Resident::find()->where(['id' => $this->resident_id])->one();
         return $query['birthday'];
     }
 
@@ -131,5 +145,13 @@ class ResidentLocation extends \yii\db\ActiveRecord
     public function getFloor()
     {
         return $this->hasOne(Floor::className(), ['id' => 'floor_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }

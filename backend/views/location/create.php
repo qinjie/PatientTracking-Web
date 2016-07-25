@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ResidentLocation */
+/* @var $model common\models\Location */
 
-$this->title = 'Create Resident Location';
-$this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
+$this->title = 'Create Location';
+$this->params['breadcrumbs'][] = ['label' => 'Locations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resident-location-create">
+<div class="location-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'items1' => $items1,
         'items2' => $items2,
+        'items3' => $items3,
     ]) ?>
 
 </div>

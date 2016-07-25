@@ -5,11 +5,11 @@ use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ResidentLocation */
+/* @var $model common\models\Location */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="resident-location-form">
+<div class="location-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -20,6 +20,14 @@ use kartik\select2\Select2;
             'allowClear' => true
         ],
     ]); ?>
+
+    <?= $form->field($model, 'user_id')->widget(Select2::classname(), [
+        'data' => $items3,
+        'options' => ['placeholder' => 'Select a user ...'],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ])->hint("You should choose either a Resident or a User only"); ?>
 
     <?= $form->field($model, 'floor_id')->widget(Select2::classname(), [
         'data' => $items2,

@@ -34,8 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'coory',
             'speed',
             'azimuth',
+            'lastTime',
             'remark',
-            'lastmodified',
         ],
     ]) ?>
 

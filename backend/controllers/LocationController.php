@@ -5,8 +5,8 @@ namespace backend\controllers;
 use common\components\AccessRule;
 use common\models\User;
 use Yii;
-use common\models\ResidentLocation;
-use common\models\ResidentLocationSearch;
+use common\models\Location;
+use common\models\LocationSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,9 +16,9 @@ use backend\models\Floor;
 use common\models\Resident;
 
 /**
- * ResidentLocationController implements the CRUD actions for ResidentLocation model.
+ * LocationController implements the CRUD actions for Location model.
  */
-class ResidentLocationController extends Controller
+class LocationController extends Controller
 {
     /**
      * @inheritdoc
@@ -48,12 +48,12 @@ class ResidentLocationController extends Controller
     }
 
     /**
-     * Lists all ResidentLocation models.
+     * Lists all Location models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ResidentLocationSearch();
+        $searchModel = new LocationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -63,7 +63,7 @@ class ResidentLocationController extends Controller
     }
 
     /**
-     * Displays a single ResidentLocation model.
+     * Displays a single Location model.
      * @param integer $id
      * @return mixed
      */
@@ -75,15 +75,16 @@ class ResidentLocationController extends Controller
     }
 
     /**
-     * Creates a new ResidentLocation model.
+     * Creates a new Location model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new ResidentLocation();
+        $model = new Location();
         $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
         $items2 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
+        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -91,12 +92,13 @@ class ResidentLocationController extends Controller
                 'model' => $model,
                 'items1' => $items1,
                 'items2' => $items2,
+                'items3' => $items3,
             ]);
         }
     }
 
     /**
-     * Updates an existing ResidentLocation model.
+     * Updates an existing Location model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -106,6 +108,7 @@ class ResidentLocationController extends Controller
         $model = $this->findModel($id);
         $items1 = ArrayHelper::map(Resident::find()->orderBy('firstname', 'lastname')->all(), 'id', 'fullName');
         $items2 = ArrayHelper::map(Floor::find()->orderBy('label')->all(), 'id', 'label');
+        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -113,12 +116,13 @@ class ResidentLocationController extends Controller
                 'model' => $model,
                 'items1' => $items1,
                 'items2' => $items2,
+                'items3' => $items3,
             ]);
         }
     }
 
     /**
-     * Deletes an existing ResidentLocation model.
+     * Deletes an existing Location model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -131,15 +135,15 @@ class ResidentLocationController extends Controller
     }
 
     /**
-     * Finds the ResidentLocation model based on its primary key value.
+     * Finds the Location model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return ResidentLocation the loaded model
+     * @return Location the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = ResidentLocation::findOne($id)) !== null) {
+        if (($model = Location::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
