@@ -43,7 +43,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
                 <p id="coorxy"></p>
             </span>
         </a>
-
     </div>
 <!--    List-->
     <br>
@@ -280,7 +279,6 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
     }
 
     // Cursor position
-
 
     function showCoords(event) {
         var x = event.offsetX;

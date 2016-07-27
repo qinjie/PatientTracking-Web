@@ -380,7 +380,6 @@ class UserController extends Controller
 //            }
         }
         return $res;
-
     }
     private function updatealert($id)
     {

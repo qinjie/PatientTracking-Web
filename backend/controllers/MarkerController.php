@@ -191,6 +191,7 @@ class MarkerController extends Controller
                 'nextPosition' => $nextPosition,
                 'nextPositionAlert' => $nextPositionAlert,
                 'floorId' => $q['floor_id'],
+                'floorName' => $q['label'],
             ]);
         }
         return $this->redirect(['index']);

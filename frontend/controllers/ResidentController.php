@@ -73,6 +73,13 @@ class ResidentController extends Controller
         ]);
     }
 
+    public function actionViewmodal($id)
+    {
+        return $this->renderAjax('viewModal', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Finds the Resident model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

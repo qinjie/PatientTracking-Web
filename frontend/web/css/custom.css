@@ -515,6 +515,19 @@
     color: #fff;
 }
 
+.tooltipCustom {
+    text-decoration:none;
+    position:relative;
+}
+.tooltipCustom span {
+    display:none;
+}
+.tooltipCustom:hover span {
+    display:block;
+    position:fixed;
+    overflow:hidden;
+}
+
 a:link {
     text-decoration: none;
 }

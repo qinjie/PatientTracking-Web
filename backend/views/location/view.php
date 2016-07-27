@@ -6,8 +6,15 @@ use backend\models\Floor;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Location */
-
-$this->title = 'Location of '.$model->residentName;
+$array = [];
+if ($model->residentName){
+    $array[] = $model->residentName;
+}
+if ($model->userName){
+    $array[] = $model->userName;
+}
+$name = implode($array, ', ');
+$this->title = 'Location of '.$name;
 $this->params['breadcrumbs'][] = ['label' => 'Resident Locations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
