@@ -7,6 +7,7 @@ use kartik\select2\Select2;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Tag */
 /* @var $form yii\widgets\ActiveForm */
+$model->status = isset($model->status) ? $model->status : 1;
 ?>
 
 <div class="tag-form">

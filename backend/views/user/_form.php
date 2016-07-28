@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\models\User */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $roleArray array */
+$model->status = isset($model->status) ? $model->status : 1;
 ?>
 
 <div class="user-form">

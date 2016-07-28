@@ -88,13 +88,13 @@ class FloorMapController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->file = UploadedFile::getInstance($model, 'file');
             $model->file_name = $model->floor_id;
-            $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
             $model->file_type = 'image/'.$model->file->extension;
             $model->file_ext = $model->file->extension;
             $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
-            $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
             $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
             if ($model->save()) {
+                $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
+                $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             else{

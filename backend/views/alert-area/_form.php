@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\AlertArea */
 /* @var $form yii\widgets\ActiveForm */
+$model->status = isset($model->status) ? $model->status : 1;
 ?>
 
 <div class="alert-area-form">

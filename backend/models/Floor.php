@@ -2,53 +2,35 @@
 
 namespace backend\models;
 
-use common\models\ResidentLocation;
+use common\models\Location;
 use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
 
 /**
  * This is the model class for table "floor".
  *
  * @property integer $id
+ * @property string $quuppa_id
  * @property string $label
  * @property string $description
  * @property double $width
  * @property double $height
  * @property string $created_at
  * @property string $updated_at
- * @property string quuppa_id
  *
+ * @property AlertArea[] $alertAreas
  * @property FloorManager[] $floorManagers
- * @property FloorMap[] $floorMaps
+ * @property FloorMap $floorMap
+ * @property Location[] $locations
  * @property Marker[] $markers
- * @property ResidentLocation[] $residentLocations
  */
 class Floor extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
-
     public static function tableName()
     {
         return 'floor';
-    }
-
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                // Modify only created not updated attribute
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-                'value' => new Expression('NOW()'),
-            ],
-        ];
     }
 
     /**
@@ -60,9 +42,10 @@ class Floor extends \yii\db\ActiveRecord
             [['label', 'width', 'height'], 'required'],
             [['width', 'height'], 'number'],
             [['created_at', 'updated_at'], 'safe'],
+            [['quuppa_id'], 'string', 'max' => 20],
             [['label'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 500],
-            [['quuppa_id'], 'string', 'max' => 20],
+            [['label'], 'unique'],
             [['quuppa_id'], 'unique'],
         ];
     }
@@ -74,13 +57,22 @@ class Floor extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'label' => 'Label',
+            'quuppa_id' => 'Quuppa ID',
+            'label' => 'Name',
             'description' => 'Description',
             'width' => 'Width',
             'height' => 'Height',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAlertAreas()
+    {
+        return $this->hasMany(AlertArea::className(), ['floor_id' => 'id']);
     }
 
     /**
@@ -94,9 +86,17 @@ class Floor extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFloorMaps()
+    public function getFloorMap()
     {
-        return $this->hasMany(FloorMap::className(), ['floor_id' => 'id']);
+        return $this->hasOne(FloorMap::className(), ['floor_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocations()
+    {
+        return $this->hasMany(Location::className(), ['floor_id' => 'id']);
     }
 
     /**
@@ -106,13 +106,4 @@ class Floor extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Marker::className(), ['floor_id' => 'id']);
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getResidentLocations()
-    {
-        return $this->hasMany(ResidentLocation::className(), ['floor_id' => 'id']);
-    }
-
 }

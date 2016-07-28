@@ -162,12 +162,17 @@ if ((new CommonFunction())->checkImageExist($id)){
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             img.style.display = 'none';
-            ctx.fillStyle = "#AA00FF";
             for(var i=0; i<array.length; i++){
                 ctx.beginPath();
                 ctx.arc(array[i]['pixelx'], array[i]['pixely'], 10, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#F44336';
                 ctx.fill();
+            }
+            for(var i=0; i<array.length; i++){
+                ctx.font="18px Arial";
+                ctx.fillStyle = "#0277BD";
+                ctx.textAlign = "center";
+                ctx.fillText(array[i]['firstname'], array[i]['pixelx'], array[i]['pixely'] - 15);
             }
         };
     }

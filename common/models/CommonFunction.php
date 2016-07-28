@@ -316,17 +316,12 @@ class CommonFunction extends \yii\db\ActiveRecord
         }
 
         $res = Yii::$app->db
-            ->createCommand('select resident.id, firstname, coorx, coory
-                            from resident, floor, location
-                            where resident.id = resident_id
-                            and floor.id = floor_id
-                            and outside = 0
-                            and location.created_at = (
-                                select MAX(location.created_at)
-                                from location
-                                where resident_id = resident.id
-                                and outside = 0)
-                            and (floor_id = \''.$floorid.'\')')
+            ->createCommand('select r.id, r.firstname, l.coorx, l.coory
+                            from resident as r, location as l
+                            where r.id = l.resident_id
+                            and l.outside = 0
+                            and l.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
+                            and (l.floor_id = '.$floorid.')')
             ->queryAll();
 
         $widthPixel = $bottomRightPixelx - $topLeftPixelx;
