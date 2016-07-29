@@ -273,7 +273,7 @@ class CommonFunction extends \yii\db\ActiveRecord
     }
 
     //calculate pixel coordinate from real coordinate
-    public function getMappoints($floorid)
+    public function getResidentPixel($floorid)
     {
         $result = (new \yii\db\Query())
             ->select(['pixelx', 'pixely', 'coorx', 'coory'])
@@ -340,18 +340,78 @@ class CommonFunction extends \yii\db\ActiveRecord
             {
                 return [];
             }
+        }
+        return $res;
+    }
 
-//            $x = rand(min($topLeftCoorx, $bottomRightCoorx) + 1, max($topLeftCoorx, $bottomRightCoorx) - 1);
-//            $y = rand(min($topLeftCoory, $bottomRightCoory) + 1, max($topLeftCoory, $bottomRightCoory) - 1);
-//            try
-//            {
-//                $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0*($x - $topLeftCoorx)/$widthCoor*$widthPixel));
-//                $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0*($y - $topLeftCoory)/$heightCoor*$heightPixel));
-//            }
-//            catch(\Exception $ex)
-//            {
-//                return [];
-//            }
+    //calculate pixel coordinate from real coordinate
+    public function getUserPixel($floorid)
+    {
+        $result = (new \yii\db\Query())
+            ->select(['pixelx', 'pixely', 'coorx', 'coory'])
+            ->from('marker')
+            ->where(['floor_id' => $floorid])
+            ->all();
+
+        $inf = 9223372036854775807;
+
+        $topLeftPixelx = $inf; $topLeftCoorx = 0.0;
+        $topLeftPixely = $inf; $topLeftCoory = 0.0;
+
+        $bottomRightPixelx = -1; $bottomRightCoorx = 0.0;
+        $bottomRightPixely = -1; $bottomRightCoory = 0.0;
+
+
+        for($i = 0; $i < count($result); $i++)
+        {
+            if($result[$i]['pixelx'] < $topLeftPixelx)
+            {
+                $topLeftPixelx = $result[$i]['pixelx'];
+                $topLeftCoorx = $result[$i]['coorx'];
+            }
+            if($result[$i]['pixely'] < $topLeftPixely)
+            {
+                $topLeftPixely = $result[$i]['pixely'];
+                $topLeftCoory = $result[$i]['coory'];
+            }
+
+            if($result[$i]['pixelx'] > $bottomRightPixelx)
+            {
+                $bottomRightPixelx = $result[$i]['pixelx'];
+                $bottomRightCoorx = $result[$i]['coorx'];
+            }
+            if($result[$i]['pixely'] > $bottomRightPixely)
+            {
+                $bottomRightPixely = $result[$i]['pixely'];
+                $bottomRightCoory = $result[$i]['coory'];
+            }
+        }
+
+        $res = Yii::$app->db
+            ->createCommand('select r.id, r.username, l.coorx, l.coory
+                            from user as r, location as l
+                            where r.id = l.user_id
+                            and l.outside = 0
+                            and l.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
+                            and (l.floor_id = '.$floorid.')')
+            ->queryAll();
+
+        $widthPixel = $bottomRightPixelx - $topLeftPixelx;
+        $heightPixel = $bottomRightPixely - $topLeftPixely;
+        $widthCoor = $bottomRightCoorx - $topLeftCoorx;
+        $heightCoor = $bottomRightCoory - $topLeftCoory;
+
+        for($i = 0; $i < count($res); $i++)
+        {
+            try
+            {
+                $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0*($res[$i]['coorx'] - $topLeftCoorx)/$widthCoor*$widthPixel));
+                $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0*($res[$i]['coory'] - $topLeftCoory)/$heightCoor*$heightPixel));
+            }
+            catch(\Exception $ex)
+            {
+                return [];
+            }
         }
         return $res;
     }

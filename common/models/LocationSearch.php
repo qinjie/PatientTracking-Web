@@ -15,6 +15,7 @@ class LocationSearch extends Location
     public $floorName;
     public $residentGender;
     public $residentBirthday;
+    public $userName;
     public $outsideName;
     /**
      * @inheritdoc
@@ -112,7 +113,7 @@ class LocationSearch extends Location
     }
 
     public function searchFloor($params, $fid){
-        $query = Location::find();
+        $query = Location::find()->where('resident_id is not null');
         $query->andWhere('floor_id = '.$fid.'
         and (outside = 0) and (location.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
         $query->joinWith('resident');
@@ -177,7 +178,53 @@ class LocationSearch extends Location
         return $dataProvider;
     }
 
-    //outside = 0: inside a ward; outside = 1: outside a ward, inside lobby; outside = 2: no signal
+
+    public function searchUserFloor($params, $fid){
+        $query = Location::find()->where('user_id is not null');
+        $query->andWhere('floor_id = '.$fid.'
+        and (outside = 0) and (location.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
+        $query->joinWith('user');
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->setSort([
+            'attributes' =>[
+                'id',
+                'userName' => [
+                    'asc' => ['userName' => SORT_ASC],
+                    'desc' => ['userName' => SORT_DESC],
+                    'default' => SORT_ASC
+                ],
+                'coorx',
+                'coory',
+                'speed',
+                'azimuth',
+                'outside',
+            ]
+        ]);
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'created_at' => $this->created_at,
+        ]);
+        $query
+            ->andFilterWhere(['like', 'coorx', $this->coorx])
+            ->andFilterWhere(['like', 'coory', $this->coory])
+            ->andFilterWhere(['like', 'speed', $this->speed])
+            ->andFilterWhere(['like', 'azimuth', $this->azimuth])
+            ->andFilterWhere(['like', 'zone', $this->zone])
+            ->andFilterWhere(['like', 'user.username', $this->userName]);
+
+        return $dataProvider;
+    }
 
     public function searchAlert($params){
         $query = Location::find();

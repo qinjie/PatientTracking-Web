@@ -27,7 +27,7 @@ $this->title = 'Patient Tracking System';
         <!-- Main content -->
         <!-- Small boxes (Stat box) -->
         <div class="row">
-            <div class="col-lg-6 col-xs-12">
+            <div class="col-lg-6 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-teal-active">
                     <div class="inner">
@@ -139,7 +139,7 @@ $this->title = 'Patient Tracking System';
                     </div>
                 </div>
             </div><!-- ./col -->
-            <div class="col-lg-6 col-xs-12">
+            <div class="col-lg-6 col-xs-6">
                 <!-- small box -->
                 <div class="small-box bg-aqua-active">
                     <div class="inner">

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Location;
 use Yii;
 
 /**
@@ -105,5 +106,36 @@ class User extends \yii\db\ActiveRecord
         if ($this->status == 1) return "Blocked";
         if ($this->status == 5) return "Wait";
         return "Active";
+    }
+
+    public function getCoorx(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['coorx'];
+    }
+
+    public function getCoory(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['coory'];
+    }
+
+    public function getLastTime(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['created_at'];
+    }
+
+    public function getSpeed(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['speed'];
+    }
+
+    public function getLastFloor(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        $rs = Floor::find()->where(['id' => $query['floor_id']])->one();
+        return $rs['label'];
+    }
+
+    public function getAzimuth(){
+        $query = Location::find()->where(['user_id' => $this->id])->orderBy('created_at DESC')->one();
+        return $query['azimuth'];
     }
 }
