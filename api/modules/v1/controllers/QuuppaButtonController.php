@@ -11,7 +11,7 @@ namespace api\modules\v1\controllers;
 use api\common\controllers\CustomActiveController;
 use api\common\models\Button;
 use backend\models\Tag;
-use common\models\ResidentLocation;
+use common\models\Location;
 use Yii;
 use yii\helpers\Url;
 use yii\web\ServerErrorHttpException;
@@ -53,7 +53,7 @@ class QuuppaButtonController extends CustomActiveController
     {
         if ($action->id == 'create'){
             $query = Tag::find()->where(['tagid' => $result['tagid']])->one();
-            $location = ResidentLocation::find()->where(['resident_id' => $query['resident_id']])->one();
+            $location = Location::find()->where(['resident_id' => $query['resident_id']])->one();
             if ($location){
                 return $this->redirect(Yii::$app->homeUrl.'user/alert?resident_id='.$location['resident_id'].'&last_position'.$location['floor_id']);
             }

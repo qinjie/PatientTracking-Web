@@ -13,41 +13,30 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <br>
 <div class="patient-index">
+    <div class="row">
+        <?php
+        $count = 0;
+        foreach ($floorList as $item) {
+            $count++;
+            echo "<div class='col-sm-6'>
+                <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>
+                <table class='tableDashboard'>
+                <tr>
+                <td>
+                # " . $count . "<br>
+                Room: <font color='#3b9bfc'>" . $item['label'] . "</font><br>
+                Patient: <font color='#3b9bfc'>" . ((new CommonFunction())->getResidentCount($item['id'])) . "</font><br>
+                Caregiver: <font color='#3b9bfc'>" . ((new CommonFunction())->getCaregiverCount($item['id'])) . "</font><br>
+                </td>
+                </tr>
+                </table>
+                <br>
+            </div>";
+        }
+        ?>
+    </div>
 </div>
-<?php
-$count = 0;
-foreach ($floorList as $item){
-    if ($count%2 == 0){
-        echo "<div class=\"border row\">";
-        echo "<div class=\"border col-sm-6\">";
-    }
-    else{
-        echo "<div class=\"border col-sm-6\">";
-    }
-    $count++;
-    echo "<a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>";
-    echo "<table class='tableDashboard'>";
-    echo "<tr>";
-    echo "<td>";
-    echo "No. ".$count."<br>";
-    echo "Room: <font color='#3b9bfc'>".$item['label']."</font><br>";
-    echo "Number of patient: <font color='#3b9bfc'>".((new CommonFunction())->getResidentCount($item['id']))."</font><br>";
-    echo "</td>";
-    echo "</tr>";
-    echo "</table>";
-    echo "</a>";
-    echo "<br>";
-    if ($count%2 == 0) {
-        echo "</div>";
-        echo "</div>";
-    } else {
-        echo "</div>";
-    }
-}
-    if ($count%2 == 1){
-        echo "</div>";
-    }
-?>
+
 
 <style>
     a:link {

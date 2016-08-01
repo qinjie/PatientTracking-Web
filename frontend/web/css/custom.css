@@ -24,15 +24,15 @@
 
 .tableDashboard{
     width: 100%;
-    font-size: 130%;
+    font-size: 18px;
     box-shadow: 1px 1px 1px #888888;
 }
 
-.tableDashboard, th{
+.tableDashboard{
     border: solid #D8E8FF 2px;
 }
 
-.tableDashboard, th, td {
+.tableDashboard, td {
     padding: 10px 0px 10px 10px;
 }
 

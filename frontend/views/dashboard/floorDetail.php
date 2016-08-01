@@ -217,7 +217,7 @@ if ((new CommonFunction())->checkImageExist($id)){
             }
             for(var i=0; i<arrayUser.length; i++){
                 ctx.font="18px Arial";
-                ctx.fillStyle = "#000000";
+                ctx.fillStyle = "#FFD600";
                 ctx.textAlign = "center";
                 ctx.fillText(arrayUser[i]['username'], arrayUser[i]['pixelx'], arrayUser[i]['pixely'] - 15);
             }

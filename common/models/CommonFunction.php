@@ -84,6 +84,17 @@ class CommonFunction extends \yii\db\ActiveRecord
         return $query[0]["cnt"];
     }
 
+    //get number of resident in floor $id
+    public function getCaregiverCount($id){
+        $query = Yii::$app->db->createCommand('
+            select count(id) as cnt
+            from location
+            where user_id is not NULL and floor_id = '.$id.' and outside = 0
+            and created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
+        ')->queryAll();
+        return $query[0]["cnt"];
+    }
+
     //get number of resident who is out of range
     public function getAlertCount(){
         $query = Yii::$app->db->createCommand('
