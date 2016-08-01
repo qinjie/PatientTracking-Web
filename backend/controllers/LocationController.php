@@ -79,23 +79,23 @@ class LocationController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
-        $model = new Location();
-        $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
-        $items2 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
-        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-                'items1' => $items1,
-                'items2' => $items2,
-                'items3' => $items3,
-            ]);
-        }
-    }
+//    public function actionCreate()
+//    {
+//        $model = new Location();
+//        $items1 = ArrayHelper::map(Resident::find()->all(), 'id', 'fullName');
+//        $items2 = ArrayHelper::map(Floor::find()->all(), 'id', 'label');
+//        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('create', [
+//                'model' => $model,
+//                'items1' => $items1,
+//                'items2' => $items2,
+//                'items3' => $items3,
+//            ]);
+//        }
+//    }
 
     /**
      * Updates an existing Location model.
@@ -103,23 +103,23 @@ class LocationController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-        $items1 = ArrayHelper::map(Resident::find()->orderBy('firstname', 'lastname')->all(), 'id', 'fullName');
-        $items2 = ArrayHelper::map(Floor::find()->orderBy('label')->all(), 'id', 'label');
-        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-                'items1' => $items1,
-                'items2' => $items2,
-                'items3' => $items3,
-            ]);
-        }
-    }
+//    public function actionUpdate($id)
+//    {
+//        $model = $this->findModel($id);
+//        $items1 = ArrayHelper::map(Resident::find()->orderBy('firstname', 'lastname')->all(), 'id', 'fullName');
+//        $items2 = ArrayHelper::map(Floor::find()->orderBy('label')->all(), 'id', 'label');
+//        $items3 = ArrayHelper::map(User::find()->all(), 'id', 'username');
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            return $this->redirect(['view', 'id' => $model->id]);
+//        } else {
+//            return $this->render('update', [
+//                'model' => $model,
+//                'items1' => $items1,
+//                'items2' => $items2,
+//                'items3' => $items3,
+//            ]);
+//        }
+//    }
 
     /**
      * Deletes an existing Location model.
