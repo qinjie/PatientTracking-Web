@@ -1,6 +1,10 @@
 <?php
 /* @var $this yii\web\View */
 
+use miloschuman\highcharts\Highcharts;
+use common\models\Resident;
+use common\models\Nextofkin;
+
 $this->title = Yii::$app->name;
 ?>
 <div class="jumbotron">
@@ -26,10 +30,6 @@ $this->title = Yii::$app->name;
 <!--</h3>-->
 <!-- Main content -->
 <!-- Small boxes (Stat box) -->
-<p align="left">
-    <h2><font color="#00BCD4">Quick Report</font></h2>
-</p>
-<br>
 <div class="row">
     <a href="resident">
         <div class="col-lg-3 col-xs-6">
@@ -89,6 +89,50 @@ $this->title = Yii::$app->name;
         </div>
     </a>
 </div><!-- /.row -->
+<br>
+<?php
+$thisMonth = date('Y-m-01 00:00:00', time());
+$lastMonth = date('Y-m-01 00:00:00', strtotime('-1 month'));
+$last2Month = date('Y-m-01 00:00:00', strtotime('-2 month'));
+$countResidentThisMonth = Resident::find()->andWhere("created_at >= '{$thisMonth}'")->count();
+$countResidentLastMonth = Resident::find()->andWhere("created_at <= '{$thisMonth}' and created_at >= '{$lastMonth}'")->count();
+$countResidentLast2Month = Resident::find()->andWhere("created_at <= '{$lastMonth}' and created_at >= '{$last2Month}'")->count();
+$countNextofkinThisMonth = Nextofkin::find()->andWhere("created_at >= '{$thisMonth}'")->count();
+$countNextofkinLastMonth = Nextofkin::find()->andWhere("created_at <= '{$thisMonth}' and created_at >= '{$lastMonth}'")->count();
+$countNextofkinLast2Month = Nextofkin::find()->andWhere("created_at <= '{$lastMonth}' and created_at >= '{$last2Month}'")->count();
+echo Highcharts::widget([
+    'options' => [
+        'title' => ['text' => 'Residents and Next-of-kin changes'],
+        //'subtitle' => ['text' => 'Count of posts and registered users'],
+        'chart' => ['type' => 'column'],
+        'xAxis' => [
+            'categories' => [date('F', strtotime('-2 month')), date('F', strtotime('-1 month')), date('F', time())],
+            'crosshair'=> true
+        ],
+        'yAxis' => [
+            'title' => ['text' => 'Counts'],
+            'min' => 0
+        ],
+        'tooltip'=>[
+            'headerFormat'=>'<span style="font-size:10px">{point.key}</span><table>',
+            'pointFormat'=>'<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y}</b></td></tr>',
+            'footerFormat'=>'</table>',
+            'shared'=>true,
+            'useHTML'=>true,
+        ],
+        'plotOptions'=>[
+            'column'=>[
+                'pointPadding'=>0.2,
+                'borderWidth'=>0,
+            ],
+        ],
+        'series' => [
+            ['name' => 'Resident', 'data' => [(int) $countResidentLast2Month, (int) $countResidentLastMonth, (int) $countResidentThisMonth]],
+            ['name' => 'NextOfKin', 'data' => [(int) $countNextofkinLast2Month, (int) $countNextofkinLastMonth, (int) $countNextofkinThisMonth]],
+        ]
+    ]
+]);
+?>
 <!-- Main row -->
 
 <?php

@@ -15,15 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="patient-index">
     <div class="row">
         <?php
-        $count = 0;
         foreach ($floorList as $item) {
-            $count++;
             echo "<div class='col-sm-6'>
                 <a href='".Yii::$app->homeUrl."dashboard/floordetail?id=".$item['id']."'>
                 <table class='tableDashboard'>
                 <tr>
                 <td>
-                # " . $count . "<br>
                 Room: <font color='#3b9bfc'>" . $item['label'] . "</font><br>
                 Patient: <font color='#3b9bfc'>" . ((new CommonFunction())->getResidentCount($item['id'])) . "</font><br>
                 Caregiver: <font color='#3b9bfc'>" . ((new CommonFunction())->getCaregiverCount($item['id'])) . "</font><br>

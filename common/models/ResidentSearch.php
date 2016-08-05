@@ -26,7 +26,7 @@ class ResidentSearch extends Resident
     {
         return [
             [['id'], 'integer'],
-            [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'lastmodified', 'fullName', 'coorx', 'coory', 'speed', 'azimuth', 'lastFloorId'], 'safe'],
+            [['firstname', 'lastname', 'nric', 'gender', 'birthday', 'contact', 'remark', 'created_at', 'updated_at', 'fullName', 'coorx', 'coory', 'speed', 'azimuth', 'lastFloorId'], 'safe'],
         ];
     }
 
@@ -71,7 +71,8 @@ class ResidentSearch extends Resident
                 'birthday',
                 'contact',
                 'remark',
-                'lastmodified',
+                'created_at',
+                'updated_at',
                 'fullName' => [
                     'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
                     'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
@@ -108,7 +109,8 @@ class ResidentSearch extends Resident
         $query->andFilterWhere([
             'resident.id' => $this->id,
             'birthday' => $this->birthday,
-            'lastmodified' => $this->lastmodified,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'azimuth' => $this->azimuth,
             'coorx' => $this->coorx,
             'coory' => $this->coory,

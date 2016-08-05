@@ -21,7 +21,8 @@ use yii\helpers\Html;
  * @property string $birthday
  * @property string $contact
  * @property string $remark
- * @property string $lastmodified
+ * @property string $created_at
+ * @property string $updated_at
  *
  * @property Location[] $residentLocations
  * @property ResidentRelative[] $residentRelatives
@@ -44,11 +45,26 @@ class Resident extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname', 'nric'], 'required'],
-            [['birthday', 'lastmodified'], 'safe'],
+            [['birthday', 'created_at', 'updated_at'], 'safe'],
             [['firstname', 'lastname'], 'string', 'max' => 100],
             [['nric', 'contact'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 10],
             [['remark'], 'string', 'max' => 500],
+        ];
+   }
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                // Modify only created not updated attribute
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -66,7 +82,8 @@ class Resident extends \yii\db\ActiveRecord
             'birthday' => 'Birthday',
             'contact' => 'Contact',
             'remark' => 'Remark',
-            'lastmodified' => 'Lastmodified',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
             'fullName' => Yii::t('app', 'Full Name'),
             'floor' => Yii::t('app', 'Floor'),
             'coorx' => 'X',
