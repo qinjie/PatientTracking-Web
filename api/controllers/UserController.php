@@ -1328,9 +1328,9 @@ class UserController extends Controller
                             from resident, location
                             where resident.id = resident_id
                             and (floor_id = \'' . $floor_id . '\')
-                            and outside = 0
-                            and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)')
+                            and outside = 0')
                 ->queryAll();
+            // and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)
 
             // calculate the width of the map in pixel corresponding to the markers (not the real width)
             $widthPixel = $bottomRightPixelx - $topLeftPixelx;
@@ -1358,26 +1358,28 @@ class UserController extends Controller
 
             // exception or the user is not detected by the system within location timeout
             if ($user == 'failed') {
-                return [];
+//                return [];
+            }
+            else{
+                // if the user is currently in the floor that has id equals floor_id
+                if ($user['floor_id'] == $floor_id) {
+                    // get the number of resident in the array $res
+                    $cnt = count($res);
+
+                    // add a ($cnt + 1)-th element (user-element) into $res describing the user's position information
+
+                    // set attribute 'id' to '-1' in order to distinguish with the residents
+                    $res[$cnt]['id'] = -1;
+
+                    // assign the 'coorx' and 'coory' attributes of the user-element
+                    $res[$cnt]['coorx'] = $user['coorx'];
+                    $res[$cnt]['coory'] = $user['coory'];
+
+                    // set green color for the user when displaying it on the map
+                    $res[$cnt]['color'] = -16711936;
+                }
             }
 
-            // if the user is currently in the floor that has id equals floor_id
-            if ($user['floor_id'] == $floor_id) {
-                // get the number of resident in the array $res
-                $cnt = count($res);
-
-                // add a ($cnt + 1)-th element (user-element) into $res describing the user's position information
-
-                // set attribute 'id' to '-1' in order to distinguish with the residents
-                $res[$cnt]['id'] = -1;
-
-                // assign the 'coorx' and 'coory' attributes of the user-element
-                $res[$cnt]['coorx'] = $user['coorx'];
-                $res[$cnt]['coory'] = $user['coory'];
-
-                // set green color for the user when displaying it on the map
-                $res[$cnt]['color'] = -16711936;
-            }
             for ($i = 0; $i < count($res); $i++) {
 
                 // calculate pixel positions of the resident basing on the above top left point and the above calculated widths and heights in pixel and meter of the map
@@ -1462,6 +1464,15 @@ class UserController extends Controller
     private function isAlertable($resident_id)
     {
         try {
+            $result = (new \yii\db\Query())
+                ->select(['id'])
+                ->limit(1)
+                ->from('notification')
+                ->andWhere('created_at >= (NOW() - INTERVAL 30 SECOND)')
+                ->all();
+            if (count($result) > 0) {
+                return false;
+            }
             // get the latest notification id that related to the resident_id parameter
             $notification_id = self::latestNotificationId($resident_id);
 

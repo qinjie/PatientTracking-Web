@@ -1,3 +1,4 @@
+<input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
 <link rel="shortcut icon" href="../../web/favicon.ico" type="icon" />
 <link rel="shortcut icon" href="../web/favicon.ico" type="icon" />
 
