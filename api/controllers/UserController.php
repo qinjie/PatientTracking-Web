@@ -1416,6 +1416,29 @@ class UserController extends Controller
 
     /**
      * @Description:
+     *          - get number of alert
+     */
+
+    public function actionAlertcount()
+    {
+        try {
+            // check session timeout
+            if (self::actionCheck() != 'isNotExpired')
+                return 'failed';
+            $query = (new \yii\db\Query())
+                ->select(['count(*) as num'])
+                ->from('notification')
+                ->andWhere('user_id is NULL')
+                ->all();
+            return $query[0]['num'];
+        } catch (\Exception $e) {
+            self::serverError();
+            return 'failed';
+        }
+    }
+
+    /**
+     * @Description:
      *          - push a updated notification corresponding to the $id parameter to all registered devices
      * @parameter:
      *          + $id: notification id
