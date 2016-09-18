@@ -55,7 +55,7 @@ class QuuppaButtonController extends CustomActiveController
             $query = Tag::find()->where(['tagid' => $result['tagid']])->one();
             $location = Location::find()->where(['resident_id' => $query['resident_id']])->one();
             if ($location){
-                return $this->redirect(Yii::$app->homeUrl.'user/alert?resident_id='.$location['resident_id'].'&last_position'.$location['floor_id']);
+                return $this->redirect(Yii::$app->homeUrl.'user/alert?resident_id='.$location['resident_id'].'&last_position'.$location['floor_id'].'&type=2');
             }
         }
     }

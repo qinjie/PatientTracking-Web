@@ -331,7 +331,6 @@ class CommonFunction extends \yii\db\ActiveRecord
                             from resident as r, location as l
                             where r.id = l.resident_id
                             and l.outside = 0
-                            and l.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
                             and (l.floor_id = '.$floorid.')')
             ->queryAll();
 
@@ -346,6 +345,13 @@ class CommonFunction extends \yii\db\ActiveRecord
             {
                 $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0*($res[$i]['coorx'] - $topLeftCoorx)/$widthCoor*$widthPixel));
                 $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0*($res[$i]['coory'] - $topLeftCoory)/$heightCoor*$heightPixel));
+                if (self::isAlerted($res[$i]['id'])) {
+                    // set red color
+                    $res[$i]['color'] = "RED";
+                } else {
+                    // set blue color
+                    $res[$i]['color'] = "BLUE";
+                }
             }
             catch(\Exception $ex)
             {
@@ -403,7 +409,6 @@ class CommonFunction extends \yii\db\ActiveRecord
                             from user as r, location as l
                             where r.id = l.user_id
                             and l.outside = 0
-                            and l.created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
                             and (l.floor_id = '.$floorid.')')
             ->queryAll();
 
@@ -425,5 +430,22 @@ class CommonFunction extends \yii\db\ActiveRecord
             }
         }
         return $res;
+    }
+
+    private function isAlerted($resident_id){
+        try {
+            $result = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('notification')
+                ->where(['resident_id' => $resident_id])
+                    ->andWhere('user_id is NULL')
+                ->all();
+            if (count($result) > 0) {
+                return true;
+            }
+            return false;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

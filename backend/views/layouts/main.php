@@ -50,7 +50,7 @@ AppAsset::register($this);
 //                ['label' => 'Quuppa tag info', 'url' => ['quuppa-tag-info/index']],
 //            ]
 //        ];
-        $menuItems[] = ['label' => 'Humans',
+        $menuItems[] = ['label' => 'Human',
             'items' => [
                 ['label' => 'Resident', 'url' => ['resident/index']],
                 ['label' => 'Next of kin', 'url' => ['nextofkin/index']],

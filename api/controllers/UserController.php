@@ -867,13 +867,15 @@ class UserController extends Controller
      *                   "id": "1",
      *                   "label": "Floor 1",
      *                   "file_path": "uploads/1.png",
-     *                   "thumbnail_path": "uploads/thumbnail_1.png"
+     *                   "thumbnail_path": "uploads/thumbnail_1.png",
+     *                   "count": "3"
      *                 },
      *                 {
      *                   "id": "2",
      *                   "label": "Floor 2",
      *                   "file_path": null,
      *                   "thumbnail_path": null
+     *                   "count": "3"
      *                 }
      *               ]
      */
@@ -891,6 +893,21 @@ class UserController extends Controller
                 ->leftJoin('floor_map', 'floor.id = floor_id')
                 ->orderBy('floor.id')
                 ->all();
+            for ($i = 0; $i < count($result); $i++) {
+                $count = (new \yii\db\Query())
+                    ->select('count(*) as count')
+                    ->from('location')
+                    ->where(['floor_id' => $result[$i]['id']])
+                    ->all();
+                $alert = (new \yii\db\Query())
+                    ->select('count(*) as alert')
+                    ->from('notification')
+                    ->where(['last_position' => $result[$i]['id']])
+                    ->andWhere('user_id is NULL')
+                    ->all();
+                $result[$i]['count'] = $count[0]['count'];
+                $result[$i]['ongoing_alert'] = $alert[0]['alert'];
+            }
             return $result;
         } catch (\Exception $e) {
             self::serverError();
@@ -947,10 +964,11 @@ class UserController extends Controller
             // query all notifications corresponding to id and ok parameter and sort them in descending order by updated time
             // and user_id and username who has taken care of the notification
             $result = (new \yii\db\Query())
-                ->select(['notification.id', 'notification.resident_id', 'firstname', 'lastname', 'last_position', 'user_id', 'username'])
+                ->select(['notification.id', 'notification.resident_id', 'firstname', 'lastname', 'last_position', 'user_id', 'username', 'notification.created_at', 'floor.label as last_position_label', 'notification.type'])
                 ->from('notification')
                 ->leftJoin('user', 'notification.user_id = user.id')
                 ->innerJoin('resident', 'notification.resident_id = resident.id')
+                ->leftJoin('floor', 'notification.last_position = floor.id')
                 ->andWhere('\'' . $id . '\' =  \'all\' or notification.id = \'' . $id . '\'')
                 ->andWhere('\'' . $ok . '\' = \'all\' or user_id is NULL')
                 ->orderBy('notification.updated_at desc')
@@ -988,6 +1006,10 @@ class UserController extends Controller
      *                  + mac_address: MAC address of the target device that will receive the notification,
      *                                 'all' for all devices
      *                                 specific MAC address: only for resending notification if user logs in the device
+     *                  + type: Type of alert
+     *                      1: Resident go to alert area
+     *                      2: Resident press the button
+     *                      3: Resident go out of tracking area
      *
      *          - header:
      *                  + token: token for checking session timeout
@@ -1003,7 +1025,7 @@ class UserController extends Controller
      *               2. isNotAlertable: the pushing notification request is not accepted because there is a notification related to the resident has not been taken care
      *               3. success: the pushing notification request is accepted and successfully send the notification to target devices
      */
-    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $mac_address = 'all')
+    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $mac_address = 'all', $type = 1)
     {
         try {
             // if the request requests a new notification for all devices but there exists an untakencare notification related to the resident
@@ -1036,7 +1058,7 @@ class UserController extends Controller
 
                 // insert a new record into notification table for a new notification related to the resident
                 $result = Yii::$app->db->createCommand()
-                    ->insert('notification', ['resident_id' => $resident_id, 'last_position' => $last_position, 'created_at' => $now, 'updated_at' => $now])->execute();
+                    ->insert('notification', ['resident_id' => $resident_id, 'last_position' => $last_position, 'created_at' => $now, 'updated_at' => $now, 'type' => $type])->execute();
 
                 // failed inserting
                 if ($result != 1) {
@@ -1087,8 +1109,8 @@ class UserController extends Controller
             }
 
             // push a notification to all devices which have registered FCM token that contained in $ids with $notification and $data content
-            self::sendFirebaseCloudMessage($ids, $notification, $data);
-            return 'success';
+            return self::sendFirebaseCloudMessage($ids, $notification, $data);
+//            return 'success';
         } catch (\Exception $e) {
             self::serverError();
             return 'failed';
@@ -1328,7 +1350,8 @@ class UserController extends Controller
                             from resident, location
                             where resident.id = resident_id
                             and (floor_id = \'' . $floor_id . '\')
-                            and outside = 0')
+                            and outside = 0
+                            and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)')
                 ->queryAll();
             // and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)
 
@@ -1397,12 +1420,12 @@ class UserController extends Controller
                 if ($res[$i]['id'] != -1) {
 
                     // if there is currently no untakencare notification related to the resident
-                    if (self::isAlertable($res[$i]['id'])) {
-                        // set blue color
-                        $res[$i]['color'] = -16776961;
-                    } else {
+                    if (self::isAlerted($res[$i]['id'])) {
                         // set red color
                         $res[$i]['color'] = -65536;
+                    } else {
+                        // set blue color
+                        $res[$i]['color'] = -16776961;
                     }
 
                 }
@@ -1411,6 +1434,23 @@ class UserController extends Controller
         } catch (\Exception $e) {
             self::serverError();
             return [];
+        }
+    }
+
+    private function isAlerted($resident_id){
+        try {
+            $result = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('notification')
+                ->where(['resident_id' => $resident_id])
+                ->andWhere('user_id is not NULL')
+                ->all();
+            if (count($result) > 0) {
+                return true;
+            }
+            return false;
+        } catch (\Exception $e) {
+            return false;
         }
     }
 
@@ -1489,9 +1529,9 @@ class UserController extends Controller
         try {
             $result = (new \yii\db\Query())
                 ->select(['id'])
-                ->limit(1)
                 ->from('notification')
-                ->andWhere('created_at >= (NOW() - INTERVAL 30 SECOND)')
+                ->where(['resident_id' => $resident_id])
+                ->andWhere('updated_at >= (NOW() - INTERVAL ' . Yii::$app->params['alertTimeOut'] . ' SECOND)')
                 ->all();
             if (count($result) > 0) {
                 return false;

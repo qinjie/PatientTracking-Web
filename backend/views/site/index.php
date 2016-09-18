@@ -31,7 +31,7 @@ $this->title = 'Patient Tracking System';
                 <!-- small box -->
                 <div class="small-box bg-teal-active">
                     <div class="inner">
-                        <h4>Humans</h4>
+                        <h4>Human</h4>
                         <p>&nbsp;</p>
                     </div>
                     <div class="icon inner">

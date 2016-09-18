@@ -12,7 +12,7 @@ use yii\db\Expression;
  *
  * @property integer $id
  * @property integer $floor_id
- * @property string $quuppa_id
+ * @property string $quuppa_id      // Zone ID
  * @property string $description
  * @property integer $status
  * @property string $created_at
@@ -67,8 +67,8 @@ class AlertArea extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'floor_id' => 'Floor ID',
-            'quuppa_id' => 'Quuppa Id',
+            'floor_id' => 'Floor',
+            'quuppa_id' => 'Zone ID',
             'description' => 'Description',
             'status' => 'Status',
             'created_at' => 'Created At',

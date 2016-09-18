@@ -18,6 +18,20 @@ $imagePath = (new \common\models\CommonFunction())->getImgPath($id);
     <h1><?= Html::encode($floorName) ?></h1>
 </div>
 <br>
+
+<h3 style="color: #00a7d0;">Floor map</h3>
+<div class="marker-index">
+    <div align="center" class="marker-view">
+        <a id="image" onmousemove="showCoords(event)" onmouseout="clearCoor()" class="tooltipCustom">
+            <canvas id="myCanvas">
+                Your browser does not support the HTML5 canvas tag.
+            </canvas>
+            <span>
+                    <p id="coorxy"></p>
+                </span>
+        </a>
+    </div>
+</div>
 <?php
 Modal::begin([
     'header' => '<h4>Detail</h4>',
@@ -27,7 +41,7 @@ Modal::begin([
 echo "<div id='modalContent'></div>";
 Modal::end();
 
-Pjax::begin(['id' => 'PjaxGrid']);
+Pjax::begin(['id' => 'PjaxGrid', 'timeout' => 3000]);
 echo "<h3 style=\"color: #00a7d0\">Resident list</h3>";
 $arrayCoor = (new CommonFunction())->getResidentPixel($id);
 $arrayCoorUser = (new CommonFunction())->getUserPixel($id);
@@ -73,22 +87,7 @@ echo GridView::widget([
     ],
 ]);
 Pjax::end();
-if ((new CommonFunction())->checkImageExist($id)){
-    echo "<h3 style=\"color: #00a7d0\">Floor map</h3>";
-}
 ?>
-<div class="marker-index">
-    <div align="center" class="marker-view">
-        <a id="image" onmousemove="showCoords(event)" onmouseout="clearCoor()" class="tooltipCustom">
-            <canvas id="myCanvas">
-                Your browser does not support the HTML5 canvas tag.
-            </canvas>
-                <span>
-                    <p id="coorxy"></p>
-                </span>
-        </a>
-    </div>
-</div>
 
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 
@@ -200,7 +199,11 @@ if ((new CommonFunction())->checkImageExist($id)){
             for(var i=0; i<array.length; i++){
                 ctx.beginPath();
                 ctx.arc(array[i]['pixelx'], array[i]['pixely'], 10, 0, 2 * Math.PI, false);
-                ctx.fillStyle = '#F44336';
+                if (array[i]['color'] == "RED"){
+                    ctx.fillStyle = '#F44336';
+                }else{
+                    ctx.fillStyle = '#2196F3';
+                }
                 ctx.fill();
             }
             for(var i=0; i<arrayUser.length; i++){
@@ -217,7 +220,7 @@ if ((new CommonFunction())->checkImageExist($id)){
             }
             for(var i=0; i<arrayUser.length; i++){
                 ctx.font="18px Arial";
-                ctx.fillStyle = "#FFD600";
+                ctx.fillStyle = "#EF6C00";
                 ctx.textAlign = "center";
                 ctx.fillText(arrayUser[i]['username'], arrayUser[i]['pixelx'], arrayUser[i]['pixely'] - 15);
             }
@@ -228,7 +231,7 @@ if ((new CommonFunction())->checkImageExist($id)){
 
     setInterval(function () {
         $.pjax.reload({container:'#PjaxGrid'});
-    }, 2000)
+    }, 3000)
 
 
 </script>
