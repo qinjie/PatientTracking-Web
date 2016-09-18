@@ -64,18 +64,18 @@ class LocationSearch extends Location
             'attributes' =>[
                 'id',
                 'resident_id' => [
-                    'asc' => ['Resident.firstname' => SORT_ASC, 'Resident.lastname' => SORT_ASC],
-                    'desc' => ['Resident.firstname' => SORT_DESC, 'Resident.lastname' => SORT_DESC],
+                    'asc' => ['resident.firstname' => SORT_ASC, 'resident.lastname' => SORT_ASC],
+                    'desc' => ['resident.firstname' => SORT_DESC, 'resident.lastname' => SORT_DESC],
                     'default' => SORT_ASC
                 ],
                 'user_id' => [
-                    'asc' => ['User.username' => SORT_ASC],
-                    'desc' => ['User.username' => SORT_DESC],
+                    'asc' => ['user.username' => SORT_ASC],
+                    'desc' => ['user.username' => SORT_DESC],
                     'default' => SORT_ASC
                 ],
                 'floor_id' => [
-                    'asc' => ['Floor.label' => SORT_ASC],
-                    'desc' => ['Floor.label' => SORT_DESC],
+                    'asc' => ['floor.label' => SORT_ASC],
+                    'desc' => ['floor.label' => SORT_DESC],
                     'default' => SORT_ASC
                 ],
                 'coorx',

@@ -33,7 +33,7 @@ $imagePath = (new CommonFunction())->getImgPath($floorId);
     Modal::end();
     ?>
 <!--    Map-->
-
+    <br>
     <div align="center" class="marker-view">
         <a id="image" onmousemove="showCoords(event)" onmouseout="clearCoor()" class="tooltipCustom">
             <canvas id="myCanvas" width="500" height="500">
