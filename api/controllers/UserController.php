@@ -1350,8 +1350,7 @@ class UserController extends Controller
                             from resident, location
                             where resident.id = resident_id
                             and (floor_id = \'' . $floor_id . '\')
-                            and outside = 0
-                            and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)')
+                            and outside = 0')
                 ->queryAll();
             // and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)
 
