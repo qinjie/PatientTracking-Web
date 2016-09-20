@@ -554,17 +554,31 @@ class UserController extends Controller
             $sort = $order1 . ', ' . $order2 . ', ' . $order3 . ', ' . $order4;
 
             // query data to search resident basing on name, floor id within location timeout and sort the result
-            $result = Yii::$app->db
-                ->createCommand('select resident.id, firstname, lastname, floor_id, label, coorx, coory
+            //$result = Yii::$app->db
+            //    ->createCommand('select resident.id, firstname, lastname, floor_id, label, coorx, coory
+            //               from resident, floor, location
+            //                where resident.id = resident_id
+            //                and floor.id = floor_id
+            //                and outside = 0
+            //                and location.created_at >= ((NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND))
+            //                and REPLACE(CONCAT(`firstname`, `lastname`), \' \', \'\') like \'%' . $name . '%\'
+            //                and (\'' . $location . '\' = \'all\' or floor_id = \'' . $location . '\')
+            //                order by ' . $sort)
+            //    ->queryAll();
+
+            $cmd = Yii::$app->db
+                ->createCommand("select resident.id, firstname, lastname, floor_id, label, coorx, coory
                             from resident, floor, location
                             where resident.id = resident_id
                             and floor.id = floor_id
                             and outside = 0
-                            and location.created_at >= ((NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND))
-                            and REPLACE(CONCAT(`firstname`, `lastname`), \' \', \'\') like \'%' . $name . '%\'
-                            and (\'' . $location . '\' = \'all\' or floor_id = \'' . $location . '\')
-                            order by ' . $sort)
-                ->queryAll();
+							and REPLACE(CONCAT(`firstname`, `lastname`), ' ', '') like :name
+							and ('all'=:location or floor_id = :location)
+                            order by :sort");
+            $cmd->bindValue(':location', $location);
+            $cmd->bindValue(':sort', $sort);
+            $cmd->bindValue(':name', '%'.$name.'%');
+            $result = $cmd->queryAll();
             return $result;
         } catch (\Exception $e) {
             self::serverError();

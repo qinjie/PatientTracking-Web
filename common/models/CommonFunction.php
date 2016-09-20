@@ -70,7 +70,12 @@ class CommonFunction extends \yii\db\ActiveRecord
     //get image Path by Floor_id
     public function getImgPath($id){
         $query = FloorMap::find()->where(['floor_id' => $id])->one();
-        return $query['file_path'];
+        if ($query){
+            return $query['file_path'];
+        }
+        else{
+            return "na.png";
+        }
     }
 
     //get number of resident in floor $id
@@ -100,8 +105,7 @@ class CommonFunction extends \yii\db\ActiveRecord
         $query = Yii::$app->db->createCommand('
             select count(id) as cnt
             from location
-            where resident_id is not NULL and (outside != 0 or 
-            created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())
+            where resident_id in (SELECT resident_id FROM notification WHERE user_id IS NULL)
         ')->queryAll();
         return $query[0]["cnt"];
     }

@@ -226,70 +226,70 @@ class LocationSearch extends Location
         return $dataProvider;
     }
 
-    public function searchAlert($params){
-        $query = Location::find();
-        $query->andWhere('(outside != 0) or (location.created_at not between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW())');
-        $query->joinWith('resident');
-        $query->joinWith('floor');
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        $dataProvider->setSort([
-            'attributes' =>[
-                'id',
-                'residentName' => [
-                    'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
-                    'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
-                'residentGender' => [
-                    'asc' => ['resident.gender' => SORT_ASC],
-                    'desc' => ['resident.gender' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
-                'residentBirthday' => [
-                    'asc' => ['resident.birthday' => SORT_ASC],
-                    'desc' => ['resident.birthday' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
-                'floorName' => [
-                    'asc' => ['Floor.label' => SORT_ASC],
-                    'desc' => ['Floor.label' => SORT_DESC],
-                    'default' => SORT_ASC
-                ],
-                'type',
-                'outside',
-                'coorx',
-                'coory',
-                'speed',
-                'azimuth',
-            ]
-        ]);
-        $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
-
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'outside' => $this->outside,
-            'created_at' => $this->created_at,
-        ]);
-        $query
-            ->andFilterWhere(['like', 'floor.label', $this->floorName])
-            ->andFilterWhere(['like', 'resident.gender', $this->residentGender])
-            ->andFilterWhere(['like', 'resident.birthday', $this->residentBirthday])
-            ->andFilterWhere(['like', 'coorx', $this->coorx])
-            ->andFilterWhere(['like', 'coory', $this->coory])
-            ->andFilterWhere(['like', 'speed', $this->speed])
-            ->andFilterWhere(['like', 'zone', $this->zone])
-            ->andFilterWhere(['like', 'azimuth', $this->azimuth])
-            ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->residentName.'%"');
-
-        return $dataProvider;
-    }
+//    public function searchAlert($params){
+//        $query = Location::find();
+//        $query->andWhere('resident_id in (SELECT resident_id FROM notification WHERE user_id IS NULL)');
+//        $query->joinWith('resident');
+//        $query->joinWith('floor');
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => $query,
+//        ]);
+//        $dataProvider->setSort([
+//            'attributes' =>[
+//                'id',
+//                'residentName' => [
+//                    'asc' => ['firstname' => SORT_ASC, 'lastname' => SORT_ASC],
+//                    'desc' => ['firstname' => SORT_DESC, 'lastname' => SORT_DESC],
+//                    'default' => SORT_ASC
+//                ],
+//                'residentGender' => [
+//                    'asc' => ['resident.gender' => SORT_ASC],
+//                    'desc' => ['resident.gender' => SORT_DESC],
+//                    'default' => SORT_ASC
+//                ],
+//                'residentBirthday' => [
+//                    'asc' => ['resident.birthday' => SORT_ASC],
+//                    'desc' => ['resident.birthday' => SORT_DESC],
+//                    'default' => SORT_ASC
+//                ],
+//                'floorName' => [
+//                    'asc' => ['Floor.label' => SORT_ASC],
+//                    'desc' => ['Floor.label' => SORT_DESC],
+//                    'default' => SORT_ASC
+//                ],
+//                'type',
+//                'outside',
+//                'coorx',
+//                'coory',
+//                'speed',
+//                'azimuth',
+//            ]
+//        ]);
+//        $this->load($params);
+//
+//        if (!$this->validate()) {
+//            // uncomment the following line if you do not want to return any records when validation fails
+//            // $query->where('0=1');
+//            return $dataProvider;
+//        }
+//
+//        // grid filtering conditions
+//        $query->andFilterWhere([
+//            'id' => $this->id,
+//            'outside' => $this->outside,
+//            'created_at' => $this->created_at,
+//        ]);
+//        $query
+//            ->andFilterWhere(['like', 'floor.label', $this->floorName])
+//            ->andFilterWhere(['like', 'resident.gender', $this->residentGender])
+//            ->andFilterWhere(['like', 'resident.birthday', $this->residentBirthday])
+//            ->andFilterWhere(['like', 'coorx', $this->coorx])
+//            ->andFilterWhere(['like', 'coory', $this->coory])
+//            ->andFilterWhere(['like', 'speed', $this->speed])
+//            ->andFilterWhere(['like', 'zone', $this->zone])
+//            ->andFilterWhere(['like', 'azimuth', $this->azimuth])
+//            ->andWhere('concat(firstname, \' \', lastname) LIKE "%'.$this->residentName.'%"');
+//
+//        return $dataProvider;
+//    }
 }

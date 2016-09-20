@@ -7,9 +7,11 @@
  */
 
 namespace frontend\controllers;
+use backend\models\Floor;
 use backend\models\User;
 use backend\models\UserSearch;
 use common\models\LocationSearch;
+use common\models\NotificationSearch;
 use Yii;
 use common\models\CommonFunction;
 use yii\filters\AccessControl;
@@ -52,6 +54,8 @@ class DashboardController extends Controller
     }
 
     public function actionFloordetail($id){
+        $searchModelAlert = new NotificationSearch();
+        $dataProviderAlert = $searchModelAlert->searchAlert(Yii::$app->request->queryParams);
         $searchModel = new LocationSearch();
         $dataProvider = $searchModel->searchFloor(Yii::$app->request->queryParams, $id);
         $searchModelUser = new LocationSearch();
@@ -60,6 +64,8 @@ class DashboardController extends Controller
         return $this->render('floorDetail',
             [
                 'id' => $id,
+                'searchModelAlert' => $searchModelAlert,
+                'dataProviderAlert' => $dataProviderAlert,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'searchModelUser' => $searchModelUser,
@@ -69,9 +75,15 @@ class DashboardController extends Controller
     }
 
     public function actionAlertdetail(){
-        $searchModel = new LocationSearch();
-        $dataProvider = $searchModel->searchAlert(Yii::$app->request->queryParams);
+        $searchModel = new NotificationSearch();
+        $dataProvider = $searchModel->searchAlertList(Yii::$app->request->queryParams);
+        $floorArray = [];
+        $query = Floor::find()->all();
+        foreach ($query as $item){
+            $floorArray += [$item['id'] => $item['label']];
+        }
         return $this->render('alertDetail', [
+            'floorArray' => $floorArray,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
