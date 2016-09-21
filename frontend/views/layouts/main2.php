@@ -59,6 +59,7 @@ AppAsset::register($this);
          margin-right: 2px;
     }
     #mapContainer {
+        display: inline-block;
         position: absolute;
         top: 0;
         right: 0;

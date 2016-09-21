@@ -1123,8 +1123,8 @@ class UserController extends Controller
             }
 
             // push a notification to all devices which have registered FCM token that contained in $ids with $notification and $data content
-            return self::sendFirebaseCloudMessage($ids, $notification, $data);
-//            return 'success';
+            self::sendFirebaseCloudMessage($ids, $notification, $data);
+            return 'success';
         } catch (\Exception $e) {
             self::serverError();
             return 'failed';

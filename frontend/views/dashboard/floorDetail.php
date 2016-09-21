@@ -9,7 +9,7 @@ use yii\bootstrap\Modal;
 /* @var $searchModelUser common\models\ResidentSearch */
 /* @var $dataProviderUser yii\data\ActiveDataProvider */
 $this->context->layout  = 'main2';
-$this->title = 'Floor Details';
+$this->title = $floorName;
 $imagePath = (new \common\models\CommonFunction())->getImgPath($id);
 list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePath);
 ?>
@@ -26,16 +26,17 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                             Your browser does not support the HTML5 canvas tag.
                         </canvas>
                         <span>
-                    <p id="coorxy"></p>
-                </span>
+                            <p id="coorxy"></p>
+                        </span>
                     </a>
                 </div>
             </div>
         </div>
+        <img style="position: absolute; right: 0px; top: 0px;" class="fullscreen-button" src="../../web/fullscreen_icon.png" width="35" height="35" onclick="goFullScreen();">
     </div>
     <div id="cPane" style="width: 19.974059662775616%;">
         <div id="tagContainer">
-            <p align="center"><a href="javascript:goFullScreen();">Go Fullscreen Map</a></p>
+            <h3 align="center"><?= $floorName ?></h3>
             <?php
             Modal::begin([
                 'header' => '<h4>Detail</h4>',
@@ -69,29 +70,28 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                             return Html::a(Html::encode($data->residentName),Yii::$app->homeUrl.'resident/view?id='.$data->resident_id);},
                         'enableSorting' => false,
                     ],
-                    [
-                        'label'=>'Gender',
-                        'attribute' => 'residentGender',
-                        'enableSorting' => false,
-                    ],
-                    [
-                        'label'=>'DoB',
-                        'attribute' => 'residentBirthday',
-                        'enableSorting' => false,
-                    ],
+//                    [
+//                        'label'=>'Gender',
+//                        'attribute' => 'residentGender',
+//                        'enableSorting' => false,
+//                    ],
+//                    [
+//                        'label'=>'DoB',
+//                        'attribute' => 'residentBirthday',
+//                        'enableSorting' => false,
+//                    ],
                     [
                         'label' => 'Floor',
                         'attribute' => 'floorName',
                         'value' => 'floorName',
                         'enableSorting' => false,
                     ],
-//                    [
-//                        'label' => 'Alert type',
-//                        'attribute'=>'outside',
-//                        'value'=>'outsideAlert',
-//                        'filter'=>array(0=>"Time out", 1=>"Outside"),
-//                        'enableSorting' => false,
-//                    ],
+                    [
+                        'label' => 'Type',
+                        'attribute'=>'alertType',
+                        'value'=>'alertType',
+                        'enableSorting' => false,
+                    ],
                 ],
             ]);
             echo "<h4 style=\"color: #00a7d0\" align='center'>Resident</h4>";
