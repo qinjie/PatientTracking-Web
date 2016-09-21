@@ -47,7 +47,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
 
             Pjax::begin(['id' => 'PjaxGrid']);
 
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Alert list</h4>";
+            echo "<h4 style=\"color: #00a7d0\" align='center'>Alert</h4>";
             echo GridView::widget([
                 'dataProvider' => $dataProviderAlert,
 //                'filterModel' => $searchModelAlert,
@@ -94,7 +94,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
 //                    ],
                 ],
             ]);
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Resident list</h4>";
+            echo "<h4 style=\"color: #00a7d0\" align='center'>Resident</h4>";
             $arrayCoor = (new CommonFunction())->getResidentPixel($id);
             $arrayCoorUser = (new CommonFunction())->getUserPixel($id);
             echo "<input id='arrayCoor' type=text value='".json_encode($arrayCoor)."' hidden>";
@@ -124,7 +124,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                     ]
                 ],
             ]);
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Caregiver list</h4>";
+            echo "<h4 style=\"color: #00a7d0\" align='center'>Caregiver</h4>";
             echo GridView::widget([
                 'dataProvider' => $dataProviderUser,
 //                'filterModel' => $searchModelUser,
