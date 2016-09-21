@@ -17,6 +17,15 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
 
 
 <div id="container">
+    <?php
+        Modal::begin([
+            'header' => '<h4>Information detail</h4>',
+            'id' => 'modal',
+            'size' => 'modal-lg',
+        ]);
+        echo "<div id='modalContent'></div>";
+        Modal::end();
+    ?>
     <div id="mapContainer" style="width: 80.02594033722438%;">
         <div>
             <div>
@@ -38,14 +47,6 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
         <div id="tagContainer">
             <h3 align="center"><font color='#3b9bfc'>[<?= $floorName ?>]</font></h3>
             <?php
-            Modal::begin([
-                'header' => '<h4>Information detail</h4>',
-                'id' => 'modal',
-                'size' => 'modal-lg',
-            ]);
-            echo "<div id='modalContent'></div>";
-            Modal::end();
-
             Pjax::begin(['id' => 'PjaxGrid']);
 
             echo "<h4 style=\"color: #00a7d0\" align='center'>Alert</h4>";

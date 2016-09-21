@@ -13,12 +13,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="resident-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><img height="120" width="120" src="../../web/resident<?=$id?>.png">&nbsp;<?= Html::encode($this->title) ?></h1>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'fullName',
             'nric',
             'gender',
@@ -30,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'contact',
             'lastFloor',
-            'coorx',
-            'coory',
-            'speed',
-            'azimuth',
+//            'coorx',
+//            'coory',
+//            'speed',
+//            'azimuth',
             'lastTime',
             'remark',
         ],
