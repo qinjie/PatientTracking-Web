@@ -10,18 +10,14 @@ $this->title = $model->username;
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><img height="120" width="120" src="../../web/nurse1.png">&nbsp;<?= Html::encode($this->title) ?></h1>
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'username',
             'roleName',
-            'coorx',
-            'coory',
-            'speed',
-            'azimuth',
+            'email',
         ],
     ]) ?>
 

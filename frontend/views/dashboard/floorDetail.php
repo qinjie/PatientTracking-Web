@@ -36,10 +36,10 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
     </div>
     <div id="cPane" style="width: 19.974059662775616%;">
         <div id="tagContainer">
-            <h3 align="center"><?= $floorName ?></h3>
+            <h3 align="center"><font color='#3b9bfc'>[<?= $floorName ?>]</font></h3>
             <?php
             Modal::begin([
-                'header' => '<h4>Detail</h4>',
+                'header' => '<h4>Information detail</h4>',
                 'id' => 'modal',
                 'size' => 'modal-lg',
             ]);
@@ -181,7 +181,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                 if (id != null && type == "resident"){
                     $.ajax({
                         type: "GET",
-                        url: "<?= Yii::$app->homeUrl?>resident/viewmodal?id=" + id,
+                        url: "<?= Yii::$app->homeUrl?>resident/residentmodal?id=" + id,
                         success:function(data) {
                             $('#modal').modal('show')
                                 .find('#modalContent')

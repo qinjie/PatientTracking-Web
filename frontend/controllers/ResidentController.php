@@ -73,10 +73,11 @@ class ResidentController extends Controller
         ]);
     }
 
-    public function actionViewmodal($id)
+    public function actionResidentmodal($id)
     {
-        return $this->renderAjax('viewModal', [
+        return $this->renderAjax('residentModal', [
             'model' => $this->findModel($id),
+            'id' => $id,
         ]);
     }
 
