@@ -23,7 +23,7 @@ class QuuppaButtonController extends CustomActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator']['except'] = ['view', /*'search', */'index', 'create'];
+        $behaviors['authenticator']['except'] = ['view', 'index', 'create'];
         $behaviors['access']['rules'] = [
             [   // No authentication required
                 'actions' => ['view', 'search', 'index', 'create'],
@@ -57,6 +57,9 @@ class QuuppaButtonController extends CustomActiveController
             if ($location){
                 return $this->redirect(Yii::$app->homeUrl.'user/alert?resident_id='.$location['resident_id'].'&last_position='.$location['floor_id'].'&type=2');
             }
+        }
+        else{
+            return $result;
         }
     }
 

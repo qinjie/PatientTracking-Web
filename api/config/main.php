@@ -57,34 +57,13 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'enableStrictParsing' => true,
+//            'enableStrictParsing' => true,
             'showScriptName' => false,
             // Add URL Rules for API
             'rules' => [
-//                # API for Account
-//                'GET <version:\w+>/account/login' => '<version>/account/login',
-//                'GET <version:\w+>/account/logout-all-sessions' => '<version>/account/logout-all-sessions',
-//                'GET <version:\w+>/account/logout-current-session' => '<version>/account/logout-current-session',
                 # API for ActiveRecords
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/quuppa-button',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
-                ],
-                ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => 'v1/resident-location',
-                    'extraPatterns' => [
-                        'GET search' => 'search',
-                    ],
-                    'tokens' => [
-                        # Keep 'id' for default CRUD action
-                        '{id}' => '<id:\\w+>',
-                    ],
+                    'controller' => ['v1/resident-location', 'v1/quuppa-button', 'v1/user'],
                 ],
             ],
         ]
