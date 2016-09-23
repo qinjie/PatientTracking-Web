@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use backend\models\FloorMap;
 use phpDocumentor\Reflection\Exception;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;
+use common\models\Location;
 
 /**
  * UserController implements API for client
@@ -1715,6 +1717,16 @@ class UserController extends Controller
                 ->from('resident')
                 ->where(['id' => $id])
                 ->all();
+            if ($result){
+                $query_floor = Location::find()->where(['resident_id' => $id])->one();
+                if ($query_floor){
+                    $result[0]['floor_id'] = $query_floor['floor_id'];
+                    $query_file = FloorMap::find()->where(['floor_id' => $query_floor['floor_id']])->one();
+                    if ($query_file){
+                        $result[0]['file_path'] = $query_file['file_path'];
+                    }
+                }
+            }
             return $result;
         } catch (\Exception $e) {
             return [];
