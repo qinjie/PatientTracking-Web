@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use backend\models\FloorMap;
+use common\models\User;
 use phpDocumentor\Reflection\Exception;
 use Yii;
 use yii\filters\VerbFilter;
@@ -199,6 +200,7 @@ class UserController extends Controller
             // generate session token using MD5 hashing algorithm from the above hash input
             $token = hash('md5', $hashInput);
 
+            $query = User::find()->where(['id' => $user_id])->one();
             // check if this is the first time the user corresponding to the above username logs in successfully
             if ($userTokenId == '-1') {
 
@@ -214,6 +216,8 @@ class UserController extends Controller
                 }
                 return [
                     'result' => 'correct',
+                    'username' => $username,
+                    'email' => $query['email'],
                     'token' => $token
                 ];
             }
@@ -229,6 +233,8 @@ class UserController extends Controller
             }
             return [
                 'result' => 'correct',
+                'username' => $username,
+                'email' => $query['email'],
                 'token' => $token
             ];
         } catch (\Exception $e) {
