@@ -8,12 +8,11 @@
 
 namespace api\modules\v1\controllers;
 
-use api\common\components\AccessRule;
-use api\common\components\TokenHelper;
 use api\common\controllers\CustomActiveController;
 
-use api\common\models\LoginModel;
 use api\common\models\UserToken;
+use common\components\AccessRule;
+use common\components\TokenHelper;
 use common\models\User;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
@@ -24,6 +23,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 use Yii;
+use api\common\models\LoginModel;
 
 class UserController extends CustomActiveController
 {
@@ -32,7 +32,7 @@ class UserController extends CustomActiveController
 
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::className(),
-            'except' => ['login', 'test'],
+            'except' => ['login'],
         ];
 
         $behaviors['access'] = [
@@ -47,7 +47,7 @@ class UserController extends CustomActiveController
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['logout', 'test'],
+                    'actions' => ['logout'],
                     'allow' => true,
                     'roles' => ['@'],
                 ]
@@ -94,10 +94,6 @@ class UserController extends CustomActiveController
                 throw new BadRequestHttpException(null);
         }
         throw new BadRequestHttpException('Invalid data');
-    }
-
-    public function actionTest(){
-        return Yii::$app->user->id;
     }
 
     public function actionLogout(){

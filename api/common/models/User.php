@@ -19,7 +19,7 @@ use yii\web\Link;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-class User extends \api\models\User
+class User extends \common\models\User
 {
 
     public function fields()

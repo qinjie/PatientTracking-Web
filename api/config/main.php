@@ -36,7 +36,7 @@ return [
             'format' => 'json',
         ],
         'user' => [
-            'identityClass' => 'api\models\User',
+            'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,
             'enableSession' => false,
             'loginUrl' => null,

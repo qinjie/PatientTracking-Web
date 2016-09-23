@@ -25,14 +25,14 @@ class TokenHelper
     {
         /*@var Token $model */
         $model = new UserToken();
-        $model->userId = $userId;
+        $model->user_id = $userId;
         $model->token = self::generateToken();
 //        $params = Yii::$app()->getParams();
 //        $interval = $params['restful_token_expired_seconds'];
         $interval = 30 * 24 * 60 * 60;
         $model->expire = date('Y-m-d H:i:s', time() + $interval);
         $model->label = is_null($label) ? self::TOKEN_LABEL_ACCESS : $label;
-        $model->ipAddress = \Yii::$app->getRequest()->getUserIP();
+        $model->mac_address = \Yii::$app->getRequest()->getUserIP();
         //UserToken::model()->deleteAllByAttributes(array("userId" => $model->userId, "label" => $model->label, "ipAddress" => $model->ipAddress));
         if ($model->save())
             return $model;
@@ -82,7 +82,7 @@ class TokenHelper
         self::updateExpire($record);
         self::cacheToken($token, $record);
 
-        return $record->userId;
+        return $record->user_id;
     }
 
     /**
@@ -136,4 +136,4 @@ class TokenHelper
         $token = $security->generateRandomString($length);
         return $token;
     }
-} 
+}

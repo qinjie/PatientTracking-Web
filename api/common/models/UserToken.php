@@ -16,7 +16,7 @@ use Yii;
  *
  * @property User $user
  */
-class UserToken extends \api\models\UserToken
+class UserToken extends \common\models\UserToken
 {
 
     public function extraFields()
