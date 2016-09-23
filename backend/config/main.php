@@ -23,6 +23,7 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => [
                 'name' => '_backendUser', // unique for backend
+                'path'=>'/backend/web'  // correct path for the backend app.
             ]
         ],
         'session' => [

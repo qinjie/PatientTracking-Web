@@ -27,17 +27,19 @@ return [
 //        ],
         'request' => [
             // Enable JSON Input
+            'enableCookieValidation' => false,
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ],
-            'cookieValidationKey' => 'MXtBcX_ZOCJVA4g9MOz6JoHtUvNFgkv8',
         ],
         'response' => [
             'format' => 'json',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'api\models\User',
             'enableAutoLogin' => false,
+            'enableSession' => false,
+            'loginUrl' => null,
         ],
         'log' => [
 //            'traceLevel' => YII_DEBUG ? 3 : 0,

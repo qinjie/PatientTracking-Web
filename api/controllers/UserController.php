@@ -920,7 +920,7 @@ class UserController extends Controller
                     ->andWhere('user_id is NULL')
                     ->all();
                 $result[$i]['count'] = $count[0]['count'];
-                $result[$i]['ongoing_alert'] = $alert[0]['alert'];
+                $result[$i]['ongoing_alerts'] = $alert[0]['alert'];
             }
             return $result;
         } catch (\Exception $e) {

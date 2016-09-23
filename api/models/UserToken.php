@@ -15,7 +15,7 @@ use yii\db\Expression;
  * @property integer $user_id
  * @property string $token
  * @property string $label
- * @property string $ip_address
+ * @property string $mac_address
  * @property string $expire
  * @property string $created_at
  * @property string $is_active
@@ -44,11 +44,6 @@ class UserToken extends ActiveRecord
                 ],
                 'value' => new Expression('NOW()'),
             ],
-            'blameable' => [
-                'class' => BlameableBehavior::className(),
-                'createdByAttribute' => 'user_id',
-                'updatedByAttribute' => null,
-            ],
         ];
     }
 
@@ -61,7 +56,7 @@ class UserToken extends ActiveRecord
             [['user_id'], 'required'],
             [['user_id'], 'integer'],
             [['expire', 'created_at'], 'safe'],
-            [['token', 'ip_address'], 'string', 'max' => 32],
+            [['token', 'mac_address'], 'string', 'max' => 32],
             [['label'], 'string', 'max' => 10],
             [['token'], 'unique']
         ];
@@ -77,7 +72,7 @@ class UserToken extends ActiveRecord
             'user_id' => 'User ID',
             'token' => 'Token',
             'label' => 'Label',
-            'ip_address' => 'Ip Address',
+            'mac_address' => 'Ip Address',
             'expire' => 'Expire',
             'created_at' => 'Created',
             'is_active' => 'Is Active',

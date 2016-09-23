@@ -8,63 +8,101 @@
 
 namespace api\modules\v1\controllers;
 
+use api\common\components\AccessRule;
+use api\common\components\TokenHelper;
 use api\common\controllers\CustomActiveController;
 
+use api\common\models\LoginModel;
+use api\common\models\UserToken;
 use common\models\User;
+use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\VerbFilter;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\web\UnauthorizedHttpException;
+use Yii;
 
 class UserController extends CustomActiveController
 {
-    public $modelClass = 'common\models\User';
+    public function behaviors() {
+        $behaviors = parent::behaviors();
 
-    public $serializer = [
-        'class' => 'yii\rest\Serializer',
-        //-- Include pagination information directly to simplify the client development work
-        'collectionEnvelope' => 'items',
-    ];
-
-    //-- disable, override or add actions
-    //-- when overriding default action, make sure current controller has checkAccess() method implemented
-    public function actions()
-    {
-        $actions = [
-//            'delete' => null,
-            //-- Add custom action
-            'user-exists' => [
-                'class' => 'app\controllers\actions\ActionUserExists',
-                'modelClass' => $this->modelClass,
-                'checkAccess' => [$this, 'checkAccess'],
-//                'params' => \Yii::$app->request->get(),
-            ]
+        $behaviors['authenticator'] = [
+            'class' => HttpBearerAuth::className(),
+            'except' => ['login', 'test'],
         ];
 
-        //-- disable the "delete" action
-//        unset($actions['delete']);
-//        return $actions;
-        return array_merge(parent::actions(), $actions);
-    }
-
-    public function verbs()
-    {
-        $verbs = [
-            'user-exists' => ['GET']
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'ruleConfig' => [
+                'class' => AccessRule::className(),
+            ],
+            'rules' => [
+                [
+                    'actions' => ['login'],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['logout', 'test'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ]
+            ],
+            'denyCallback' => function ($rule, $action) {
+                throw new UnauthorizedHttpException('You are not authorized');
+            },
         ];
-        return array_merge(parent::verbs(), $verbs);
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'login' => ['post'],
+                'logout' => ['get']
+            ],
+        ];
+
+        return $behaviors;
     }
 
-    /**
-     * Checks the privilege of the current user.
-     * @param string $action the ID of the action to be executed
-     * @param \yii\base\Model $model the model to be accessed. If null, it means no specific model is being accessed.
-     * @param array $params additional parameters
-     * @throws ForbiddenHttpException if the user does not have access
-     */
-    public function checkAccess($action, $model = null, $params = [])
-    {
-        // check if the user can access $action and $model
-        // throw ForbiddenHttpException if access should be denied
+    public function actionLogin() {
+        $request = Yii::$app->request;
+        $bodyParams = $request->bodyParams;
+        $username = $bodyParams['username'];
+        $password = $bodyParams['password'];
+        $mac_address = $bodyParams['mac_address'];
+        $model = new LoginModel();
+        $model->username = $username;
+        $model->password = $password;
+        if ($user = $model->login()) {
+            if ($user->status == User::STATUS_ACTIVE) {
+                UserToken::deleteAll(['user_id' => $user->id]);
+                $token = TokenHelper::createUserToken($user->id);
+                return [
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'token' => $token->token,
+                ];
+            } else throw new BadRequestHttpException(null);
+        } else {
+            if (isset($model->errors['username']))
+                throw new BadRequestHttpException(null);
+            if (isset($model->errors['password']))
+                throw new BadRequestHttpException(null);
+        }
+        throw new BadRequestHttpException('Invalid data');
     }
 
+    public function actionTest(){
+        return Yii::$app->user->id;
+    }
+
+    public function actionLogout(){
+        $id = Yii::$app->user->id;
+        UserToken::deleteAll(['user_id' => $id]);
+        return 'logout successfully';
+    }
 }

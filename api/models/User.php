@@ -1,7 +1,7 @@
 <?php
 namespace api\models;
 
-use TokenHelp;
+use api\common\components\TokenHelper;
 use common\models\query\UserQuery;
 use Yii;
 use yii\base\NotSupportedException;

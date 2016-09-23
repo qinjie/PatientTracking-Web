@@ -10,13 +10,13 @@ use Yii;
  * @property integer $user_id
  * @property string $token
  * @property string $label
- * @property string $ip_address
+ * @property string $mac_address
  * @property string $expire
  * @property string $created_at
  *
  * @property User $user
  */
-class UserToken extends \common\models\UserToken
+class UserToken extends \api\models\UserToken
 {
 
     public function extraFields()
