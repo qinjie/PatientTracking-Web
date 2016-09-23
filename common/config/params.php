@@ -7,4 +7,5 @@ return [
     'user.emailConfirmUserExpire' => 259200,    // 3 days
     'locationTimeOut' => '15', //seconds
     'alertTimeOut' => '15', //seconds
+    'alertListTimeOut' => '86400', //seconds = 1 day
 ];

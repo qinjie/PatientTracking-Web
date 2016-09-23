@@ -681,9 +681,20 @@ class UserController extends Controller
                 ->where('resident_relative.resident_id = ' . $id)
                 ->andWhere('nextofkin.id = resident_relative.nextofkin_id')
                 ->all();
+            $alert = (new \yii\db\Query())
+                ->select(['notification.id', 'last_position', 'user_id', 'username', 'notification.created_at', 'floor.label as last_position_label', 'notification.type'])
+                ->from('notification')
+                ->leftJoin('user', 'notification.user_id = user.id')
+                ->innerJoin('resident', 'notification.resident_id = resident.id')
+                ->leftJoin('floor', 'notification.last_position = floor.id')
+                ->where(['notification.resident_id' => $id])
+                ->andWhere('notification.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['alertListTimeOut'] . ' SECOND)')
+                ->orderBy('notification.updated_at desc')
+                ->all();
 
             // assign the $nex result as a attribute named 'nextofkin' in $res
             $res[0]['nextofkin'] = $nex;
+            $res[0]['alert_list'] = $alert;
 
             // return result as a object
             return $res[0];
@@ -1365,8 +1376,7 @@ class UserController extends Controller
                 ->createCommand('select resident.id, firstname, coorx, coory
                             from resident, location
                             where resident.id = resident_id
-                            and (floor_id = \'' . $floor_id . '\')
-                            and outside = 0')
+                            and (floor_id = \'' . $floor_id . '\')')
                 ->queryAll();
             // and location.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)
 
@@ -1458,7 +1468,7 @@ class UserController extends Controller
                 ->select(['id'])
                 ->from('notification')
                 ->where(['resident_id' => $resident_id])
-                ->andWhere('user_id is not NULL')
+                ->andWhere('user_id is NULL')
                 ->all();
             if (count($result) > 0) {
                 return true;
