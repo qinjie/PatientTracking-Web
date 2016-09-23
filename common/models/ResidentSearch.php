@@ -52,7 +52,7 @@ class ResidentSearch extends Resident
         $query = Resident::find();
         // add conditions that should always apply here
         //filter by floor
-        $query->joinWith('residentLocations');
+        $query->joinWith('location');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -64,8 +64,8 @@ class ResidentSearch extends Resident
                 'lastname',
                 'nric',
                 'lastFloorId' =>[
-                    'asc' => ['resident_location.floor_id' => SORT_ASC],
-                    'desc' => ['resident_location.floor_id' => SORT_DESC],
+                    'asc' => ['location.floor_id' => SORT_ASC],
+                    'desc' => ['location.floor_id' => SORT_DESC],
                 ],
                 'gender',
                 'birthday',

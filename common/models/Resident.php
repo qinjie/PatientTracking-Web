@@ -23,8 +23,9 @@ use yii\helpers\Html;
  * @property string $remark
  * @property string $created_at
  * @property string $updated_at
+ * @property string $abcd
  *
- * @property Location[] $residentLocations
+ * @property Location[] $location
  * @property ResidentRelative[] $residentRelatives
  * @property Tag[] $tags
  */
@@ -45,7 +46,7 @@ class Resident extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname', 'nric'], 'required'],
-            [['birthday', 'created_at', 'updated_at'], 'safe'],
+            [['birthday', 'created_at', 'updated_at', 'abcd'], 'safe'],
             [['firstname', 'lastname'], 'string', 'max' => 100],
             [['nric', 'contact'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 10],
@@ -98,7 +99,7 @@ class Resident extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getResidentLocations()
+    public function getLocation()
     {
         return $this->hasMany(Location::className(), ['resident_id' => 'id']);
     }
@@ -109,6 +110,11 @@ class Resident extends \yii\db\ActiveRecord
     public function getResidentRelatives()
     {
         return $this->hasMany(ResidentRelative::className(), ['resident_id' => 'id']);
+    }
+
+    public function getNextOfKin(){
+        return $this->hasMany(Nextofkin::className(), ['id' => 'nextofkin_id'])
+            ->viaTable('resident_relative', ['resident_id' => 'id']);
     }
 
     /**

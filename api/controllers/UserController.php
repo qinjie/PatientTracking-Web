@@ -682,7 +682,7 @@ class UserController extends Controller
                 ->andWhere('nextofkin.id = resident_relative.nextofkin_id')
                 ->all();
             $alert = (new \yii\db\Query())
-                ->select(['notification.id', 'last_position', 'user_id', 'username', 'notification.created_at', 'floor.label as last_position_label', 'notification.type'])
+                ->select(['notification.id', 'notification.resident_id', 'firstname', 'lastname', 'last_position', 'user_id', 'username', 'notification.created_at', 'floor.label as last_position_label', 'notification.type'])
                 ->from('notification')
                 ->leftJoin('user', 'notification.user_id = user.id')
                 ->innerJoin('resident', 'notification.resident_id = resident.id')
@@ -691,6 +691,16 @@ class UserController extends Controller
                 ->andWhere('notification.created_at >= (NOW() - INTERVAL ' . Yii::$app->params['alertListTimeOut'] . ' SECOND)')
                 ->orderBy('notification.updated_at desc')
                 ->all();
+
+            for ($i = 0; $i < count($alert); $i++) {
+
+                // if the notification has not been taken care of by any user
+                if ($alert[$i]['user_id'] == NULL) {
+                    $alert[$i]['ok'] = '0';
+                } else {
+                    $alert[$i]['ok'] = '1';
+                }
+            }
 
             // assign the $nex result as a attribute named 'nextofkin' in $res
             $res[0]['nextofkin'] = $nex;

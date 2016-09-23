@@ -32,7 +32,7 @@ class User extends \common\models\User
 
     public function extraFields()
     {
-        $new = ['userProfile', 'projectsOwned', 'projectsInvolved'];
+        $new = [/*'userProfile', 'projectsOwned', 'projectsInvolved'*/];
         $fields = array_merge(parent::fields(), $new);
         return $fields;
     }

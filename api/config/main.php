@@ -65,7 +65,7 @@ return [
             'rules' => [
                 # API for ActiveRecords
                 ['class' => 'yii\rest\UrlRule', 'pluralize' => false,
-                    'controller' => ['v1/resident-location', 'v1/quuppa-button', 'v1/user'],
+                    'controller' => ['v1/resident-location', 'v1/quuppa-button', 'v1/user', 'v1/resident'],
                 ],
             ],
         ]
