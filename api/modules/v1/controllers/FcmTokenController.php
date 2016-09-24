@@ -2,25 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: qj
- * Date: 28/3/15
- * Time: 23:28
+ * Date: 29/3/15
+ * Time: 17:58
  */
 
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
-use api\common\models\Resident;
 use common\components\AccessRule;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\VerbFilter;
 use yii\web\UnauthorizedHttpException;
-use Yii;
 
-class ResidentController extends CustomActiveController
+class FcmTokenController extends CustomActiveController
 {
-    public $modelClass = 'api\common\models\Resident';
+    public $modelClass = 'api\common\models\Fcmtoken';
 
     public function behaviors() {
         $behaviors = parent::behaviors();

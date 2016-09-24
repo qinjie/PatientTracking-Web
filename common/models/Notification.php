@@ -120,4 +120,8 @@ class Notification extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getLocation(){
+        return $this->hasOne(Location::className(), ['resident_id' => 'resident_id']);
+    }
 }

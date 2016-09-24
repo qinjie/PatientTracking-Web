@@ -216,9 +216,10 @@ class UserController extends Controller
                 }
                 return [
                     'result' => 'correct',
+                    'user_id' => $user_id,
                     'username' => $username,
                     'email' => $query['email'],
-                    'token' => $token
+                    'token' => $token,
                 ];
             }
 
@@ -233,6 +234,7 @@ class UserController extends Controller
             }
             return [
                 'result' => 'correct',
+                'user_id' => $user_id,
                 'username' => $username,
                 'email' => $query['email'],
                 'token' => $token

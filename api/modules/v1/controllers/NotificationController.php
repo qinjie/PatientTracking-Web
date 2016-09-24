@@ -9,8 +9,8 @@
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
-use api\common\models\Resident;
 use common\components\AccessRule;
+use common\models\Notification;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -18,9 +18,9 @@ use yii\filters\VerbFilter;
 use yii\web\UnauthorizedHttpException;
 use Yii;
 
-class ResidentController extends CustomActiveController
+class NotificationController extends CustomActiveController
 {
-    public $modelClass = 'api\common\models\Resident';
+    public $modelClass = 'api\common\models\Notification';
 
     public function behaviors() {
         $behaviors = parent::behaviors();
@@ -37,12 +37,12 @@ class ResidentController extends CustomActiveController
             ],
             'rules' => [
                 [
-                    'actions' => [],
+                    'actions' => ['create'],
                     'allow' => true,
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => [],
+                    'actions' => ['create'],
                     'allow' => true,
                     'roles' => ['@'],
                 ]
@@ -55,9 +55,23 @@ class ResidentController extends CustomActiveController
         $behaviors['verbs'] = [
             'class' => VerbFilter::className(),
             'actions' => [
+
             ],
         ];
 
         return $behaviors;
+    }
+
+    public function actionAlert($expand){
+        $expandList = explode(',', $expand);
+        $query = Notification::find()->andWhere('user_id IS NULL');
+        $query->with($expandList);
+        return new ActiveDataProvider([
+            'query' => $query,
+        ]);
+    }
+
+    public function actionCount(){
+        return Notification::find()->andWhere('user_id IS NULL')->count();
     }
 }
