@@ -734,7 +734,9 @@ class UserController extends Controller
             // assign the $nex result as a attribute named 'nextofkin' in $res
             $res[0]['nextofkin'] = $nex;
             $res[0]['alert_list'] = $alert;
-            $res[0]['ongoing_alert'] = $ongoing_alert[0];
+            if ($ongoing_alert){
+                $res[0]['ongoing_alert'] = $ongoing_alert[0];
+            }
 
             // return result as a object
             return $res[0];
