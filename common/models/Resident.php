@@ -23,7 +23,6 @@ use yii\helpers\Html;
  * @property string $remark
  * @property string $created_at
  * @property string $updated_at
- * @property string $abcd
  *
  * @property Location[] $location
  * @property ResidentRelative[] $residentRelatives
@@ -46,7 +45,7 @@ class Resident extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname', 'nric'], 'required'],
-            [['birthday', 'created_at', 'updated_at', 'abcd'], 'safe'],
+            [['birthday', 'created_at', 'updated_at'], 'safe'],
             [['firstname', 'lastname'], 'string', 'max' => 100],
             [['nric', 'contact'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 10],
