@@ -9,8 +9,10 @@
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
+use api\common\models\Location;
+use api\common\models\Resident;
+use backend\models\Marker;
 use common\components\AccessRule;
-use common\models\Notification;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -18,9 +20,9 @@ use yii\filters\VerbFilter;
 use yii\web\UnauthorizedHttpException;
 use Yii;
 
-class NotificationController extends CustomActiveController
+class LocationController extends CustomActiveController
 {
-    public $modelClass = 'api\common\models\Notification';
+    public $modelClass = 'api\common\models\Location';
 
     public function behaviors() {
         $behaviors = parent::behaviors();
@@ -42,7 +44,7 @@ class NotificationController extends CustomActiveController
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['create', 'alert', 'count'],
+                    'actions' => ['position'],
                     'allow' => true,
                     'roles' => ['@'],
                 ]
@@ -55,15 +57,22 @@ class NotificationController extends CustomActiveController
         $behaviors['verbs'] = [
             'class' => VerbFilter::className(),
             'actions' => [
-
             ],
         ];
 
         return $behaviors;
     }
 
-    public function actionAlert($expand = null){
-        $query = Notification::find()->andWhere('user_id IS NULL');
+    public function actionPosition($floor_id, $expand = null){
+//        $topPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixely');
+//        $botPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixely');
+//        $rightPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixelx');
+//        $leftPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixelx');
+//        $topCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coory');
+//        $botCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coory');
+//        $rightCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coorx');
+//        $leftCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coorx');
+        $query = Location::find()->where(['floor_id' => $floor_id]);
         if ($expand){
             $expandList = explode(',', $expand);
             $query->with($expandList);
@@ -71,9 +80,5 @@ class NotificationController extends CustomActiveController
         return new ActiveDataProvider([
             'query' => $query,
         ]);
-    }
-
-    public function actionCount(){
-        return Notification::find()->andWhere('user_id IS NULL')->count();
     }
 }

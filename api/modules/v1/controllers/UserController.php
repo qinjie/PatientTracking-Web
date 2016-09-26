@@ -82,6 +82,7 @@ class UserController extends CustomActiveController
                 UserToken::deleteAll(['user_id' => $user->id]);
                 $token = TokenHelper::createUserToken($user->id);
                 return [
+                    'user_id' => $user->id,
                     'username' => $user->username,
                     'email' => $user->email,
                     'token' => $token->token,

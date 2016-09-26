@@ -710,9 +710,31 @@ class UserController extends Controller
                 }
             }
 
+            $ongoing_alert = (new \yii\db\Query())
+                ->select(['notification.id', 'notification.resident_id', 'firstname', 'lastname', 'last_position', 'user_id', 'username', 'notification.created_at', 'floor.label as last_position_label', 'notification.type'])
+                ->from('notification')
+                ->leftJoin('user', 'notification.user_id = user.id')
+                ->innerJoin('resident', 'notification.resident_id = resident.id')
+                ->leftJoin('floor', 'notification.last_position = floor.id')
+                ->where(['notification.resident_id' => $id])
+                ->andWhere('notification.user_id is NULL')
+                ->orderBy('notification.updated_at desc')
+                ->all();
+
+            for ($i = 0; $i < count($ongoing_alert); $i++) {
+
+                // if the notification has not been taken care of by any user
+                if ($ongoing_alert[$i]['user_id'] == NULL) {
+                    $ongoing_alert[$i]['ok'] = '0';
+                } else {
+                    $ongoing_alert[$i]['ok'] = '1';
+                }
+            }
+
             // assign the $nex result as a attribute named 'nextofkin' in $res
             $res[0]['nextofkin'] = $nex;
             $res[0]['alert_list'] = $alert;
+            $res[0]['ongoing_alert'] = $ongoing_alert[0];
 
             // return result as a object
             return $res[0];

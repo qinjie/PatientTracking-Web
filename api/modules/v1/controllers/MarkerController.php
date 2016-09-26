@@ -9,8 +9,9 @@
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
+use api\common\models\Resident;
+use backend\models\Marker;
 use common\components\AccessRule;
-use common\models\Notification;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
@@ -18,9 +19,9 @@ use yii\filters\VerbFilter;
 use yii\web\UnauthorizedHttpException;
 use Yii;
 
-class NotificationController extends CustomActiveController
+class MarkerController extends CustomActiveController
 {
-    public $modelClass = 'api\common\models\Notification';
+    public $modelClass = 'api\common\models\Marker';
 
     public function behaviors() {
         $behaviors = parent::behaviors();
@@ -42,7 +43,7 @@ class NotificationController extends CustomActiveController
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['create', 'alert', 'count'],
+                    'actions' => [],
                     'allow' => true,
                     'roles' => ['@'],
                 ]
@@ -55,25 +56,16 @@ class NotificationController extends CustomActiveController
         $behaviors['verbs'] = [
             'class' => VerbFilter::className(),
             'actions' => [
-
             ],
         ];
 
         return $behaviors;
     }
 
-    public function actionAlert($expand = null){
-        $query = Notification::find()->andWhere('user_id IS NULL');
-        if ($expand){
-            $expandList = explode(',', $expand);
-            $query->with($expandList);
-        }
+    public function actionFloor($floor_id){
+        $query = Marker::find()->where(['floor_id' => $floor_id]);
         return new ActiveDataProvider([
             'query' => $query,
         ]);
-    }
-
-    public function actionCount(){
-        return Notification::find()->andWhere('user_id IS NULL')->count();
     }
 }
