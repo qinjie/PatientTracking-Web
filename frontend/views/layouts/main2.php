@@ -72,7 +72,6 @@ AppAsset::register($this);
         height: 100%;
         top: 0;
         left: 0;
-        background: #E0F2F1;
         overflow-y: scroll;
     }
 </style>

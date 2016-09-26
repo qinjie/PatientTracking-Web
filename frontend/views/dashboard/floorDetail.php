@@ -29,7 +29,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
     <div id="mapContainer" style="width: 80.02594033722438%;">
         <div>
             <div>
-                <div align="center">
+                <div>
                     <a id="image" onmousemove="showCoords(event)" onmouseout="clearCoor()" class="tooltipCustom">
                         <canvas id="myCanvas">
                             Your browser does not support the HTML5 canvas tag.
@@ -49,7 +49,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
             <?php
             Pjax::begin(['id' => 'PjaxGrid']);
 
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Alert</h4>";
+            echo "<h4 style=\"color: #00a7d0\">&nbsp;Alert</h4>";
             echo GridView::widget([
                 'dataProvider' => $dataProviderAlert,
 //                'filterModel' => $searchModelAlert,
@@ -95,7 +95,8 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                     ],
                 ],
             ]);
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Resident</h4>";
+            echo "<br>";
+            echo "<h4 style=\"color: #00a7d0\">&nbsp;Resident</h4>";
             $arrayCoor = (new CommonFunction())->getResidentPixel($id);
             $arrayCoorUser = (new CommonFunction())->getUserPixel($id);
             echo "<input id='arrayCoor' type=text value='".json_encode($arrayCoor)."' hidden>";
@@ -125,14 +126,15 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
                     ]
                 ],
             ]);
-            echo "<h4 style=\"color: #00a7d0\" align='center'>Caregiver</h4>";
+            echo "<br>";
+            echo "<h4 style=\"color: #00a7d0\">&nbsp;Caregiver</h4>";
             echo GridView::widget([
                 'dataProvider' => $dataProviderUser,
 //                'filterModel' => $searchModelUser,
                 'summary'=>'',
+                'showOnEmpty'=>true,
                 'columns' => [
                     [
-                        'label'=>'Username',
                         'format' => 'raw',
                         'attribute' => 'userName',
                         'value'=>function ($data) {
