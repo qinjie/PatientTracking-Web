@@ -333,7 +333,6 @@ class CommonFunction extends \yii\db\ActiveRecord
             ->createCommand('select r.id, r.firstname, l.coorx, l.coory
                             from resident as r, location as l
                             where r.id = l.resident_id
-                            and l.outside = 0
                             and (l.floor_id = '.$floorid.')')
             ->queryAll();
 
@@ -411,7 +410,6 @@ class CommonFunction extends \yii\db\ActiveRecord
             ->createCommand('select r.id, r.username, l.coorx, l.coory
                             from user as r, location as l
                             where r.id = l.user_id
-                            and l.outside = 0
                             and (l.floor_id = '.$floorid.')')
             ->queryAll();
 
