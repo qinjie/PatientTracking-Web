@@ -1,9 +1,100 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
+
+<style>
+    /* jQuery Growl
+ * Copyright 2015 Kevin Sylvestre
+ * 1.3.2
+ */
+    #growls {
+        z-index: 50000;
+        position: fixed; }
+    #growls.default {
+        top: 10px;
+        right: 10px; }
+    #growls.tl {
+        top: 10px;
+        left: 10px; }
+    #growls.tr {
+        top: 10px;
+        right: 10px; }
+    #growls.bl {
+        bottom: 10px;
+        left: 10px; }
+    #growls.br {
+        bottom: 10px;
+        right: 10px; }
+    #growls.tc {
+        top: 10px;
+        right: 10px;
+        left: 10px; }
+    #growls.bc {
+        bottom: 10px;
+        right: 10px;
+        left: 10px; }
+    #growls.tc .growl, #growls.bc .growl {
+        margin-left: auto;
+        margin-right: auto; }
+
+    .growl {
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        position: relative;
+        border-radius: 4px;
+        -webkit-transition: all 0.4s ease-in-out;
+        -moz-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out; }
+    .growl.growl-incoming {
+        opacity: 0;
+        filter: alpha(opacity=0); }
+    .growl.growl-outgoing {
+        opacity: 0;
+        filter: alpha(opacity=0); }
+    .growl.growl-small {
+        width: 200px;
+        padding: 5px;
+        margin: 5px; }
+    .growl.growl-medium {
+        width: 250px;
+        padding: 10px;
+        margin: 10px; }
+    .growl.growl-large {
+        width: 300px;
+        padding: 15px;
+        margin: 15px; }
+    .growl.growl-default {
+        color: #FFF;
+        background: #7f8c8d; }
+    .growl.growl-error {
+        color: #FFF;
+        background: #C0392B; }
+    .growl.growl-notice {
+        color: #FFF;
+        background: #2ECC71; }
+    .growl.growl-warning {
+        color: #FFF;
+        background: #F39C12; }
+    .growl .growl-close {
+        cursor: pointer;
+        float: right;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: normal;
+        font-family: helvetica, verdana, sans-serif; }
+    .growl .growl-title {
+        font-size: 18px;
+        line-height: 24px; }
+    .growl .growl-message {
+        font-size: 14px;
+        line-height: 18px; }
+</style>
+
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use common\models\CommonFunction;
 use yii\bootstrap\Modal;
+use common\models\Notification;
 /* @var $searchModel common\models\ResidentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModelUser common\models\ResidentSearch */
@@ -12,6 +103,7 @@ $this->context->layout  = 'main2';
 $this->title = $floorName;
 $imagePath = (new \common\models\CommonFunction())->getImgPath($id);
 list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePath);
+$maxID = Notification::find()->max('id');
 ?>
 
 
@@ -47,7 +139,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
         <div id="tagContainer">
             <h3 align="center"><font color='#3b9bfc'>[<?= $floorName ?>]</font></h3>
             <?php
-            Pjax::begin(['id' => 'PjaxGrid']);
+            Pjax::begin(['id' => 'Pjax']);
 
             echo "<h4 style=\"color: #00a7d0\">&nbsp;Alert</h4>";
             echo GridView::widget([
@@ -99,8 +191,11 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
             echo "<h4 style=\"color: #00a7d0\">&nbsp;Resident</h4>";
             $arrayCoor = (new CommonFunction())->getResidentPixel($id);
             $arrayCoorUser = (new CommonFunction())->getUserPixel($id);
+            $arrayNotif = (new CommonFunction())->getNotification();
+            echo "<input id='arrayNotif' type=text value='".json_encode($arrayNotif)."' hidden>";
             echo "<input id='arrayCoor' type=text value='".json_encode($arrayCoor)."' hidden>";
             echo "<input id='arrayCoorUser' type=text value='".json_encode($arrayCoorUser)."' hidden>";
+            echo "<script>checkNotification()</script>";
             echo "<script>showPoint()</script>";
             echo "<script>showCoords()</script>";
             echo GridView::widget([
@@ -149,9 +244,279 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
     </div>
 </div>
 
-<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 
 <script>
+    function checkNotification() {
+        (function() {
+            "use strict";
+            var $, Animation, Growl,
+                bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+
+            $ = jQuery;
+
+            Animation = (function() {
+                function Animation() {}
+
+                Animation.transitions = {
+                    "webkitTransition": "webkitTransitionEnd",
+                    "mozTransition": "mozTransitionEnd",
+                    "oTransition": "oTransitionEnd",
+                    "transition": "transitionend"
+                };
+
+                Animation.transition = function($el) {
+                    var el, ref, result, type;
+                    el = $el[0];
+                    ref = this.transitions;
+                    for (type in ref) {
+                        result = ref[type];
+                        if (el.style[type] != null) {
+                            return result;
+                        }
+                    }
+                };
+
+                return Animation;
+
+            })();
+
+            Growl = (function() {
+                Growl.settings = {
+                    namespace: 'growl',
+                    duration: 3200,
+                    close: "&#215;",
+                    location: "default",
+                    style: "default",
+                    size: "medium",
+                    delayOnHover: true
+                };
+
+                Growl.growl = function(settings) {
+                    if (settings == null) {
+                        settings = {};
+                    }
+                    this.initialize();
+                    return new Growl(settings);
+                };
+
+                Growl.initialize = function() {
+                    return $("body:not(:has(#growls))").append('<div id="growls" />');
+                };
+
+                function Growl(settings) {
+                    if (settings == null) {
+                        settings = {};
+                    }
+                    this.container = bind(this.container, this);
+                    this.content = bind(this.content, this);
+                    this.html = bind(this.html, this);
+                    this.$growl = bind(this.$growl, this);
+                    this.$growls = bind(this.$growls, this);
+                    this.animate = bind(this.animate, this);
+                    this.remove = bind(this.remove, this);
+                    this.dismiss = bind(this.dismiss, this);
+                    this.present = bind(this.present, this);
+                    this.waitAndDismiss = bind(this.waitAndDismiss, this);
+                    this.cycle = bind(this.cycle, this);
+                    this.close = bind(this.close, this);
+                    this.click = bind(this.click, this);
+                    this.mouseLeave = bind(this.mouseLeave, this);
+                    this.mouseEnter = bind(this.mouseEnter, this);
+                    this.unbind = bind(this.unbind, this);
+                    this.bind = bind(this.bind, this);
+                    this.render = bind(this.render, this);
+                    this.settings = $.extend({}, Growl.settings, settings);
+                    this.$growls().attr('class', this.settings.location);
+                    this.render();
+                }
+
+                Growl.prototype.render = function() {
+                    var $growl;
+                    $growl = this.$growl();
+                    this.$growls().append($growl);
+                    if (this.settings.fixed) {
+                        this.present();
+                    } else {
+                        this.cycle();
+                    }
+                };
+
+                Growl.prototype.bind = function($growl) {
+                    if ($growl == null) {
+                        $growl = this.$growl();
+                    }
+                    $growl.on("click", this.click);
+                    if (this.settings.delayOnHover) {
+                        $growl.on("mouseenter", this.mouseEnter);
+                        $growl.on("mouseleave", this.mouseLeave);
+                    }
+                    return $growl.on("contextmenu", this.close).find("." + this.settings.namespace + "-close").on("click", this.close);
+                };
+
+                Growl.prototype.unbind = function($growl) {
+                    if ($growl == null) {
+                        $growl = this.$growl();
+                    }
+                    $growl.off("click", this.click);
+                    if (this.settings.delayOnHover) {
+                        $growl.off("mouseenter", this.mouseEnter);
+                        $growl.off("mouseleave", this.mouseLeave);
+                    }
+                    return $growl.off("contextmenu", this.close).find("." + this.settings.namespace + "-close").off("click", this.close);
+                };
+
+                Growl.prototype.mouseEnter = function(event) {
+                    var $growl;
+                    $growl = this.$growl();
+                    return $growl.stop(true, true);
+                };
+
+                Growl.prototype.mouseLeave = function(event) {
+                    return this.waitAndDismiss();
+                };
+
+                Growl.prototype.click = function(event) {
+                    if (this.settings.url != null) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        return window.open(this.settings.url);
+                    }
+                };
+
+                Growl.prototype.close = function(event) {
+                    var $growl;
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $growl = this.$growl();
+                    return $growl.stop().queue(this.dismiss).queue(this.remove);
+                };
+
+                Growl.prototype.cycle = function() {
+                    var $growl;
+                    $growl = this.$growl();
+                    return $growl.queue(this.present).queue(this.waitAndDismiss());
+                };
+
+                Growl.prototype.waitAndDismiss = function() {
+                    var $growl;
+                    $growl = this.$growl();
+                    return $growl.delay(this.settings.duration).queue(this.dismiss).queue(this.remove);
+                };
+
+                Growl.prototype.present = function(callback) {
+                    var $growl;
+                    $growl = this.$growl();
+                    this.bind($growl);
+                    return this.animate($growl, this.settings.namespace + "-incoming", 'out', callback);
+                };
+
+                Growl.prototype.dismiss = function(callback) {
+                    var $growl;
+                    $growl = this.$growl();
+                    this.unbind($growl);
+                    return this.animate($growl, this.settings.namespace + "-outgoing", 'in', callback);
+                };
+
+                Growl.prototype.remove = function(callback) {
+                    this.$growl().remove();
+                    return typeof callback === "function" ? callback() : void 0;
+                };
+
+                Growl.prototype.animate = function($element, name, direction, callback) {
+                    var transition;
+                    if (direction == null) {
+                        direction = 'in';
+                    }
+                    transition = Animation.transition($element);
+                    $element[direction === 'in' ? 'removeClass' : 'addClass'](name);
+                    $element.offset().position;
+                    $element[direction === 'in' ? 'addClass' : 'removeClass'](name);
+                    if (callback == null) {
+                        return;
+                    }
+                    if (transition != null) {
+                        $element.one(transition, callback);
+                    } else {
+                        callback();
+                    }
+                };
+
+                Growl.prototype.$growls = function() {
+                    return this.$_growls != null ? this.$_growls : this.$_growls = $('#growls');
+                };
+
+                Growl.prototype.$growl = function() {
+                    return this.$_growl != null ? this.$_growl : this.$_growl = $(this.html());
+                };
+
+                Growl.prototype.html = function() {
+                    return this.container(this.content());
+                };
+
+                Growl.prototype.content = function() {
+                    return "<div class='" + this.settings.namespace + "-close'>" + this.settings.close + "</div>\n<div class='" + this.settings.namespace + "-title'>" + this.settings.title + "</div>\n<div class='" + this.settings.namespace + "-message'>" + this.settings.message + "</div>";
+                };
+
+                Growl.prototype.container = function(content) {
+                    return "<div class='" + this.settings.namespace + " " + this.settings.namespace + "-" + this.settings.style + " " + this.settings.namespace + "-" + this.settings.size + "'>\n  " + content + "\n</div>";
+                };
+
+                return Growl;
+
+            })();
+
+            this.Growl = Growl;
+
+            $.growl = function(options) {
+                if (options == null) {
+                    options = {};
+                }
+                return Growl.growl(options);
+            };
+
+            $.growl.error = function(options) {
+                var settings;
+                if (options == null) {
+                    options = {};
+                }
+                settings = {
+                    title: "New alert",
+                    style: "error"
+                };
+                return $.growl($.extend(settings, options));
+            };
+
+            $.growl.notice = function(options) {
+                var settings;
+                if (options == null) {
+                    options = {};
+                }
+                settings = {
+                    title: "Notice!",
+                    style: "notice"
+                };
+                return $.growl($.extend(settings, options));
+            };
+
+            $.growl.warning = function(options) {
+                var settings;
+                if (options == null) {
+                    options = {};
+                }
+                settings = {
+                    title: "Warning!",
+                    style: "warning"
+                };
+                return $.growl($.extend(settings, options));
+            };
+
+        }).call(this);
+        var array = JSON.parse(document.getElementById("arrayNotif").value);
+        for (i = 0; i < array.length; i++){
+            $.growl.error({ message: array[i]['firstname'] + " need your help!" });
+        }
+    }
+
     var imgWidth = <?php echo json_encode($width); ?>;
     var imgHeight = <?php echo json_encode($height); ?>;
     var wRatio = 0.8002594033722438;
@@ -306,9 +671,6 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
 
     showPoint();
 
-    setInterval(function () {
-        $.pjax.reload({container:'#PjaxGrid'});
-    }, 2000)
 
     function goFullScreen(){
         wRatio = 1;
@@ -331,3 +693,19 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
         }
     });
 </script>
+
+<?php
+$script = <<< JS
+ $(document).ready(function() {
+    setInterval(function(){
+    $.ajax({
+        success: function(){
+            $.pjax.reload({container:"#Pjax", async:false});
+        }
+    })
+    }, 2000);
+ });
+
+JS;
+$this->registerJs($script);
+?>
