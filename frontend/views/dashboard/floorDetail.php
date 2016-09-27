@@ -133,7 +133,7 @@ $maxID = Notification::find()->max('id');
                 </div>
             </div>
         </div>
-        <img style="position: absolute; right: 0px; top: 0px;" class="fullscreen-button" src="../../web/fullscreen_icon.png" width="35" height="35" onclick="goFullScreen();">
+<!--        <img style="position: absolute; right: 0px; top: 0px;" class="fullscreen-button" src="../../web/fullscreen_icon.png" width="35" height="35" onclick="goFullScreen();">-->
     </div>
     <div id="cPane" style="width: 19.974059662775616%;">
         <div id="tagContainer">
