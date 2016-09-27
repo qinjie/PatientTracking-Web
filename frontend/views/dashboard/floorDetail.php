@@ -513,7 +513,7 @@ $maxID = Notification::find()->max('id');
         }).call(this);
         var array = JSON.parse(document.getElementById("arrayNotif").value);
         for (i = 0; i < array.length; i++){
-            $.growl.error({ message: array[i]['firstname'] + " need your help!" });
+            $.growl.error({ message: array[i]['firstname'] + " needs your help!" });
         }
     }
 
