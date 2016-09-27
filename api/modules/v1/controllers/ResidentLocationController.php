@@ -56,9 +56,13 @@ class ResidentLocationController extends CustomActiveController
             $now = date_format(date_create(date('Y-m-d H:i:s')), 'Y-m-d H:i:s');
             if ($action->id == 'create'){
                 $q_resident_id = Tag::find()->where(['tagid' => $result['tagid']])->one();
-                $resident_id = $q_resident_id['resident_id'];
+                if ($q_resident_id){
+                    $resident_id = $q_resident_id['resident_id'];
+                }
                 $q_user_id = Tag::find()->where(['tagid' => $result['tagid']])->one();
-                $user_id = $q_user_id['user_id'];
+                if ($q_user_id){
+                    $user_id = $q_user_id['user_id'];
+                }
                 $token = strtok($result['zone'], ",");
                 $zones = [];
                 while ($token !== false)
@@ -72,8 +76,8 @@ class ResidentLocationController extends CustomActiveController
                         $speed = 0;
                         $azimuth = 0;
                         $outside = 0;
-                        //if the tag belong to an created user
-                        if ($user_id && Location::find()->where(['user_id' => $user_id])->one()){
+                        //if the tag belong to an created location
+                        if (($user_id && Location::find()->where(['user_id' => $user_id])->one()) || ($resident_id && Location::find()->where(['resident_id' => $resident_id])->one())){
                             $result = Yii::$app->db->createCommand()
                                 ->update('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
                                     'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
@@ -82,22 +86,12 @@ class ResidentLocationController extends CustomActiveController
                                 )->execute();
                         }
                         else{
-                            //if the tag belong the a created resident
-                            if ($resident_id && Location::find()->where(['resident_id' => $resident_id])->one()){
-                                $result = Yii::$app->db->createCommand()
-                                    ->update('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
-                                        'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
-                                        'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now],
-                                        ['resident_id' => $resident_id]
-                                    )->execute();
-                            }else{
-                                //if the tag is not exists
+                            if ($user_id || $resident_id)
                                 $result = Yii::$app->db->createCommand()
                                     ->insert('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
                                             'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
                                             'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now]
                                     )->execute();
-                            }
                         }
                     }
                     else{
@@ -106,32 +100,22 @@ class ResidentLocationController extends CustomActiveController
                             $speed = 0;
                             $azimuth = 0;
                             $outside = 1;
-                            //if the tag belong to an created user
-                            if ($user_id && Location::find()->where(['user_id' => $user_id])->one()){
+                            //if the tag belong to an created location
+                            if (($user_id && Location::find()->where(['user_id' => $user_id])->one()) || ($resident_id && Location::find()->where(['resident_id' => $resident_id])->one())){
                                 $result = Yii::$app->db->createCommand()
                                     ->update('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
-                                        'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
+                                        'floor_id' => $temp['floor_id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
                                         'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now],
                                         ['user_id' => $user_id]
                                     )->execute();
                             }
                             else{
-                                //if the tag belong the a created resident
-                                if ($resident_id && Location::find()->where(['resident_id' => $resident_id])->one()){
-                                    $result = Yii::$app->db->createCommand()
-                                        ->update('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
-                                            'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
-                                            'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now],
-                                            ['resident_id' => $resident_id]
-                                        )->execute();
-                                }else{
-                                    //if the tag is not exists
+                                if ($user_id || $resident_id)
                                     $result = Yii::$app->db->createCommand()
                                         ->insert('location', ['resident_id' => $resident_id, 'user_id' => $user_id,
-                                                'floor_id' => $temp['id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
+                                                'floor_id' => $temp['floor_id'], 'coorx' => $result['coorx'], 'coory' => $result['coory'],
                                                 'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now]
                                         )->execute();
-                                }
                             }
                         }
                     }
