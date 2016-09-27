@@ -295,10 +295,10 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
             }
             for(var i=0; i<array.length; i++){
                 if (array[i]['outside'] == true){
-                    ctx.font="20px Arial";
+                    ctx.font="15px Arial";
                     ctx.fillStyle = "#F44336";
                     ctx.textAlign = "center";
-                    ctx.fillText("No signal", array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight + 15);
+                    ctx.fillText("No signal", array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight + 25);
                 }
             }
         };
