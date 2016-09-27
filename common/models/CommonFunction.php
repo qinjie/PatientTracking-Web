@@ -94,7 +94,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             select count(id) as cnt
             from location
             where user_id is not NULL and floor_id = '.$id.' and outside = 0
-            and created_at between DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second) and NOW()
+            and created_at > DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second)
         ')->queryAll();
         return $query[0]["cnt"];
     }
@@ -354,7 +354,7 @@ class CommonFunction extends \yii\db\ActiveRecord
                     // set blue color
                     $res[$i]['color'] = "BLUE";
                 }
-                if (Notification::find()->where(['resident_id' => $res[$i]['id'], 'type' => 3, 'user_id' => null])->one()){
+                if (Location::find()->where(['resident_id' => $res[$i]['id']])->andWhere('created_at < DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second)')->one()){
                     $res[$i]['outside'] = true;
                 } else {
                     $res[$i]['outside'] = false;
