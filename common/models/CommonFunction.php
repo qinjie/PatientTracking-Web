@@ -354,6 +354,11 @@ class CommonFunction extends \yii\db\ActiveRecord
                     // set blue color
                     $res[$i]['color'] = "BLUE";
                 }
+                if (Location::find()->where(['resident_id' => $res[$i]['id'], 'tpye' => 3])->one()){
+                    $res[$i]['outside'] = true;
+                } else {
+                    $res[$i]['outside'] = false;
+                }
             }
             catch(\Exception $ex)
             {
