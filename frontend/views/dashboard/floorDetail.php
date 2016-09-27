@@ -289,7 +289,7 @@ list($width, $height, $type, $attr) = getimagesize("../../backend/web/".$imagePa
             }
             for(var i=0; i<arrayUser.length; i++){
                 ctx.font="28px Arial";
-                ctx.fillStyle = "#EF6C00";
+                ctx.fillStyle = "#0277BD";
                 ctx.textAlign = "center";
                 ctx.fillText(arrayUser[i]['username'], arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, arrayUser[i]['pixely']*window.innerHeight/imgHeight - 15);
             }
