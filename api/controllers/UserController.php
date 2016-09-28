@@ -581,7 +581,6 @@ class UserController extends Controller
                             from resident, floor, location
                             where resident.id = resident_id
                             and floor.id = floor_id
-                            and outside = 0
 							and REPLACE(CONCAT(`firstname`, `lastname`), ' ', '') like :name
 							and ('all'=:location or floor_id = :location)
                             order by :sort");
