@@ -460,7 +460,7 @@ class CommonFunction extends \yii\db\ActiveRecord
             ->select(['notification.resident_id', 'notification.type', 'resident.firstname'])
             ->from('notification')
             ->leftJoin('resident', 'notification.resident_id = resident.id')
-            ->andWhere('notification.created_at > DATE_SUB(NOW(), INTERVAL 2.5 second)')
+            ->andWhere('notification.created_at > DATE_SUB(NOW(), INTERVAL 2 second)')
             ->all();
         for($i = 0; $i < count($result); $i++)
         {
