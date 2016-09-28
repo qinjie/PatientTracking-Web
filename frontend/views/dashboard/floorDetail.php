@@ -515,14 +515,17 @@ $maxID = Notification::find()->max('id');
         for (i = 0; i < array.length; i++){
             var alertType;
             switch (array[i]['type']) {
-                case 6:
-                    text = " went to alert area";
+                case 1:
+                    alertType = " went to alert area";
                     break;
-                case 0:
-                    text = " pressed the button";
+                case 2:
+                    alertType = " pressed the button";
+                    break;
+                case 3:
+                    alertType = " went out of tracking zone"";
                     break;
                 default:
-                    text = " went out of tracking zone";
+                    alertType = " needs your help";
             }
             $.growl.error({ message: array[i]['firstname'] + alertType });
         }
