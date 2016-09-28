@@ -513,19 +513,17 @@ $maxID = Notification::find()->max('id');
         }).call(this);
         var array = JSON.parse(document.getElementById("arrayNotif").value);
         for (i = 0; i < array.length; i++){
-            var alertType;
-            switch (array[i]['type']) {
-                case 1:
-                    alertType = " went to alert area";
-                    break;
-                case 2:
+            var alertType = "";
+            if (array[i]['type'] !== undefined && array[i]['type'] === "1"){
+                alertType = " went to alert area";
+            }
+            else{
+                if (array[i]['type'] !== undefined && array[i]['type'] === "2"){
                     alertType = " pressed the button";
-                    break;
-                case 3:
-                    alertType = " went out of tracking zone"";
-                    break;
-                default:
-                    alertType = " needs your help";
+                }
+                else{
+                    alertType = " went out of tracking zone";
+                }
             }
             $.growl.error({ message: array[i]['firstname'] + alertType });
         }
