@@ -18,7 +18,7 @@ $this->title = Yii::$app->name;
             </td>
             <td>
                 <h1>
-                    Patient Tracking
+                    Resident Tracking
                 </h1>
             </td>
         </tr>
