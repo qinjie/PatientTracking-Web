@@ -10,7 +10,7 @@
         position: fixed; }
     #growls.default {
         top: 10px;
-        right: 10px; }
+        left: 22%; }
     #growls.tl {
         top: 10px;
         left: 10px; }
@@ -36,8 +36,8 @@
         margin-right: auto; }
 
     .growl {
-        opacity: 0.8;
-        filter: alpha(opacity=80);
+        opacity: 1;
+        filter: alpha(opacity=100);
         position: relative;
         border-radius: 4px;
         -webkit-transition: all 0.4s ease-in-out;
@@ -54,9 +54,9 @@
         padding: 5px;
         margin: 5px; }
     .growl.growl-medium {
-        width: 250px;
-        padding: 10px;
-        margin: 10px; }
+        width: 350px;
+        padding: 20px;
+        margin: 20px; }
     .growl.growl-large {
         width: 300px;
         padding: 15px;
@@ -81,10 +81,10 @@
         font-weight: normal;
         font-family: helvetica, verdana, sans-serif; }
     .growl .growl-title {
-        font-size: 18px;
+        font-size: 24px;
         line-height: 24px; }
     .growl .growl-message {
-        font-size: 14px;
+        font-size: 18px;
         line-height: 18px; }
 </style>
 
@@ -283,7 +283,7 @@ $maxID = Notification::find()->max('id');
             Growl = (function() {
                 Growl.settings = {
                     namespace: 'growl',
-                    duration: 3200,
+                    duration: 15000,
                     close: "&#215;",
                     location: "default",
                     style: "default",
@@ -515,7 +515,7 @@ $maxID = Notification::find()->max('id');
         for (i = 0; i < array.length; i++){
             var alertType = "";
             if (array[i]['type'] !== undefined && array[i]['type'] === "1"){
-                alertType = " went to alert area";
+                alertType = " went out of ward";
             }
             else{
                 if (array[i]['type'] !== undefined && array[i]['type'] === "2"){
