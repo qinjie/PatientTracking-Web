@@ -1,93 +1,3 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
-
-<style>
-    /* jQuery Growl
- * Copyright 2015 Kevin Sylvestre
- * 1.3.2
- */
-    #growls {
-        z-index: 50000;
-        position: fixed; }
-    #growls.default {
-        top: 10px;
-        left: 21%; }
-    #growls.tl {
-        top: 10px;
-        left: 10px; }
-    #growls.tr {
-        top: 10px;
-        right: 10px; }
-    #growls.bl {
-        bottom: 10px;
-        left: 10px; }
-    #growls.br {
-        bottom: 10px;
-        right: 10px; }
-    #growls.tc {
-        top: 10px;
-        right: 10px;
-        left: 10px; }
-    #growls.bc {
-        bottom: 10px;
-        right: 10px;
-        left: 10px; }
-    #growls.tc .growl, #growls.bc .growl {
-        margin-left: auto;
-        margin-right: auto; }
-
-    .growl {
-        opacity: 1;
-        filter: alpha(opacity=100);
-        position: relative;
-        border-radius: 4px;
-        -webkit-transition: all 0.4s ease-in-out;
-        -moz-transition: all 0.4s ease-in-out;
-        transition: all 0.4s ease-in-out; }
-    .growl.growl-incoming {
-        opacity: 0;
-        filter: alpha(opacity=0); }
-    .growl.growl-outgoing {
-        opacity: 0;
-        filter: alpha(opacity=0); }
-    .growl.growl-small {
-        width: 200px;
-        padding: 5px;
-        margin: 5px; }
-    .growl.growl-medium {
-        width: 350px;
-        padding: 20px;
-        margin: 20px; }
-    .growl.growl-large {
-        width: 300px;
-        padding: 15px;
-        margin: 15px; }
-    .growl.growl-default {
-        color: #FFF;
-        background: #7f8c8d; }
-    .growl.growl-error {
-        color: #FFF;
-        background: #C0392B; }
-    .growl.growl-notice {
-        color: #FFF;
-        background: #2ECC71; }
-    .growl.growl-warning {
-        color: #FFF;
-        background: #F39C12; }
-    .growl .growl-close {
-        cursor: pointer;
-        float: right;
-        font-size: 14px;
-        line-height: 18px;
-        font-weight: normal;
-        font-family: helvetica, verdana, sans-serif; }
-    .growl .growl-title {
-        font-size: 24px;
-        line-height: 24px; }
-    .growl .growl-message {
-        font-size: 18px;
-        line-height: 18px; }
-</style>
-
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -243,6 +153,91 @@ $maxID = Notification::find()->max('id');
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
+
+<style>
+    #growls {
+        z-index: 50000;
+        position: fixed; }
+    #growls.default {
+        top: 10px;
+        left: 21%; }
+    #growls.tl {
+        top: 10px;
+        left: 10px; }
+    #growls.tr {
+        top: 10px;
+        right: 10px; }
+    #growls.bl {
+        bottom: 10px;
+        left: 10px; }
+    #growls.br {
+        bottom: 10px;
+        right: 10px; }
+    #growls.tc {
+        top: 10px;
+        right: 10px;
+        left: 10px; }
+    #growls.bc {
+        bottom: 10px;
+        right: 10px;
+        left: 10px; }
+    #growls.tc .growl, #growls.bc .growl {
+        margin-left: auto;
+        margin-right: auto; }
+
+    .growl {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        position: relative;
+        border-radius: 4px;
+        -webkit-transition: all 0.4s ease-in-out;
+        -moz-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out; }
+    .growl.growl-incoming {
+        opacity: 0;
+        filter: alpha(opacity=0); }
+    .growl.growl-outgoing {
+        opacity: 0;
+        filter: alpha(opacity=0); }
+    .growl.growl-small {
+        width: 200px;
+        padding: 5px;
+        margin: 5px; }
+    .growl.growl-medium {
+        width: 350px;
+        padding: 20px;
+        margin: 20px; }
+    .growl.growl-large {
+        width: 300px;
+        padding: 15px;
+        margin: 15px; }
+    .growl.growl-default {
+        color: #FFF;
+        background: #7f8c8d; }
+    .growl.growl-error {
+        color: #FFF;
+        background: #C0392B; }
+    .growl.growl-notice {
+        color: #FFF;
+        background: #2ECC71; }
+    .growl.growl-warning {
+        color: #FFF;
+        background: #F39C12; }
+    .growl .growl-close {
+        cursor: pointer;
+        float: right;
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: normal;
+        font-family: helvetica, verdana, sans-serif; }
+    .growl .growl-title {
+        font-size: 24px;
+        line-height: 24px; }
+    .growl .growl-message {
+        font-size: 18px;
+        line-height: 18px; }
+</style>
 
 <script>
     var maxID = <?php echo json_encode($maxID); ?>;
@@ -252,6 +247,7 @@ $maxID = Notification::find()->max('id');
             url: "<?= Yii::$app->homeUrl?>dashboard/getnotif?id=" + maxID,
             async: false,
             success: function(response){
+                //Notification function
                 (function() {
                     "use strict";
                     var $, Animation, Growl,
@@ -516,6 +512,7 @@ $maxID = Notification::find()->max('id');
                     };
 
                 }).call(this);
+                //End of notification function
                 var array = JSON.parse(response);
                 for (i = 0; i < array.length; i++){
                     maxID = array[i]['id'];
