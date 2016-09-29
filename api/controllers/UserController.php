@@ -1154,7 +1154,7 @@ class UserController extends Controller
             }
 
             // prepare data to push a notification to target devices
-            $data = array('message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id, 'username' => $username]);
+            $data = array('message' => ['id' => $id, 'resident_id' => $resident_id, 'firstname' => $firstname, 'lastname' => $lastname, 'last_position' => $last_position, 'ok' => $ok, 'user_id' => $user_id, 'username' => $username, 'type' => $type]);
 
             // prepare notification to push a notification to target devices
             $notification = array('title' => 'Urgent', 'body' => 'Patients are in danger!');
