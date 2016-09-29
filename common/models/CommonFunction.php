@@ -455,16 +455,14 @@ class CommonFunction extends \yii\db\ActiveRecord
         }
     }
 
-    public function getNotification(){
+    public function getNotification($id = 999999){
         $result = (new \yii\db\Query())
-            ->select(['notification.resident_id', 'notification.type', 'resident.firstname'])
+            ->select(['notification.id', 'notification.resident_id', 'notification.type', 'resident.firstname'])
             ->from('notification')
             ->leftJoin('resident', 'notification.resident_id = resident.id')
-            ->andWhere('notification.created_at > DATE_SUB(NOW(), INTERVAL 2 second)')
+            ->andWhere('notification.id > '.$id)
+            ->orderBy('notification.id ASC')
             ->all();
-        for($i = 0; $i < count($result); $i++)
-        {
-        }
         return $result;
     }
 }

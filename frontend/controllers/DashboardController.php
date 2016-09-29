@@ -103,6 +103,10 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function actionGetnotif($id){
+        return json_encode((new \common\models\CommonFunction())->getNotification($id));
+    }
+
     protected function findModel($id)
     {
         if (($model = User::findOne($id)) !== null) {
