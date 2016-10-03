@@ -2,50 +2,64 @@
 /**
  * Created by PhpStorm.
  * User: qj
- * Date: 29/3/15
- * Time: 17:58
+ * Date: 28/3/15
+ * Time: 23:28
  */
 
 namespace api\modules\v1\controllers;
 
 use api\common\controllers\CustomActiveController;
-use api\common\models\Button;
+use backend\models\AlertArea;
+use backend\models\Floor;
 use backend\models\Tag;
+use common\components\AccessRule;
 use common\models\Location;
+use yii\filters\AccessControl;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\VerbFilter;
+use yii\web\UnauthorizedHttpException;
 use Yii;
-use yii\helpers\Url;
-use yii\web\ServerErrorHttpException;
 
 class QuuppaButtonController extends CustomActiveController
 {
     public $modelClass = 'api\common\models\Button';
 
-    public function behaviors()
-    {
+    public function behaviors() {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator']['except'] = ['view', 'index', 'create'];
-        $behaviors['access']['rules'] = [
-            [   // No authentication required
-                'actions' => ['view', 'search', 'index', 'create'],
-                'allow' => true,
-                'roles' => ['?', '@'],
+
+        $behaviors['authenticator'] = [
+            'class' => HttpBearerAuth::className(),
+            'except' => ['create'],
+        ];
+
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'ruleConfig' => [
+                'class' => AccessRule::className(),
             ],
-            [ # all other actions are matched by RBAC rules
-                'allow' => true,
-                'roles' => ['@'],
-                'matchCallback' => function ($rule, $action) {
-                    $module = Yii::$app->controller->module->id;
-                    $action = Yii::$app->controller->action->id;
-                    $controller = Yii::$app->controller->id;
-                    $route = "$module/$controller/$action";
-                    $post = Yii::$app->request->post();
-                    if (Yii::$app->user->can($route)) {
-                        return true;
-                    }
-                    return false;
-                }
+            'rules' => [
+                [
+                    'actions' => [],
+                    'allow' => true,
+                    'roles' => ['?'],
+                ],
+                [
+                    'actions' => ['position'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ]
+            ],
+            'denyCallback' => function ($rule, $action) {
+                throw new UnauthorizedHttpException('You are not authorized');
+            },
+        ];
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::className(),
+            'actions' => [
             ],
         ];
+
         return $behaviors;
     }
 
@@ -61,14 +75,5 @@ class QuuppaButtonController extends CustomActiveController
         else{
             return $result;
         }
-    }
-
-    public function actions()
-    {
-        $actions = parent::actions();
-//        unset($actions['create']);
-        unset($actions['delete']);
-        unset($actions['update']);
-        return $actions;
     }
 }
