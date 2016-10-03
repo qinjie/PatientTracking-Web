@@ -345,12 +345,12 @@ class CommonFunction extends \yii\db\ActiveRecord
     }
 
     private function UserDetail($id){
-        $query = Yii::$app->db->createCommand('SELECT * FROM User WHERE id = '.$id)->queryAll();
+        $query = Yii::$app->db->createCommand('SELECT * FROM user WHERE id = '.$id)->queryAll();
         return $query[0];
     }
 
     private function ResidentDetail($id){
-        $query = Yii::$app->db->createCommand('SELECT * FROM Resident WHERE id = '.$id)->queryAll();
+        $query = Yii::$app->db->createCommand('SELECT * FROM resident WHERE id = '.$id)->queryAll();
         return $query[0];
     }
 
