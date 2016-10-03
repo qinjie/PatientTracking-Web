@@ -42,7 +42,7 @@ class NotificationController extends CustomActiveController
                     'roles' => ['?'],
                 ],
                 [
-                    'actions' => ['create', 'alert', 'count'],
+                    'actions' => [],
                     'allow' => true,
                     'roles' => ['@'],
                 ]

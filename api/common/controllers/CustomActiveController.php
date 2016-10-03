@@ -25,56 +25,6 @@ class CustomActiveController extends ActiveController
         'collectionEnvelope' => 'items',
     ];
 
-    ## Add authentication
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-
-        # Allow two types of Authentication: Basic & Token
-        $behaviors['authenticator'] = [
-            'class' => CompositeAuth::className(),
-            'except' => ['index', 'view', 'search'],
-            'authMethods' => [
-                # Add following key-value pair in HTTP header where username:password is 64bit-encoded
-                # Authorization     Basic <username:password>
-                [
-                    'class' => HttpBasicAuth::className(),
-                    'auth' => [$this, 'auth'],
-                ],
-
-                # Append following behind URL while making request
-                # ?access-token=<token>     ?others&access-token=<token>
-                QueryParamAuth::className(),
-
-                # Add following key-value pair in HTTP header
-                # Authorization     Bearer <token>
-                HttpBearerAuth::className(),
-            ],
-        ];
-
-        $behaviors['access'] = [
-            'class' => AccessControl::className(),
-            'rules' => [
-                [   // No authentication required
-                    'actions' => ['view', 'index', 'search'],
-                    'allow' => true,
-                    'roles' => ['?', '@'],
-                ],
-                ['actions' => ['create', 'update', 'delete'],
-                    'allow' => true,
-                    'roles' => ['user',],
-                ],
-            ],
-
-            # if user not login, and not allowed for current action, return following exception
-            'denyCallback' => function ($rule, $action) {
-                throw new UnauthorizedHttpException('You are not allowed to access this page');
-            },
-        ];
-
-        return $behaviors;
-    }
-
     # Used by HttpBasicAuth
     public function auth($username, $password)
     {

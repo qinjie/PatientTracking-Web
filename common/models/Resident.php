@@ -103,6 +103,11 @@ class Resident extends \yii\db\ActiveRecord
         return $this->hasMany(Location::className(), ['resident_id' => 'id']);
     }
 
+    public function getFloor(){
+        return $this->hasMany(Floor::className(), ['id' => 'floor_id'])
+            ->viaTable('location', ['resident_id' => 'id']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

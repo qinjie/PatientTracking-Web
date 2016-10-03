@@ -287,182 +287,102 @@ class CommonFunction extends \yii\db\ActiveRecord
     }
 
     //calculate pixel coordinate from real coordinate
-    public function getResidentPixel($floorid)
+    public function getResidentPixel($floor_id)
     {
-        $result = (new \yii\db\Query())
-            ->select(['pixelx', 'pixely', 'coorx', 'coory'])
-            ->from('marker')
-            ->where(['floor_id' => $floorid])
+        $topPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixely');
+        $botPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixely');
+        $rightPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixelx');
+        $leftPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixelx');
+        $topCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coory');
+        $botCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coory');
+        $rightCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coorx');
+        $leftCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coorx');
+        $query = (new \yii\db\Query())
+            ->select('*')
+            ->from('location')
+            ->where(['floor_id' => $floor_id])
+            ->andWhere('resident_id IS NOT NULL')
             ->all();
-
-        $inf = 9223372036854775807;
-
-        $topLeftPixelx = $inf; $topLeftCoorx = 0.0;
-        $topLeftPixely = $inf; $topLeftCoory = 0.0;
-
-        $bottomRightPixelx = -1; $bottomRightCoorx = 0.0;
-        $bottomRightPixely = -1; $bottomRightCoory = 0.0;
-
-
-        for($i = 0; $i < count($result); $i++)
-        {
-            if($result[$i]['pixelx'] < $topLeftPixelx)
-            {
-                $topLeftPixelx = $result[$i]['pixelx'];
-                $topLeftCoorx = $result[$i]['coorx'];
+        for ($i = 0; $i < count($query); $i++) {
+            if ($query[$i]['resident_id']){
+                $query[$i]['resident'] = $this->ResidentDetail($query[$i]['resident_id']);
+                $query[$i]['color'] = $this->ResidentColor($query[$i]['resident_id']);
+                $query[$i]['signal'] = $this->ResidentSignal($query[$i]['resident_id']);
             }
-            if($result[$i]['pixely'] < $topLeftPixely)
-            {
-                $topLeftPixely = $result[$i]['pixely'];
-                $topLeftCoory = $result[$i]['coory'];
-            }
-
-            if($result[$i]['pixelx'] > $bottomRightPixelx)
-            {
-                $bottomRightPixelx = $result[$i]['pixelx'];
-                $bottomRightCoorx = $result[$i]['coorx'];
-            }
-            if($result[$i]['pixely'] > $bottomRightPixely)
-            {
-                $bottomRightPixely = $result[$i]['pixely'];
-                $bottomRightCoory = $result[$i]['coory'];
-            }
+            $query[$i]['pixelx'] = $leftPixel + intval(round(1.0 * ($query[$i]['coorx'] - $leftCoor) * ($rightPixel - $leftPixel) / ($rightCoor - $leftCoor)));
+            $query[$i]['pixely'] = $topPixel + intval(round(1.0 * ($query[$i]['coory'] - $topCoor) * ($topPixel - $botPixel) / ($topCoor - $botCoor)));
         }
-
-        $res = Yii::$app->db
-            ->createCommand('select r.id, r.firstname, l.coorx, l.coory
-                            from resident as r, location as l
-                            where r.id = l.resident_id
-                            and (l.floor_id = '.$floorid.')')
-            ->queryAll();
-
-        $widthPixel = $bottomRightPixelx - $topLeftPixelx;
-        $heightPixel = $bottomRightPixely - $topLeftPixely;
-        $widthCoor = $bottomRightCoorx - $topLeftCoorx;
-        $heightCoor = $bottomRightCoory - $topLeftCoory;
-
-        for($i = 0; $i < count($res); $i++)
-        {
-            try
-            {
-                $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0*($res[$i]['coorx'] - $topLeftCoorx)/$widthCoor*$widthPixel));
-                $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0*($res[$i]['coory'] - $topLeftCoory)/$heightCoor*$heightPixel));
-                if (self::isAlerted($res[$i]['id'])) {
-                    // set red color
-                    $res[$i]['color'] = "RED";
-                } else {
-                    // set blue color
-                    $res[$i]['color'] = "BLUE";
-                }
-                if (Location::find()->where(['resident_id' => $res[$i]['id']])->andWhere('created_at < DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second)')->one()){
-                    $res[$i]['outside'] = true;
-                } else {
-                    $res[$i]['outside'] = false;
-                }
-            }
-            catch(\Exception $ex)
-            {
-                return [];
-            }
-        }
-        return $res;
+        return $query;
     }
 
     //calculate pixel coordinate from real coordinate
-    public function getUserPixel($floorid)
+    public function getUserPixel($floor_id)
     {
-        $result = (new \yii\db\Query())
-            ->select(['pixelx', 'pixely', 'coorx', 'coory'])
-            ->from('marker')
-            ->where(['floor_id' => $floorid])
+        $topPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixely');
+        $botPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixely');
+        $rightPixel = Marker::find()->where(['floor_id' => $floor_id])->max('pixelx');
+        $leftPixel = Marker::find()->where(['floor_id' => $floor_id])->min('pixelx');
+        $topCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coory');
+        $botCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coory');
+        $rightCoor = Marker::find()->where(['floor_id' => $floor_id])->max('coorx');
+        $leftCoor = Marker::find()->where(['floor_id' => $floor_id])->min('coorx');
+        $query = (new \yii\db\Query())
+            ->select('*')
+            ->from('location')
+            ->where(['floor_id' => $floor_id])
+            ->andWhere('user_id IS NOT NULL')
             ->all();
-
-        $inf = 9223372036854775807;
-
-        $topLeftPixelx = $inf; $topLeftCoorx = 0.0;
-        $topLeftPixely = $inf; $topLeftCoory = 0.0;
-
-        $bottomRightPixelx = -1; $bottomRightCoorx = 0.0;
-        $bottomRightPixely = -1; $bottomRightCoory = 0.0;
-
-
-        for($i = 0; $i < count($result); $i++)
-        {
-            if($result[$i]['pixelx'] < $topLeftPixelx)
-            {
-                $topLeftPixelx = $result[$i]['pixelx'];
-                $topLeftCoorx = $result[$i]['coorx'];
+        for ($i = 0; $i < count($query); $i++) {
+            if ($query[$i]['user_id']){
+                $query[$i]['user'] = $this->UserDetail($query[$i]['user_id']);
+                //Color: Green
+                $query[$i]['color'] = "#009688";
             }
-            if($result[$i]['pixely'] < $topLeftPixely)
-            {
-                $topLeftPixely = $result[$i]['pixely'];
-                $topLeftCoory = $result[$i]['coory'];
-            }
-
-            if($result[$i]['pixelx'] > $bottomRightPixelx)
-            {
-                $bottomRightPixelx = $result[$i]['pixelx'];
-                $bottomRightCoorx = $result[$i]['coorx'];
-            }
-            if($result[$i]['pixely'] > $bottomRightPixely)
-            {
-                $bottomRightPixely = $result[$i]['pixely'];
-                $bottomRightCoory = $result[$i]['coory'];
-            }
+            $query[$i]['pixelx'] = $leftPixel + intval(round(1.0 * ($query[$i]['coorx'] - $leftCoor) * ($rightPixel - $leftPixel) / ($rightCoor - $leftCoor)));
+            $query[$i]['pixely'] = $topPixel + intval(round(1.0 * ($query[$i]['coory'] - $topCoor) * ($topPixel - $botPixel) / ($topCoor - $botCoor)));
         }
-
-        $res = Yii::$app->db
-            ->createCommand('select r.id, r.username, l.coorx, l.coory
-                            from user as r, location as l
-                            where r.id = l.user_id
-                            and (l.floor_id = '.$floorid.')')
-            ->queryAll();
-
-        $widthPixel = $bottomRightPixelx - $topLeftPixelx;
-        $heightPixel = $bottomRightPixely - $topLeftPixely;
-        $widthCoor = $bottomRightCoorx - $topLeftCoorx;
-        $heightCoor = $bottomRightCoory - $topLeftCoory;
-
-        for($i = 0; $i < count($res); $i++)
-        {
-            try
-            {
-                $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0*($res[$i]['coorx'] - $topLeftCoorx)/$widthCoor*$widthPixel));
-                $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0*($res[$i]['coory'] - $topLeftCoory)/$heightCoor*$heightPixel));
-            }
-            catch(\Exception $ex)
-            {
-                return [];
-            }
-        }
-        return $res;
+        return $query;
     }
 
-    private function isAlerted($resident_id){
-        try {
+    private function UserDetail($id){
+        $query = Yii::$app->db->createCommand('SELECT * FROM User WHERE id = '.$id)->queryAll();
+        return $query[0];
+    }
+
+    private function ResidentDetail($id){
+        $query = Yii::$app->db->createCommand('SELECT * FROM Resident WHERE id = '.$id)->queryAll();
+        return $query[0];
+    }
+
+    private function ResidentColor($id){
+        if (Notification::find()->where(['resident_id' => $id, 'user_id' => null])->one()){
+            //Color: Red
+            return "#F44336";
+        }
+        //Color: Blue
+        return "#2196F3";
+    }
+
+    private function ResidentSignal($id){
+        if (Location::find()->where(['resident_id' => $id])->andWhere('created_at < DATE_SUB(NOW(), INTERVAL '.Yii::$app->params['locationTimeOut'].' second)')->one()){
+            return false;
+        }
+        return true;
+    }
+
+    public function getNotification($id = null){
+        if ($id){
             $result = (new \yii\db\Query())
-                ->select(['id'])
+                ->select(['notification.id', 'notification.resident_id', 'notification.type', 'resident.firstname'])
                 ->from('notification')
-                ->where(['resident_id' => $resident_id])
-                    ->andWhere('user_id is NULL')
+                ->leftJoin('resident', 'notification.resident_id = resident.id')
+                ->andWhere('notification.id > '.$id)
+                ->orderBy('notification.id ASC')
                 ->all();
-            if (count($result) > 0) {
-                return true;
-            }
-            return false;
-        } catch (\Exception $e) {
-            return false;
+            return $result;
         }
-    }
-
-    public function getNotification($id = 999999){
-        $result = (new \yii\db\Query())
-            ->select(['notification.id', 'notification.resident_id', 'notification.type', 'resident.firstname'])
-            ->from('notification')
-            ->leftJoin('resident', 'notification.resident_id = resident.id')
-            ->andWhere('notification.id > '.$id)
-            ->orderBy('notification.id ASC')
-            ->all();
-        return $result;
+        else{
+            return "";
+        }
     }
 }

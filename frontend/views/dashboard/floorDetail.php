@@ -554,14 +554,14 @@ $maxID = Notification::find()->max('id');
                 for (i = 0; i < array.length; i++){
                     var d = Math.pow(pos_x - array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, 2) + Math.pow(pos_y - array[i]['pixely']*window.innerHeight/imgHeight, 2) ;
                     if (d <= 100 && d <= distance){
-                        id = array[i]['id'];
+                        id = array[i]['resident_id'];
                         distance = d;
                     }
                 }
                 for (i = 0; i < arrayUser.length; i++){
                     var d = Math.pow(pos_x - arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, 2) + Math.pow(pos_y - arrayUser[i]['pixely']*window.innerHeight/imgHeight, 2) ;
                     if (d <= 100 && d <= distance){
-                        id = arrayUser[i]['id'];
+                        id = arrayUser[i]['user_id'];
                         distance = d;
                         type = "user";
                     }
@@ -603,14 +603,14 @@ $maxID = Notification::find()->max('id');
             for (i = 0; i < array.length; i++){
                 var d = Math.pow(pos_x - array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, 2) + Math.pow(pos_y - array[i]['pixely']*window.innerHeight/imgHeight, 2) ;
                 if (d <= 100 && d <= distance){
-                    name = array[i]['firstname'];
+                    name = array[i]['resident']['firstname'];
                     distance = d;
                 }
             }
             for (i = 0; i < arrayUser.length; i++){
                 var d = Math.pow(pos_x - arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, 2) + Math.pow(pos_y - arrayUser[i]['pixely']*window.innerHeight/imgHeight, 2) ;
                 if (d <= 100 && d <= distance){
-                    name = arrayUser[i]['username'];
+                    name = arrayUser[i]['user']['username'];
                     distance = d;
                 }
             }
@@ -651,40 +651,35 @@ $maxID = Notification::find()->max('id');
             ctx.drawImage(img, 0, 0, window.innerWidth*wRatio,window.innerHeight);
             img.style.display = 'none';
             for(var i=0; i<array.length; i++){
+                //draw circle
                 ctx.beginPath();
                 ctx.arc(array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight, 10, 0, 2 * Math.PI, false);
-                if (array[i]['color'] == "RED"){
-                    ctx.fillStyle = '#F44336';
-                }else{
-                    ctx.fillStyle = '#2196F3';
-                }
+                ctx.fillStyle = array[i]['color'];
                 ctx.fill();
-            }
-            for(var i=0; i<arrayUser.length; i++){
-                ctx.beginPath();
-                ctx.arc(arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, arrayUser[i]['pixely']*window.innerHeight/imgHeight, 10, 0, 2 * Math.PI, false);
-                ctx.fillStyle = '#009688';
-                ctx.fill();
-            }
-            for(var i=0; i<array.length; i++){
+                //draw resident name
                 ctx.font="28px Arial";
                 ctx.fillStyle = "#0277BD";
                 ctx.textAlign = "center";
-                ctx.fillText(array[i]['firstname'], array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight - 15);
+                ctx.fillText(array[i]['resident']['firstname'], array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight - 15);
+                //no signal checking
+                ctx.font="15px Arial";
+                ctx.fillStyle = "#F44336";
+                ctx.textAlign = "center";
+                if (array[i]['signal'] == false){
+                    ctx.fillText("No signal", array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight + 25);
+                }
             }
             for(var i=0; i<arrayUser.length; i++){
+                //draw circle
+                ctx.beginPath();
+                ctx.arc(arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, arrayUser[i]['pixely']*window.innerHeight/imgHeight, 10, 0, 2 * Math.PI, false);
+                ctx.fillStyle = arrayUser[i]['color'];
+                ctx.fill();
+                //draw user name
                 ctx.font="28px Arial";
                 ctx.fillStyle = "#EF6C00";
                 ctx.textAlign = "center";
-                ctx.fillText(arrayUser[i]['username'], arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, arrayUser[i]['pixely']*window.innerHeight/imgHeight - 15);
-            }
-            for(var i=0; i<array.length; i++){
-                if (array[i]['outside'] == true){
-                    ctx.font="15px Arial";
-                    ctx.fillStyle = "#F44336";
-                    ctx.textAlign = "center";
-                    ctx.fillText("No signal", array[i]['pixelx']*window.innerWidth*wRatio/imgWidth, array[i]['pixely']*window.innerHeight/imgHeight + 25);
-                }
+                ctx.fillText(arrayUser[i]['user']['username'], arrayUser[i]['pixelx']*window.innerWidth*wRatio/imgWidth, arrayUser[i]['pixely']*window.innerHeight/imgHeight - 15);
             }
         };
     }

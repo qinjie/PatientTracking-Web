@@ -60,4 +60,20 @@ class ResidentController extends CustomActiveController
 
         return $behaviors;
     }
+
+    public function actionSort($expand = null, $name, $location, $sort_value, $sort_type){
+        if ($sort_value != 'name'){
+            $sort_string = $sort_value.' '.$sort_type;
+        }else{
+            $sort_string = 'firstname '.$sort_type.', lastname '.$sort_type;
+        }
+        $query = Resident::find()->joinWith('floor')->andWhere('CONCAT(firstname, \' \', lastname) LIKE \'%'.$name.'%\'')->andWhere('\'all\'=\''.$location.'\' or floor_id = \''.$location.'\'')->orderBy($sort_string);
+        if ($expand){
+            $expandList = explode(',', $expand);
+            $query->with($expandList);
+        }
+        return new ActiveDataProvider([
+            'query' => $query,
+        ]);
+    }
 }
