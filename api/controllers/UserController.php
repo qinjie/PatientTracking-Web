@@ -1474,7 +1474,6 @@ class UserController extends Controller
                 // calculate pixel positions of the resident basing on the above top left point and the above calculated widths and heights in pixel and meter of the map
                 $res[$i]['pixelx'] = $topLeftPixelx + intval(round(1.0 * ($res[$i]['coorx'] - $topLeftCoorx) / $widthCoor * $widthPixel));
                 $res[$i]['pixely'] = $topLeftPixely + intval(round(1.0 * ($res[$i]['coory'] - $topLeftCoory) / $heightCoor * $heightPixel));
-                return  $res[$i]['coory'] - $topLeftCoory;
 
                 // for testing purpose
 //                $x = rand(min($topLeftCoorx, $bottomRightCoorx) + 1, max($topLeftCoorx, $bottomRightCoorx) - 1);
