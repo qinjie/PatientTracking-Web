@@ -10,10 +10,11 @@ use common\models\CommonFunction;
 $this->title = $model->fullName;
 $this->params['breadcrumbs'][] = ['label' => 'Residents', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$file_path = (new CommonFunction())->getResidentFile($id);
 ?>
 <div class="resident-view">
 
-    <h1><img height="120" width="120" src="../../web/resident<?=$id?>.png">&nbsp;<?= Html::encode($this->title) ?></h1>
+    <h1><img height="120" width="120" src="../../../backend/web/<?=$file_path?>">&nbsp;<?= Html::encode($this->title) ?></h1>
 
     <?= DetailView::widget([
         'model' => $model,

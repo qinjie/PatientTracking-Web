@@ -30,6 +30,7 @@ use yii\helpers\Html;
  */
 class Resident extends \yii\db\ActiveRecord
 {
+    public $file;
     /**
      * @inheritdoc
      */
@@ -45,7 +46,7 @@ class Resident extends \yii\db\ActiveRecord
     {
         return [
             [['firstname', 'lastname', 'nric'], 'required'],
-            [['birthday', 'created_at', 'updated_at'], 'safe'],
+            [['birthday', 'created_at', 'updated_at', 'file_path', 'thumbnail_path'], 'safe'],
             [['firstname', 'lastname'], 'string', 'max' => 100],
             [['nric', 'contact'], 'string', 'max' => 20],
             [['gender'], 'string', 'max' => 10],

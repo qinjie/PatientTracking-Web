@@ -90,10 +90,10 @@ class FloorMapController extends Controller
             $model->file_name = $model->floor_id;
             $model->file_type = 'image/'.$model->file->extension;
             $model->file_ext = $model->file->extension;
-            $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
-            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
+            $model->file_path = 'uploads/maps/'.$model->file_name.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/maps/thumbnail_'.$model->file_name.'.'.$model->file->extension;
             if ($model->save()) {
-                $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
+                $model->file->saveAs('uploads/maps/'.$model->file_name.'.'.$model->file->extension);
                 $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -127,10 +127,10 @@ class FloorMapController extends Controller
             $model->file_name = $model->floor_id;
             $model->file_type = 'image/'.$model->file->extension;
             $model->file_ext = $model->file->extension;
-            $model->file_path = 'uploads/'.$model->file_name.'.'.$model->file->extension;
-            $model->thumbnail_path = 'uploads/thumbnail_'.$model->file_name.'.'.$model->file->extension;
+            $model->file_path = 'uploads/maps/'.$model->file_name.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/maps/thumbnail_'.$model->file_name.'.'.$model->file->extension;
             if ($model->save()) {
-                $model->file->saveAs('uploads/'.$model->file_name.'.'.$model->file->extension);
+                $model->file->saveAs('uploads/maps/'.$model->file_name.'.'.$model->file->extension);
                 $this->makeThumbnails($model->file_name.'.'.$model->file_ext);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -180,7 +180,7 @@ class FloorMapController extends Controller
 
     private function makeThumbnails($imgName)
     {
-        $uploadsPath = "uploads/";
+        $uploadsPath = "uploads/maps/";
         $imgPath = $uploadsPath.$imgName;
         $thumb_before_word = "thumbnail_";
         $arr_image_details = getimagesize($imgPath);

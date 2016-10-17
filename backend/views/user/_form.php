@@ -19,7 +19,7 @@ $model->status = isset($model->status) ? $model->status : 1;
         if (Yii::$app->user->identity->role >= 40) $roleArray += [30 => 'Admin'];
     ?>
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
@@ -44,6 +44,15 @@ $model->status = isset($model->status) ? $model->status : 1;
     <?= $form->field($model, 'allowance')->textInput() ?>
 
     <?= $form->field($model, 'timestamp')->textInput() ?>
+
+    <?= $form->field($model, 'file')->widget(\kartik\file\FileInput::className(),
+        [
+            'options' => ['accept' => 'image/*'],
+            'pluginOptions' => [
+                'showUpload' => false,
+            ]
+        ]
+    ) ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>
 

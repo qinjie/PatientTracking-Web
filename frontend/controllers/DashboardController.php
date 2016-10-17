@@ -100,6 +100,7 @@ class DashboardController extends Controller
     {
         return $this->renderAjax('userModal', [
             'model' => $this->findModel($id),
+            'id' => $id,
         ]);
     }
 

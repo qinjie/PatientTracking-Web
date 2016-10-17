@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\components\AccessRule;
+use common\models\CommonFunction;
 use common\models\User;
 use Yii;
 use common\models\Resident;
@@ -11,6 +12,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ResidentController implements the CRUD actions for Resident model.
@@ -80,8 +82,15 @@ class ResidentController extends Controller
     {
         $model = new Resident();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->file_path = 'uploads/human_images/'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/human_images/thumbnail_'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension;
+            if ($model->save()) {
+                $model->file->saveAs('uploads/human_images/'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension);
+                $this->makeThumbnails($model->firstname.'_'.$model->lastname.'.'.$model->file->extension);
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -99,8 +108,15 @@ class ResidentController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            $model->file_path = 'uploads/human_images/'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension;
+            $model->thumbnail_path = 'uploads/human_images/thumbnail_'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension;
+            if ($model->save()) {
+                $model->file->saveAs('uploads/human_images/'.$model->firstname.'_'.$model->lastname.'.'.$model->file->extension);
+                $this->makeThumbnails($model->firstname.'_'.$model->lastname.'.'.$model->file->extension);
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -117,6 +133,7 @@ class ResidentController extends Controller
   
     public function actionDelete($id)
     {
+        (new CommonFunction())->deleteFloorMap($id);
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -135,6 +152,43 @@ class ResidentController extends Controller
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    private function makeThumbnails($imgName)
+    {
+        $uploadsPath = "uploads/human_images/";
+        $imgPath = $uploadsPath.$imgName;
+        $thumb_before_word = "thumbnail_";
+        $arr_image_details = getimagesize($imgPath);
+        $original_width = $arr_image_details[0];
+        $original_height = $arr_image_details[1];
+        if ($original_width > 2*$original_height) {
+            $thumbnail_width = 200;
+            $thumbnail_height = intval($original_height*200/$original_width);
+        } else {
+            $thumbnail_height = 100;
+            $thumbnail_width = intval($original_width*100/$original_height);
+        }
+        if ($arr_image_details[2] == 1) {
+            $imgt = "imagegif";
+            $imgcreatefrom = "imagecreatefromgif";
+        }
+        if ($arr_image_details[2] == 2) {
+            $imgt = "imagejpeg";
+            $imgcreatefrom = "imagecreatefromjpeg";
+        }
+        if ($arr_image_details[2] == 3) {
+            $imgt = "imagepng";
+            $imgcreatefrom = "imagecreatefrompng";
+        }
+        if ($imgt) {
+            $old_image = $imgcreatefrom($imgPath);
+            $new_image = imagecreatetruecolor($thumbnail_width, $thumbnail_height);
+            imagealphablending( $new_image, false );
+            imagesavealpha( $new_image, true );
+            imagecopyresized($new_image, $old_image, 0, 0, 0, 0, $thumbnail_width, $thumbnail_height, $original_width, $original_height);
+            $imgt($new_image, $uploadsPath.$thumb_before_word.$imgName);
         }
     }
 }

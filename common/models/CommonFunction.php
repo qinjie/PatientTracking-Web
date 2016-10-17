@@ -42,6 +42,30 @@ class CommonFunction extends \yii\db\ActiveRecord
         return true;
     }
 
+    //delete resident image
+    public function deleteResidentImage($id){
+        $query = Resident::find()->where(['id' => $id])->one();
+        if (file_exists($filePath = $query['file_path'])){
+            unlink($query['file_path']);
+        }
+        if (file_exists($filePath = $query['thumbnail_path'])){
+            unlink($query['thumbnail_path']);
+        }
+        return true;
+    }
+
+    //delete nurse image
+    public function deleteNurseImage($id){
+        $query = User::find()->where(['id' => $id])->one();
+        if (file_exists($filePath = $query['file_path'])){
+            unlink($query['file_path']);
+        }
+        if (file_exists($filePath = $query['thumbnail_path'])){
+            unlink($query['thumbnail_path']);
+        }
+        return true;
+    }
+
     //get Coordinate of Floor_id
     public function getCoordinate($id){
         $query = Yii::$app->db->createCommand('SELECT pixelx, pixely FROM marker where floor_id = '.$id.' order by position ASC ')->queryAll();
@@ -384,5 +408,25 @@ class CommonFunction extends \yii\db\ActiveRecord
         else{
             return "";
         }
+    }
+
+    public function getResidentFile($id){
+        $query = Resident::find()->where(['id' => $id])->one();
+        return $query['file_path'];
+    }
+
+    public function getResidentThumbnail($id){
+        $query = Resident::find()->where(['id' => $id])->one();
+        return $query['thumbnail_path'];
+    }
+
+    public function getUserFile($id){
+        $query = User::find()->where(['id' => $id])->one();
+        return $query['file_path'];
+    }
+
+    public function getUserThumbnail($id){
+        $query = User::find()->where(['id' => $id])->one();
+        return $query['thumbnail_path'];
     }
 }
