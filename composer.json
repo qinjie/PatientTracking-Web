@@ -1,6 +1,6 @@
 {
   "name": "yiisoft/yii2-app-advanced",
-  "description": "Yii 2 Advanced Project Template",
+  "description": "Patient Tracking",
   "keywords": [
     "yii2",
     "framework",
@@ -46,6 +46,7 @@
     "process-timeout": 1800
   },
   "extra": {
+    "fxp/composer-asset-plugin": "~1.1",
     "asset-installer-paths": {
       "npm-asset-library": "vendor/npm",
       "bower-asset-library": "vendor/bower"
