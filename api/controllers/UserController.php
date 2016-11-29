@@ -1097,8 +1097,8 @@ class UserController extends Controller
     {
         try {
             // if the request requests a new notification for all devices but there exists an untakencare notification related to the resident
-            if (!self::isAlertable($resident_id) && $mac_address == 'all' & $user_id == -1)
-                return 'isNotAlertable';
+//            if (!self::isAlertable($resident_id) && $mac_address == 'all' & $user_id == -1)
+//                return 'isNotAlertable';
 
             // get some basic information of the resident
             $query = (new \yii\db\Query())
@@ -1693,14 +1693,14 @@ class UserController extends Controller
         try {
             // Insert real FCM API key from Google APIs Console
             // https://code.google.com/apis/console/
-            $apiKey = 'AIzaSyAhwoQzA2NhAvXJaDXFd11B_91aJrcDHIo';
+            $apiKey = 'AIzaSyAUoKiGeMSb3Y9p6MFY6wl4o7YEGIkKyIw';
 
             // Define URL to FCM endpoint
             $url = 'https://fcm.googleapis.com/fcm/send';
 
             // Set FCM post variables (device IDs and push payload)
             $post = [
-                'registration_ids' => $ids,
+                'registration_ids' => [],
                 'priority' => 'high',
 //            'notification'      => $notification,
                 'data' => $data
@@ -1745,6 +1745,7 @@ class UserController extends Controller
             curl_close($ch);
 
             // Debug FCM response
+            var_dump($result); die();
             return $result;
         } catch (\Exception $e) {
             return 'failed';
@@ -1988,3 +1989,4 @@ class UserController extends Controller
         Yii::$app->response->headers->set('result', 'failed');
     }
 }
+?>
