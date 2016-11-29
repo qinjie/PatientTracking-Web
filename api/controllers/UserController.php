@@ -1700,7 +1700,7 @@ class UserController extends Controller
 
             // Set FCM post variables (device IDs and push payload)
             $post = [
-                'registration_ids' => [],
+                'registration_ids' => $ids,
                 'priority' => 'high',
 //            'notification'      => $notification,
                 'data' => $data
