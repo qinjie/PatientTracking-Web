@@ -102,6 +102,7 @@ class UserController extends Controller
                 return 'isNotExpired';
             }
 
+
             // set response header result value 'isExpired'
             Yii::$app->response->headers->set('result', 'isExpired');
             return 'isExpired';
@@ -416,15 +417,11 @@ class UserController extends Controller
             // check session timeout
             if (self::actionCheck() != 'isNotExpired')
                 return 'failed';
-
-            // get mac_address attribute from request body
-            $mac_address = Yii::$app->request->post('mac_address');
-
             // get fcm_token attribute from request body
             $fcm_token = Yii::$app->request->post('fcm_token');
 
             // get FCM token id corresponding to the above MAC address from fcmtoken table
-            $fcmTokenId = self::getFcmTokenId($mac_address);
+            $fcmTokenId = self::getFcmTokenId($fcm_token);
 
             // exception or inconsistent database
             if ($fcmTokenId == 'failed') {
@@ -438,11 +435,10 @@ class UserController extends Controller
 
                 // insert a new record into fcmtoken table for the first successful receiving FCM token for the device corresponding to the MAC address
                 $result = Yii::$app->db->createCommand()
-                    ->insert('fcmtoken', ['mac_address' => $mac_address, 'fcm_token' => $fcm_token])->execute();
+                    ->insert('fcmtoken', ['fcm_token' => $fcm_token])->execute();
             } else {
-
                 // update fcmtoken column for the device corresponding to the MAC address in fcmtoken table
-                $result = Yii::$app->db->createCommand()->update('fcmtoken', ['fcm_token' => $fcm_token], 'id = ' . $fcmTokenId)->execute();
+                $result = $fcm_token;
             }
 
             //failed inserting or updating
@@ -1093,7 +1089,7 @@ class UserController extends Controller
      *               2. isNotAlertable: the pushing notification request is not accepted because there is a notification related to the resident has not been taken care
      *               3. success: the pushing notification request is accepted and successfully send the notification to target devices
      */
-    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $mac_address = 'all', $type = 1)
+    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $type = 1)
     {
         try {
             // if the request requests a new notification for all devices but there exists an untakencare notification related to the resident
@@ -1106,7 +1102,6 @@ class UserController extends Controller
                 ->from('resident')
                 ->where(['id' => $resident_id])
                 ->all();
-
             // if resident_id does not exits in resident table
             if (count($query) == 0) {
                 self::serverError();
@@ -1166,9 +1161,7 @@ class UserController extends Controller
             $result = (new \yii\db\Query())
                 ->select('fcm_token')
                 ->from('fcmtoken')
-                ->where('\'' . $mac_address . '\' =  \'all\' or mac_address = \'' . $mac_address . '\'')
                 ->all();
-
             // add NOT NULL fcm_token into $ids array
             for ($i = 0; $i < count($result); $i++) {
                 if ($result[$i]['fcm_token'] != NULL) {
@@ -1204,7 +1197,7 @@ class UserController extends Controller
      *               1. failed: exception or inconsistent database or the session is expired
      *               2. success: successfully push all untakencare notifications to the target device
      */
-    public function actionAlertuntakencare($mac_address)
+    public function actionAlertuntakencare()
     {
         try {
             // check session timeout
@@ -1226,7 +1219,7 @@ class UserController extends Controller
                 $notification = $notificationList[$i];
 
                 // call actionAlert function to notify to the target device
-                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1', $mac_address);
+                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1');
 
                 // exception or inconsistent database
                 if ($result == 'failed') {
@@ -1959,7 +1952,7 @@ class UserController extends Controller
      *          + $mac_address: MAC address of a device
      * @return string
      */
-    private function getFcmTokenId($mac_address)
+    private function getFcmTokenId($fcm_token)
     {
         try {
             // query id corresponding to the mac_address parameter from fcmtoken
@@ -1967,7 +1960,7 @@ class UserController extends Controller
                 ->select('id')
                 ->limit(1)
                 ->from('fcmtoken')
-                ->where(['mac_address' => $mac_address])
+                ->where(['fcm_token' => $fcm_token])
                 ->all();
 
             // if the mac_address does not exist in fcmtoken table
