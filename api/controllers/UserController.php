@@ -299,7 +299,7 @@ class UserController extends Controller
             if ($mac_address == NULL){
                 throw new BadRequestHttpException('fcm token was NULL');
             }
-            
+
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
 
@@ -1170,7 +1170,7 @@ class UserController extends Controller
             $result = (new \yii\db\Query())
                 ->select('fcm_token')
                 ->from('fcmtoken')
-                ->where('\'' . $token . '\' =  \'all\' or token = \'' . $token . '\'')
+                ->where('\'' . $token . '\' =  \'all\' or fcm_token = \'' . $token . '\'')
                 ->all();
             // add NOT NULL fcm_token into $ids array
             for ($i = 0; $i < count($result); $i++) {
@@ -1207,12 +1207,15 @@ class UserController extends Controller
      *               1. failed: exception or inconsistent database or the session is expired
      *               2. success: successfully push all untakencare notifications to the target device
      */
-    public function actionAlertuntakencare($token)
+    public function actionAlertuntakencare()
     {
         try {
             // check session timeout
             if (self::actionCheck() != 'isNotExpired')
                 return 'failed';
+
+            // get fcm_token attribute from request body
+            $fcm_token = Yii::$app->request->post('fcm_token');
 
             // query all notifications have not been taken care of and sort in ascending order by created time
             $notificationList = (new \yii\db\Query())
@@ -1229,7 +1232,7 @@ class UserController extends Controller
                 $notification = $notificationList[$i];
 
                 // call actionAlert function to notify to the target device
-                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1', $token);
+                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1', $fcm_token);
 
                 // exception or inconsistent database
                 if ($result == 'failed') {
