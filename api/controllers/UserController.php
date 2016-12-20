@@ -149,7 +149,6 @@ class UserController extends Controller
             if ($mac_address == NULL){
                 throw new BadRequestHttpException('fcm token was NULL');
             }
-
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
 
