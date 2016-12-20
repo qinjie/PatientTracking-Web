@@ -15,6 +15,6 @@
     If can't run ```composer install```, run this first:<br>
 	```composer global require "fxp/composer-asset-plugin:1.0.3"```;
 11. The server address is something like this:
-* Frontend: <server_ip>/PatientTracking-Web/frontend/web;
-* Backend: <server_ip>/PatientTracking-Web/backend/web;
-* API: <server_ip>/PatientTracking-Web/api/web/index.php/v1.
+    * Frontend: ```<server_ip>/PatientTracking-Web/frontend/web```;
+    * Backend: ```<server_ip>/PatientTracking-Web/backend/web```;
+    * API: ```<server_ip>/PatientTracking-Web/api/web/index.php/v1```.
