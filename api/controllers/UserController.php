@@ -9,6 +9,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;
 use common\models\Location;
+use yii\web\BadRequestHttpException;
 
 /**
  * UserController implements API for client
@@ -144,6 +145,10 @@ class UserController extends Controller
 
             // get mac_address attribute from request body
             $mac_address = Yii::$app->request->post("fcm_token");
+
+            if ($mac_address == NULL){
+                throw new BadRequestHttpException('fcm token was NULL');
+            }
 
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
@@ -289,8 +294,12 @@ class UserController extends Controller
             $new_password = Yii::$app->request->post("new_password");
 
             // get mac_address attribute from request body
-            $mac_address = Yii::$app->request->post("token");
+            $mac_address = Yii::$app->request->post("fcm_token");
 
+            if ($mac_address == NULL){
+                throw new BadRequestHttpException('fcm token was NULL');
+            }
+            
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
 
