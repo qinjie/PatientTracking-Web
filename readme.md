@@ -17,4 +17,5 @@
 11. The server address is something like this:
     * Frontend: ```<server_ip>/PatientTracking-Web/frontend/web```;
     * Backend: ```<server_ip>/PatientTracking-Web/backend/web```;
-    * API: ```<server_ip>/PatientTracking-Web/api/web/index.php/v1```.
+    * API: ```<server_ip>/PatientTracking-Web/api/web/index.php/v1```.  
+12. Python background process is described [Here](https://github.com/qinjie/PatientTracking-Python)
