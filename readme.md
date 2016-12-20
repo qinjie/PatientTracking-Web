@@ -2,9 +2,9 @@
 
 ##Installation Instruction
 
-1. SSH to server;
+1. If you use remote server, SSH to server;
 2. Install [LAMP](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-14-04), [Git](https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-14-04), [Composer](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-14-04) (If need);
-3. Install database file;
+3. Install database file in ```docs/database.sql```;
 4. Go to /var/www/html (Root directory of Apache);
 5. Run ```git clone https://github.com/qinjie/PatientTracking-Web```;
 6. Go to PatientTracking-Web folder;
