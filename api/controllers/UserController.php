@@ -446,7 +446,7 @@ class UserController extends Controller
                     ->insert('fcmtoken', ['fcm_token' => $fcm_token])->execute();
             } else {
                 // update fcmtoken column for the device corresponding to the MAC address in fcmtoken table
-                $result = $fcm_token;
+                $result = 1;
             }
 
             //failed inserting or updating
