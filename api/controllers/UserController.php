@@ -144,9 +144,9 @@ class UserController extends Controller
             $password = Yii::$app->request->post("password");
 
             // get mac_address attribute from request body
-            $mac_address = Yii::$app->request->post("fcm_token");
+            $fcm_token = Yii::$app->request->post("fcm_token");
 
-            if ($mac_address == NULL){
+            if ($fcm_token == NULL){
                 throw new BadRequestHttpException('fcm token was NULL');
             }
             // get id corresponding to the above username from user table
@@ -184,7 +184,7 @@ class UserController extends Controller
             }
 
             // get id corresponding to pair user_id and mac_address from usertoken table
-            $userTokenId = self::getUserTokenId($user_id, $mac_address);
+            $userTokenId = self::getUserTokenId($user_id, $fcm_token);
 
             // exception
             if ($userTokenId == 'failed') {
@@ -200,7 +200,7 @@ class UserController extends Controller
             $expire = date_format(date_add($now, date_interval_create_from_date_string(self::session_timeout)), 'Y-m-d H:i:s');
 
             // generate hash input for session token
-            $hashInput = $username . $mac_address . $expire;
+            $hashInput = $username . $fcm_token . $expire;
 
             // generate session token using MD5 hashing algorithm from the above hash input
             $token = hash('md5', $hashInput);
@@ -211,7 +211,7 @@ class UserController extends Controller
 
                 // insert a new record into usertoken table for the first successful log in
                 $result = Yii::$app->db->createCommand()
-                    ->insert('usertoken', ['user_id' => $user_id, 'token' => $token, 'mac_address' => $mac_address, 'expire' => $expire])->execute();
+                    ->insert('usertoken', ['user_id' => $user_id, 'token' => $token, 'mac_address' => $fcm_token, 'expire' => $expire])->execute();
 
                 // failed inserting
                 if ($result != 1) {
@@ -1206,15 +1206,12 @@ class UserController extends Controller
      *               1. failed: exception or inconsistent database or the session is expired
      *               2. success: successfully push all untakencare notifications to the target device
      */
-    public function actionAlertuntakencare()
+    public function actionAlertuntakencare($fcm_token)
     {
         try {
             // check session timeout
             if (self::actionCheck() != 'isNotExpired')
                 return 'failed';
-
-            // get fcm_token attribute from request body
-            $fcm_token = Yii::$app->request->post('fcm_token');
 
             // query all notifications have not been taken care of and sort in ascending order by created time
             $notificationList = (new \yii\db\Query())
