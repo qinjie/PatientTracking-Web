@@ -143,7 +143,7 @@ class UserController extends Controller
             $password = Yii::$app->request->post("password");
 
             // get mac_address attribute from request body
-            $mac_address = Yii::$app->request->post("mac_address");
+            $mac_address = Yii::$app->request->post("fcm_token");
 
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
@@ -289,7 +289,7 @@ class UserController extends Controller
             $new_password = Yii::$app->request->post("new_password");
 
             // get mac_address attribute from request body
-            $mac_address = Yii::$app->request->post("mac_address");
+            $mac_address = Yii::$app->request->post("token");
 
             // get id corresponding to the above username from user table
             $user_id = self::getUserIdByUsername($username);
@@ -1089,7 +1089,7 @@ class UserController extends Controller
      *               2. isNotAlertable: the pushing notification request is not accepted because there is a notification related to the resident has not been taken care
      *               3. success: the pushing notification request is accepted and successfully send the notification to target devices
      */
-    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $type = 1)
+    public function actionAlert($resident_id, $last_position = '', $ok = '0', $id = '-1', $user_id = '-1', $token = 'all', $type = 1)
     {
         try {
             // if the request requests a new notification for all devices but there exists an untakencare notification related to the resident
@@ -1161,6 +1161,7 @@ class UserController extends Controller
             $result = (new \yii\db\Query())
                 ->select('fcm_token')
                 ->from('fcmtoken')
+                ->where('\'' . $token . '\' =  \'all\' or token = \'' . $token . '\'')
                 ->all();
             // add NOT NULL fcm_token into $ids array
             for ($i = 0; $i < count($result); $i++) {
@@ -1197,7 +1198,7 @@ class UserController extends Controller
      *               1. failed: exception or inconsistent database or the session is expired
      *               2. success: successfully push all untakencare notifications to the target device
      */
-    public function actionAlertuntakencare()
+    public function actionAlertuntakencare($token)
     {
         try {
             // check session timeout
@@ -1219,7 +1220,7 @@ class UserController extends Controller
                 $notification = $notificationList[$i];
 
                 // call actionAlert function to notify to the target device
-                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1');
+                $result = self::actionAlert($notification['resident_id'], $notification['last_position'], '0', $notification['id'], '-1', $token);
 
                 // exception or inconsistent database
                 if ($result == 'failed') {
