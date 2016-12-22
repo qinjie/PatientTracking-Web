@@ -1599,7 +1599,7 @@ class UserController extends Controller
                 ->select(['id'])
                 ->from('notification')
                 ->where(['resident_id' => $resident_id])
-                ->andWhere('updated_at >= (NOW() - INTERVAL ' . Yii::$app->params['alertTimeOut'] . ' SECOND)')
+                ->andWhere('updated_at >= (NOW() - INTERVAL ' . Yii::$app->params['locationTimeOut'] . ' SECOND)')
                 ->all();
             if (count($result) > 0) {
                 return false;
