@@ -1,5 +1,11 @@
 #Patient Tracking Web
 
+Web service has responsibility to:
+* Collect data from [Floor server](https://github.com/qinjie/PatientTracking-Python#floor);
+* Send data to Android applications: API;
+* Display residents' location, information: Frontend side;
+* Manage residents and their location data: Backend side;
+
 ##Installation Instruction
 
 1. If you use remote server, SSH to server;
