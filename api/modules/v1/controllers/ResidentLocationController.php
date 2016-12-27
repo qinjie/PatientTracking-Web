@@ -141,6 +141,7 @@ class ResidentLocationController extends CustomActiveController
                                             'zone' => $zone, 'outside' => $outside, 'speed' => $speed, 'azimuth' => $azimuth, 'created_at' => $now],
                                             ['resident_id' => $resident_id]
                                         )->execute();
+                                    return $this->redirect(Yii::$app->homeUrl.'user/alert?resident_id='.$resident_id.'&last_position='.$temp['floor_id'].'&type=1');
                                 }else{
                                     //if the tag is not exists
                                     $result = Yii::$app->db->createCommand()
