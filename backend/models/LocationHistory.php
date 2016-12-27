@@ -29,20 +29,6 @@ class LocationHistory extends \yii\db\ActiveRecord
         return 'location_history';
     }
 
-    public function behaviors()
-    {
-        return [
-            'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                // Modify only created not updated attribute
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
-                ],
-                'value' => new Expression('NOW()'),
-            ],
-        ];
-    }
-
     /**
      * @inheritdoc
      */
