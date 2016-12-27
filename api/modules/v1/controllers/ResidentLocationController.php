@@ -81,8 +81,9 @@ class ResidentLocationController extends CustomActiveController
                 while ($token !== false)
                 {
                     $zones[] = $token;
-                    $token = strtok(",");
+                    $token = strtok(" ");
                 }
+                var_dump($zones); die();
                 foreach ($zones as $zone){
                     //if the zone is belong to a floor
                     if ($temp = Floor::find()->where(['quuppa_id' => $zone])->one()){
