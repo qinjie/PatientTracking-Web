@@ -76,7 +76,7 @@ class ResidentLocationController extends CustomActiveController
                 if ($q_user_id){
                     $user_id = $q_user_id['user_id'];
                 }
-                $token = strtok($result['zone'], ",");
+                $token = strtok($result['zone'], " ");
                 $zones = [];
                 while ($token !== false)
                 {
