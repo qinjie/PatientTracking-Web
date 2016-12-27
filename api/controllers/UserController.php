@@ -1101,8 +1101,8 @@ class UserController extends Controller
     {
         try {
             // if the request requests a new notification for all devices but there exists an untakencare notification related to the resident
-//            if (!self::isAlertable($resident_id) && $mac_address == 'all' & $user_id == -1)
-//                return 'isNotAlertable';
+            if (!self::isAlertable($resident_id) && $mac_address == 'all' & $user_id == -1)
+                return 'isNotAlertable';
 
             // get some basic information of the resident
             $query = (new \yii\db\Query())
