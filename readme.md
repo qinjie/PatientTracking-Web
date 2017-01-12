@@ -5,6 +5,12 @@ Web service has responsibility to:
 * Display residents' location, information: Frontend side;
 * Manage residents and their location data: Backend side.
 
+## Environments
+* Staging/Demonstration: [http://128.199.93.67/PatientTracking-Web]()
+  * Frontend: [http://128.199.93.67/PatientTracking-Web/frontend/web]()
+  * Backend: [http://128.199.93.67/PatientTracking-Web/backend/web]()
+  * API: [http://128.199.93.67/PatientTracking-Web/api/web/index.php/v1]()
+
 ## Software Requirements
 * [Git](https://www.digitalocean.com/community/tutorials/how-to-install-git-on-ubuntu-14-04)
 * [Composer](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-composer-on-ubuntu-14-04)
